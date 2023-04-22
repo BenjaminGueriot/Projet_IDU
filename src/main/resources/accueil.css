@@ -1,0 +1,56 @@
+#NomPrenomText {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+    -fx-font-family: 'Helvetica Neue', sans-serif;
+}
+
+#ModuleText {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-font-family: 'Georgia', serif;
+}
+
+#PlanningText {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-font-family: 'Georgia', serif;
+}
+
+#SemaineText {
+    -fx-font-size: 15px;
+    -fx-fill: black;
+}
+
+#MoyenneText {
+    -fx-font-size: 15px;
+    -fx-fill: black;
+}
+
+#TestText {
+    -fx-font-size: 15px;
+    -fx-fill: black;
+}
+
+#parent-grid-pane {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-background-color: linear-gradient(to bottom, white, darkgray);
+}
+
+#titre-grid {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.grid-pane {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-background-color: white;
+}
