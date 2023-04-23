@@ -14,7 +14,8 @@ public class ScrappingTest {
 	public static void main(String[] args) throws IOException {
 		
 		login();
-}
+		
+	}
 	
 	@SuppressWarnings("deprecation")
 	public static void login() {
@@ -23,11 +24,9 @@ public class ScrappingTest {
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-	    // setting headless mode to true.. so there isn't any ui
 		options.setAcceptInsecureCerts(true);
         options.setHeadless(true);
 
-	    // Create a new instance of the Chrome driver
 	    WebDriver driver = new ChromeDriver(options);
 		
 		driver.manage().window().maximize();
@@ -45,20 +44,13 @@ public class ScrappingTest {
 		
 		// Trouver les éléments qui contiennent les informations
 	    List<WebElement> indentificationElement = driver.findElements(By.className("table"));
-	   // WebElement mailElement = (WebElement) driver.findElements(By.className("table"));
 	    
-	    // Extraire les informations
-
-	    String t = "";
+	    String fullText = "";
 	    for(WebElement we : indentificationElement) {
-	    	 t += we.getText() + " ";
+	    	fullText += we.getText() + " ";
 	    }
 	    
-	    String[] values = getStudentIdentification(t);
-	    
-	    //String mail = mailElement.getText();
-	    
-	    // Afficher les informations
+	    String[] values = getStudentIdentification(fullText);
 	    
 	    System.out.println(values[0]);
 	    System.out.println(values[1]);
