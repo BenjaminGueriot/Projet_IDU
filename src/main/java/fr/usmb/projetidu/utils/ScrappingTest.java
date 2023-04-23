@@ -13,15 +13,15 @@ public class ScrappingTest {
 	
 	public static void main(String[] args) throws IOException {
 		
-		login();
+		loginToIntranet();
 		
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void login() {
+	public static void loginToIntranet() {
 				
-		String log = "nicolath";
-		String pass = "ao61na76&*Tao61na76";
+		String log = "";
+		String pass = "";
 		
 		ChromeOptions options = new ChromeOptions();
 		options.setAcceptInsecureCerts(true);
@@ -60,7 +60,6 @@ public class ScrappingTest {
 	    System.out.println(values[5]);
 		
 	}
-	
 	
 	private static String[] getStudentIdentification(String texte) {
 		
