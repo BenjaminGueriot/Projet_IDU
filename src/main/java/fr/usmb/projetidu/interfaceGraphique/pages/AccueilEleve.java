@@ -109,9 +109,9 @@ public class AccueilEleve extends Parent {
         decoButton.setOnAction(event -> {
         	Initialize.resetObject(eleve);
         	
-        	LoginForm LoginForm = new LoginForm(primaryStage);
+        	LoginForm loginForm = new LoginForm(primaryStage);
     		// Add a style sheet to the scene
-            Scene scene = new Scene(LoginForm, 290, 220);
+            Scene scene = new Scene(loginForm, 290, 220);
             scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -147,12 +147,20 @@ public class AccueilEleve extends Parent {
         MoyenneGrid.add(MoyenneNote, 1, 0);
         gridParent.add(MoyenneGrid, 5, 7, 1, 1);
         
+  
+        Button addNoteButton = new Button("Ajouter une note");
+        addNoteButton.setOnAction(event -> {
+        	
+        	NoteForm noteForm = new NoteForm(primaryStage,eleve);
+    		// Add a style sheet to the scene
+            Scene scene = new Scene(noteForm,500,500);
+            //scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        });
         
-        Text MoyenneClasseText = new Text("Moyenne de classe : " + eleve.getPromo().getGlobalMean());
-        MoyenneClasseText.setId("MoyenneText");
-        gridParent.add(MoyenneClasseText, 10, 7, 1, 1);
-        
-        
+        addNoteButton.setId("addNoteButton");
+        gridParent.add(addNoteButton, 10, 7, 1, 1);
         
         // Create the child grid panes
         GridPane childGrid1 = new GridPane();
