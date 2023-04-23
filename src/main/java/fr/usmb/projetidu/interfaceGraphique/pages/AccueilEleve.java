@@ -153,7 +153,7 @@ public class AccueilEleve extends Parent {
         	
         	NoteForm noteForm = new NoteForm(primaryStage,eleve);
     		// Add a style sheet to the scene
-            Scene scene = new Scene(noteForm,500,500);
+            Scene scene = new Scene(noteForm,700,500);
             //scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
