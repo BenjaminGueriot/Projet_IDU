@@ -59,7 +59,7 @@ public class ModuleInfo extends Parent {
         	UEText.setStyle("-fx-font-weight: bold;");
         	UEText.setTextAlignment(TextAlignment.CENTER);
             gridParent.add(UEText, 0, count, 1, 1);
-            Text MoyenneUEText = new Text("Moyenne de l'UE: " + eleve.getMeanOfUe(ue) + " | Moyenne g�n�rale: " + eleve.getPromo().getPromoMeanOfUE(ue));
+            Text MoyenneUEText = new Text("Moyenne de l'UE: " + eleve.getMeanOfUe(ue));
             MoyenneUEText.setId("MoyenneUEText");
             gridParent.add(MoyenneUEText, 0, count+1, 1, 1);
             count += 2;
@@ -102,7 +102,7 @@ public class ModuleInfo extends Parent {
 	            HashMap<Travail, double[]> travaux = eleve.getInfosFromModule(module);
 	            
 	            for (Travail travail : travaux.keySet()) {
-	            	Text travailText = new Text(travail.getNom() + ": " + travaux.get(travail)[0] +" | Moyenne: " + eleve.getPromo().getPromoMeanOfTravail(travail));
+	            	Text travailText = new Text(travail.getNom() + ": " + travaux.get(travail)[0]);
 	            	travailText.setId("TravailText");
 	            	gridParent.add(travailText, 0, count+3, 1, 1);
 	            	
@@ -112,7 +112,7 @@ public class ModuleInfo extends Parent {
 	            	count+=1;
 	    		}
 	            
-	            Text MoyenneText = new Text("Moyenne du module: " + eleve.getMeanOfModule(module) + " | Moyenne de classe: " + eleve.getPromo().getPromoMeanOfModule(module));
+	            Text MoyenneText = new Text("Moyenne du module: " + eleve.getMeanOfModule(module));
 	            MoyenneText.setId("MoyenneText");
 	        	gridParent.add(MoyenneText, 0, count+3, 1, 1);
 	            

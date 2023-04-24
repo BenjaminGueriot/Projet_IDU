@@ -342,12 +342,12 @@ public class NoteForm extends Parent {
                         primaryStage.show();
             		}
             		else {
-            			//Page erreur champs manquant
+            			ErrorPopup.display("Un ou plusieurs champs sont manquants.");
             		}
             	}
         	}
         	else {
-    			//Page erreur champs manquant
+        		ErrorPopup.display("Un ou plusieurs champs sont manquants.");
     		}
         	
         });
