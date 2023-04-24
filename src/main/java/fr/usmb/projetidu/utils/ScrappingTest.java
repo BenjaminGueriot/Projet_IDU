@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -16,19 +18,15 @@ public class ScrappingTest {
 	
 	public static void main(String[] args) throws IOException {
 		
-		try {
-			loginToPolytechIntranet();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		loginToUSMBIntranet();
 		
 	}
 	
 	@SuppressWarnings("deprecation")
 	public static void loginToUSMBIntranet() {
 				
-		String login = "";
-		String pass = "";
+		String login = "nicolath";
+		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
 		options.setAcceptInsecureCerts(true);
@@ -58,24 +56,39 @@ public class ScrappingTest {
 	    
 	    String[] values = getStudentIdentification(fullText);
 	    
-	    System.out.println(values[0]);
-	    System.out.println(values[1]);
-	    System.out.println(values[2]);
-	    System.out.println(values[3]);
-	    System.out.println(values[4]);
-	    System.out.println(values[5]);
+	    String name = values[0];
+	    String surname = values[1];
+	    String bday = values[2];
+	    String mail = values[3];
+	    String endOfLicence = values[4];
+	    String INE = values[5];
+	    
+	    System.out.println("Nom : " + surname);
+	    System.out.println("Prenom : " + name);
+	    System.out.println("Anniversaire : " + bday);
+	    System.out.println("Mail : " + mail);
+	    System.out.println("Fin de licence : " + endOfLicence);
+	    System.out.println("INE : " + INE);
+	    
+	    
+	    try {
+			loginToPolytechIntranet(surname, name);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} 
+	    
 		
 	}
 	
-	public static void loginToPolytechIntranet() throws InterruptedException {
+	public static void loginToPolytechIntranet(String surname, String name) throws InterruptedException {
 		
-		String login = "";
-		String pass = "";
+		String login = "nicolath";
+		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
 		options.setAcceptInsecureCerts(true);
-        //options.setHeadless(true);
-
+        options.setHeadless(true);
+        
 	    WebDriver driver = new ChromeDriver(options);
 		
 		driver.get("https://www.polytech.univ-smb.fr/login");
@@ -94,25 +107,123 @@ public class ScrappingTest {
 		password.sendKeys(pass);
 		submit.click();
 		
+		
+		/** Partie récupération des polypoints **/
+		
 		driver.get("https://www.polytech.univ-smb.fr/intranet/pages-speciales/espace-etudiants/espace-personnel.html");
 		
 		List<WebElement> pointsElement = driver.findElements(By.className("nb_points"));
 		
-		 int polyPoints = 0;
-		 for(WebElement we : pointsElement) {
+		int polyPoints = 0;
+		 
+		for(WebElement we : pointsElement) {
 			 polyPoints += Integer.parseInt(we.getText());
+		}
+		 
+		 System.out.println("Polypoints : " + polyPoints);
+		 
+		 
+		/** Partie récupération de la filière via le trombinoscope **/ 
+		 
+		 driver.get("https://www.polytech.univ-smb.fr/intranet/eleves-ingenieurs.html");
+		 
+		 WebElement search = driver.findElement(By.xpath("//*[@id=\"c3262\"]/div/div/form/ul/li[27]/input"));
+		 WebElement searchButton = driver.findElement(By.className("icon-color"));
+		 
+		 search.sendKeys(surname);
+		 searchButton.click();
+		 
+		 List<WebElement> students = driver.findElements(By.className("item"));
+		 
+		 String filiere = "";
+		 int year = -1;
+		 
+		 for(WebElement student : students) {
+			 
+			 
+			 String[] splited = student.getText().split("\\s+");
+			 
+			 if(splited[splited.length - 1].equalsIgnoreCase(name) && splited[splited.length - 2].equalsIgnoreCase(surname)) {
+				 
+				 String yearFI = splited[0];
+				 filiere = splited[2];
+				 
+				 year = Integer.parseInt(yearFI.substring(yearFI.length() - 1));   
+				 
+				 System.out.println("Annee : " + year);
+				 System.out.println("Filiere : " + filiere);
+				 
+			 }
+			 
+			 
+			 
 		 }
 		 
-		 System.out.println(polyPoints);
+		 loginToPlanning(filiere, year);
+		
 		 
-		 driver.get("https://www.polytech.univ-smb.fr/intranet/scolarite/programmes-ingenieur.html");
+		 /** Partie récupération des informations liées aux modules **/
+		 
+		/* driver.get("https://www.polytech.univ-smb.fr/intranet/scolarite/programmes-ingenieur.html");
 		 
 		 
 		 WebElement idu = driver.findElement(By.xpath("//*[@id=\"c3506\"]/div/div/form/ul/li[2]/div/label[3]"));
 		 idu.click();
 		 
 		 WebElement validate = driver.findElement(By.className("icon-color"));
-		 validate.click();
+		 validate.click(); */
+		 
+		
+	}
+	
+	public static void loginToPlanning(String filiere, int year){
+		
+		String login = "nicolath";
+		String pass = "ao61na76&*Tao61na76";
+		
+		ChromeOptions options = new ChromeOptions();
+		options.setAcceptInsecureCerts(true);
+        //options.setHeadless(true);
+
+	    WebDriver driver = new ChromeDriver(options);
+		
+		driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp");
+		
+		WebElement username = driver.findElement(By.id("username"));
+		WebElement password = driver.findElement(By.id("password"));
+		WebElement submit = driver.findElement(By.className("btn-submit"));
+		
+		username.sendKeys(login);
+		password.sendKeys(pass);
+		submit.click();
+		
+		By validateButton = By.className("x-btn-text");
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable(validateButton)).click();
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(validateButton));
+		
+		By searchArea = By.xpath("//*[@id=\"x-auto-136-input\"]");
+		wait.until(ExpectedConditions.elementToBeClickable(searchArea)).sendKeys(filiere + "-" + year);
+		
+		WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"x-auto-138\"]/tbody/tr[2]/td[2]/em/button/img"));
+		searchButton.click();
+		
+		By firstHoraire = By.className("xtn-button");
+		wait.until(ExpectedConditions.presenceOfElementLocated(firstHoraire));
+		
+		/*** LUNDI ***/
+		
+		WebElement monday = driver.findElement(By.xpath("//*[@id=\"x-auto-161\"]/tbody/tr[2]/td[2]/em/button"));
+		monday.click();
+		
+		List<WebElement> horaires = driver.findElements(By.className("eventText"));
+		for(WebElement we : horaires) {
+			System.out.println("------------------------------------------------");
+			System.out.println(we.getText());
+		}
+		
+		//driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp?data=7020a3fce84ff3ba42e6d53dcf2a8626dbb4ee8dad47f25db24afb2b83a03d759fd8c31cee53c321e535653ae26cd5be,1&ticket=ST-684424-XUQCf9grD0dqbZOiamLU-cas-uds.grenet.fr");
 		
 	}
 	
