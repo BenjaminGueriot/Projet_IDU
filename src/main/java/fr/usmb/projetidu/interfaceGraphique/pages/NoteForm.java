@@ -38,6 +38,7 @@ public class NoteForm extends Parent {
 	private Module currentModule = null;
 	private Travail currentTravail = null;
 	private Boolean isTravail = null;
+	private Boolean isAfter = null;
 	private Date currentDateTravail = null;
 	  
     public NoteForm(Stage primaryStage,Eleve eleve) { 
@@ -65,19 +66,12 @@ public class NoteForm extends Parent {
         
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> {
-        	AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-            Scene scene = new Scene(accueilEleve);
-            scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        	AccueilEleve.accueilSender(primaryStage,eleve);
         });
 
-        // Add the back button to the top left corner of the root node
+        // Add the back button to the top left corner of the node
         gridGeneral.add(backButton,0,0);
         gridGeneral.setAlignment(Pos.TOP_LEFT);
-        /*Separator topseparator = new Separator();
-        topseparator.setHalignment(HPos.CENTER);
-        gridParent.add(topseparator, 0, 1, 1, 1);*/
         
         int count = 2;
         
@@ -137,6 +131,62 @@ public class NoteForm extends Parent {
         gridParent.add(travailModule, 0, count, 1, 1);
         count += 1;
         
+        Text noteText = new Text("Note : ");
+        noteText.setId("NoteText");
+        
+        TextField noteField = new TextField();
+        noteField.setId("NoteField");
+        
+        Text coefText = new Text("Coefficient : ");
+        coefText.setId("CoefText");
+        
+        TextField coefField = new TextField();
+        coefField.setId("NoteField");
+        
+        gridParent.add(noteText, 0, count, 1, 1);
+        gridParent.add(noteField, 1, count, 1, 1);
+        count += 1;
+        
+        Separator separatorNote = new Separator();
+        separatorNote.setHalignment(HPos.CENTER);
+        separatorNote.setId("SeparatorId");
+        gridParent.add(separatorNote, 0, count, 1, 1);
+        count += 1;
+        
+        gridParent.add(coefText, 0, count, 1, 1);
+        gridParent.add(coefField, 1, count, 1, 1);
+        count += 1;
+        
+        ArrayList<Node> listNode1 = new ArrayList<>(Arrays.asList(noteText, noteField, coefText, coefField, separatorNote));
+        
+        noteField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                	noteField.setText(newValue.replaceAll("[^[0-9.]]", ""));
+                }
+            } 
+        });
+        
+        coefField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                	coefField.setText(newValue.replaceAll("[^[0-9.]]", ""));
+                }
+            } 
+        });
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setContent(gridParent);
+        gridGeneral.add(scrollPane,0,1);
+        
+        
         Text nomText = new Text("Nom du travail : ");
         nomText.setId("NomText");
         nomText.setVisible(false);
@@ -193,6 +243,15 @@ public class NoteForm extends Parent {
         datePicker.setOnAction(e -> {
         	ZoneId defaultZoneId = ZoneId.systemDefault();
         	currentDateTravail = Date.from(datePicker.getValue().atStartOfDay(defaultZoneId).toInstant());
+        	
+        	if(new Date().getTime() < currentDateTravail.getTime()) {
+        		isAfter = true;
+        		setAllVisible(listNode1, false);
+        	}
+        	else {
+        		isAfter = false;
+        		setAllVisible(listNode1, true);
+        	}
         });
         
         gridParent2.add(dateText, 0, 6, 1, 1);
@@ -239,7 +298,7 @@ public class NoteForm extends Parent {
 	        		List<Travail> travaux = currentModule.getTravaux();
 	    	        
 	    	        for(Travail travail: travaux) {
-	    	        	if(!eleve.getInformations().get(module).keySet().contains(travail)) {
+	    	        	if(!eleve.getInformations().get(module).keySet().contains(travail) && new Date().getTime() > travail.getDate().getTime()) {
 	    	        		travailChoiceBox.getItems().add(travail.getNom());
 		    	        	travail2Nom.put(travail, travail.getNom());
 	    	        	}
@@ -279,59 +338,6 @@ public class NoteForm extends Parent {
             	}	
         });
         
-        Text noteText = new Text("Note : ");
-        noteText.setId("NoteText");
-        
-        TextField noteField = new TextField();
-        noteField.setId("NoteField");
-        
-        Text coefText = new Text("Coefficient : ");
-        coefText.setId("CoefText");
-        
-        TextField coefField = new TextField();
-        coefField.setId("NoteField");
-        
-        gridParent.add(noteText, 0, count, 1, 1);
-        gridParent.add(noteField, 1, count, 1, 1);
-        count += 1;
-        
-        Separator separatorNote = new Separator();
-        separatorNote.setHalignment(HPos.CENTER);
-        separatorNote.setId("SeparatorId");
-        gridParent.add(separatorNote, 0, count, 1, 1);
-        count += 1;
-        
-        gridParent.add(coefText, 0, count, 1, 1);
-        gridParent.add(coefField, 1, count, 1, 1);
-        count += 1;
-        
-        noteField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(
-                    ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                	noteField.setText(newValue.replaceAll("[^[0-9.]]", ""));
-                }
-            } 
-        });
-        
-        coefField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(
-                    ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                	coefField.setText(newValue.replaceAll("[^[0-9.]]", ""));
-                }
-            } 
-        });
-        
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setFitToWidth(true);
-        scrollPane.setContent(gridParent);
-        gridGeneral.add(scrollPane,0,1);
-        
         Separator Vseparator = new Separator(Orientation.VERTICAL);
         Vseparator.setHalignment(HPos.CENTER);
         gridGeneral.add(Vseparator, 1, 1);
@@ -341,59 +347,92 @@ public class NoteForm extends Parent {
         Button validateButton = new Button("Ajouter Note");
         validateButton.setOnAction(event -> {
         	
-        	//System.out.println(currentUE + " " + currentModule + " " + isTravail + " " + noteField.getText().isBlank() + " " + coefField.getText().isBlank());
         	
-        	if(this.currentUE != null && this.currentModule != null && this.isTravail != null && !noteField.getText().isBlank() && !coefField.getText().isBlank()) {
+        	if(this.currentUE != null && this.currentModule != null && this.isTravail != null) {
         		UE validateUE = this.currentUE;
             	
             	Module validateModule = this.currentModule;
             	
-            	Double note = Double.parseDouble(noteField.getText());
-            	Double coef = Double.parseDouble(coefField.getText());
-            	double[] infos = new double[]{note, coef};
             	
-            	if(this.isTravail) {
+            	
+            	if(this.isTravail && !noteField.getText().isBlank() && !coefField.getText().isBlank()) {
+            		
+            		Double note = Double.parseDouble(noteField.getText());
+                	Double coef = Double.parseDouble(coefField.getText());
+                	double[] infos = new double[]{note, coef};
+            		
             		Travail validateTravail = this.currentTravail;
             		
             		// Ajout de la note au travail
                     eleve.getInformations().get(currentModule).put(validateTravail, infos);
             		
             		//Ajout de la note a la bdd
+                    
             		
-            		AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-                    Scene scene = new Scene(accueilEleve);
-                    scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
+                    AccueilEleve.accueilSender(primaryStage,eleve);
             	}
             	else {
-            		if(this.currentDateTravail != null && !nomField.getText().isBlank() && !sujetField.getText().isBlank()) {
-            			String nomTravail = nomField.getText();
-                		String sujetTravail = sujetField.getText();
-                		Date dateTravail = currentDateTravail;
+            		if(!this.isTravail && this.currentDateTravail != null && !nomField.getText().isBlank() && !sujetField.getText().isBlank() && enseignantChoiceBox.getValue() != null) {
+            			
+            			if(this.isAfter) {
+                			
+                			String nomTravail = nomField.getText();
+                    		String sujetTravail = sujetField.getText();
+                    		Date dateTravail = currentDateTravail;
+                    		
+                    		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
+                            Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
+                    		
+                            for(Enseignant enseignant: enseignant2Nom.keySet()) {
+                	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
+                	        		Enseignant enseignantTravail = enseignant;
+                	        	}
+                	        }
+                    		
+                  
+                    		// Création du travail
+                            Travail newTravail = new Travail(nomTravail,sujetTravail,dateTravail,currentModule);
+                            currentModule.addTravail(newTravail);
+                            
+                            AccueilEleve.accueilSender(primaryStage,eleve);
+            			}
+            			else {
+            				if(!noteField.getText().isBlank() && !coefField.getText().isBlank()) {
+            					Double note = Double.parseDouble(noteField.getText());
+                            	Double coef = Double.parseDouble(coefField.getText());
+                            	double[] infos = new double[]{note, coef};
+                    			
+                    			String nomTravail = nomField.getText();
+                        		String sujetTravail = sujetField.getText();
+                        		Date dateTravail = currentDateTravail;
+                        		
+                        		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
+                                Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
+                        		
+                                for(Enseignant enseignant: enseignant2Nom.keySet()) {
+                    	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
+                    	        		Enseignant enseignantTravail = enseignant;
+                    	        	}
+                    	        }
+                        		
+                      
+                        		// Création du travail et ajout de la note
+                                Travail newTravail = new Travail(nomTravail,sujetTravail,dateTravail,currentModule);
+                                currentModule.addTravail(newTravail);
+                                
+                                eleve.getInformations().get(currentModule).put(newTravail, infos);
+                        		
+                        		//Ajout du travail a la bdd
+                                
+                        		
+                        		//Ajout de la note a la bdd
+                                
+                        		AccueilEleve.accueilSender(primaryStage,eleve);
+            				}
+            			}
+            			
+            			
                 		
-                		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
-                        Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
-                		
-                        for(Enseignant enseignant: enseignant2Nom.keySet()) {
-            	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
-            	        		Enseignant enseignantTravail = enseignant;
-            	        	}
-            	        }
-                		
-              
-                		// Création du travail et ajout de la note
-                        eleve.getInformations().get(currentModule).put(new Travail(nomTravail,sujetTravail,dateTravail,currentModule), infos);
-                		
-                		//Ajout du travail a la bdd
-                		
-                		//Ajout de la note a la bdd
-                		
-                		AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-                        Scene scene = new Scene(accueilEleve);
-                        scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-                        primaryStage.setScene(scene);
-                        primaryStage.show();
             		}
             		else {
             			ErrorPopup.display("Un ou plusieurs champs sont manquants.");
@@ -419,5 +458,6 @@ public class NoteForm extends Parent {
     		node.setVisible(bool);
     	}
     }
+    
 }
 

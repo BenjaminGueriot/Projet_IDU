@@ -24,11 +24,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 @SuppressWarnings("unused")
@@ -36,10 +38,9 @@ public class InfoModule extends Parent {
 	
 	private UE currentUE = null;
 	private Module currentModule = null;
-	private Travail currentTravail = null;
-	private Boolean isTravail = null;
-	private Date currentDateTravail = null;
-	  
+	
+	
+	
     public InfoModule(Stage primaryStage,Eleve eleve) { 
     	
     	GridPane gridGeneral = new GridPane();
@@ -58,7 +59,7 @@ public class InfoModule extends Parent {
         
         GridPane gridParent2 = new GridPane();
         gridParent2.setAlignment(Pos.TOP_LEFT);
-        gridParent2.setHgap(10);
+        gridParent2.setHgap(15);
         gridParent2.setVgap(10);
         gridParent2.setPadding(new Insets(10, 10, 10, 10));
         gridParent2.setPrefHeight(400);
@@ -76,7 +77,7 @@ public class InfoModule extends Parent {
         gridGeneral.add(backButton,0,0);
         gridGeneral.setAlignment(Pos.TOP_LEFT);
         
-        int count = 2;
+        int count = 0;
         
         List<UE> ues = eleve.getPromo().getFiliere().getListe_ue();
         HashMap<UE,String> ue2Nom = new HashMap<>();
@@ -85,14 +86,6 @@ public class InfoModule extends Parent {
         HashMap<Module,String> module2Nom = new HashMap<>();
         ChoiceBox<String> moduleChoiceBox = new ChoiceBox<>();
         
-        
-        HashMap<Travail,String> travail2Nom = new HashMap<>();
-        ChoiceBox<String> travailChoiceBox = new ChoiceBox<>();
-        
-        HashMap<Enseignant,String> enseignant2Nom = new HashMap<>();
-        ChoiceBox<String> enseignantChoiceBox = new ChoiceBox<>();
-        enseignantChoiceBox.setVisible(false);
-        
         for(UE ue: ues) {
         	ueChoiceBox.getItems().add(ue.getNom());
         	ue2Nom.put(ue, ue.getNom());
@@ -100,9 +93,10 @@ public class InfoModule extends Parent {
         
         Text ueText = new Text("UE : ");
         ueText.setId("UEText");
-        	
-        gridParent.add(ueChoiceBox, 0, count, 1, 1);
-        count += 1;
+        
+        gridParent.add(ueText, 0, count, 1, 1);
+        gridParent.add(ueChoiceBox, 0, count+1, 1, 1);
+        count += 2;
         
         Separator separatorUE = new Separator();
         separatorUE.setHalignment(HPos.CENTER);
@@ -110,11 +104,12 @@ public class InfoModule extends Parent {
         gridParent.add(separatorUE, 0, count, 1, 1);
         count += 1;
         
-        Text modeleText = new Text("Modele : ");
-        modeleText.setId("ModeleText");
-        	
-        gridParent.add(moduleChoiceBox, 0, count, 1, 1);
-        count += 1;
+        Text moduleText = new Text("Module : ");
+        moduleText.setId("ModeleText");
+        
+        gridParent.add(moduleText, 0, count, 1, 1);
+        gridParent.add(moduleChoiceBox, 0, count+1, 1, 1);
+        count += 2;
         
         Separator separatorModule = new Separator();
         separatorModule.setHalignment(HPos.CENTER);
@@ -122,85 +117,166 @@ public class InfoModule extends Parent {
         gridParent.add(separatorModule, 0, count, 1, 1);
         count += 1;
         
-        Text travailText = new Text("Modele : ");
-        travailText.setId("ModeleText");
-        	
-        gridParent.add(travailChoiceBox, 0, count, 1, 1);
-        count += 1;
         
-        Separator travailModule = new Separator();
-        travailModule.setHalignment(HPos.CENTER);
-        travailModule.setId("SeparatorId");
-        gridParent.add(travailModule, 0, count, 1, 1);
-        count += 1;
+        /*------------------------------------------PARTIE 2---------------------------------------*/
         
-        Text nomText = new Text("Nom du travail : ");
-        nomText.setId("NomText");
-        nomText.setVisible(false);
+        Text nomModuleText = new Text("DATA832 : Machine Learning");
+        nomModuleText.setId("SujetText");
+        nomModuleText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: black;");
+        nomModuleText.setVisible(false);
         
-        TextField nomField = new TextField();
-        nomField.setId("NomField");
-        nomField.setVisible(false);
-        
-        Text sujetText = new Text("Sujet : ");
-        sujetText.setId("SujetText");
-        sujetText.setVisible(false);
-        
-        TextField sujetField = new TextField();
-        sujetField.setId("SujetField");
-        sujetField.setVisible(false);
-        
-        gridParent2.add(nomText, 0, 0, 1, 1);
-        gridParent2.add(nomField, 1, 0, 1, 1);
-        
-        Separator separatorNom = new Separator();
+        GridPane GridModule = new GridPane();
+        GridModule.setAlignment(Pos.BASELINE_LEFT);
+        GridModule.setPrefHeight(20);
+    	
+        GridModule.add(nomModuleText, 0, 0);
+    	
+    	gridParent2.add(GridModule, 0, 0, 1, 1);
+    	
+    	Separator separatorNom = new Separator();
         separatorNom.setHalignment(HPos.CENTER);
         separatorNom.setId("SeparatorId");
         gridParent2.add(separatorNom, 0, 1, 1, 1);
         separatorNom.setVisible(false);
         
-        gridParent2.add(sujetText, 0, 2, 1, 1);
-        gridParent2.add(sujetField, 1, 2, 1, 1);
+        Text labelUE = new Text("UE : ");
+        labelUE.setId("UEText");
+        labelUE.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+        labelUE.setVisible(false);
         
-        Separator separatorSujet = new Separator();
-        separatorSujet.setHalignment(HPos.CENTER);
-        separatorSujet.setId("SeparatorId");
-        gridParent2.add(separatorSujet, 0, 3, 1, 1);
-        separatorSujet.setVisible(false);
+        Text ueDataText = new Text("UE803 : Données et Aide à la Décision");
+        ueDataText.setId("NomText");
+        ueDataText.setVisible(false);
         
-        Text enseignantText = new Text("Enseignant : ");
-        enseignantText.setId("EnseignantText");
-        enseignantText.setVisible(false);
+        GridPane GridUE = new GridPane();
+        GridUE.setAlignment(Pos.BASELINE_LEFT);
+    	GridUE.setPrefHeight(20);
+    	
+    	GridUE.add(labelUE, 0, 0);
+    	GridUE.add(ueDataText, 1, 0);
+    	
+    	gridParent2.add(GridUE, 0, 2, 1, 1);
         
-        gridParent2.add(enseignantText, 0, 4, 1, 1);
-        gridParent2.add(enseignantChoiceBox, 1, 4, 1, 1);
+        Text labelResponsable = new Text("Responsable : ");
+        labelResponsable.setId("labelResponsable");
+        labelResponsable.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+        labelResponsable.setVisible(false);
         
-        Separator separatorEnseignant = new Separator();
-        separatorEnseignant.setHalignment(HPos.CENTER);
-        separatorEnseignant.setId("SeparatorId");
-        gridParent2.add(separatorEnseignant, 0, 5, 1, 1);
-        separatorEnseignant.setVisible(false);
+        Text responsableText = new Text("Marc-Philippe Huget" + "  ");
+        responsableText.setId("responsableText");
+        responsableText.setVisible(false);
         
-        Text dateText = new Text("Date : ");
-        dateText.setId("DateText");
-        dateText.setVisible(false);
+        Text labelMail = new Text("Mail : ");
+        labelMail.setId("labelMail");
+        labelMail.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+        labelMail.setVisible(false);
         
-        DatePicker datePicker = new DatePicker();
-        datePicker.setVisible(false);
-        datePicker.setOnAction(e -> {
-        	ZoneId defaultZoneId = ZoneId.systemDefault();
-        	currentDateTravail = Date.from(datePicker.getValue().atStartOfDay(defaultZoneId).toInstant());
-        });
+        Text mailText = new Text("Marc-Philippe.Huget@univ-smb.fr");
+        mailText.setId("mailText");
+        mailText.setVisible(false);
         
-        gridParent2.add(dateText, 0, 6, 1, 1);
-        gridParent2.add(datePicker, 1, 6, 1, 1);
+        GridPane GridRespo = new GridPane();
+        GridRespo.setAlignment(Pos.BASELINE_LEFT);
+        GridRespo.setPrefHeight(20);
+    	
+        GridRespo.add(labelResponsable, 0, 0);
+        GridRespo.add(responsableText, 1, 0);
         
-        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(nomText, nomField, sujetText, sujetField, separatorNom, separatorSujet, enseignantText, enseignantChoiceBox, separatorEnseignant, dateText, datePicker));
+        Separator separatorMail = new Separator(Orientation.VERTICAL);
+        separatorMail.setHalignment(HPos.CENTER);
+        GridRespo.add(separatorMail, 2, 0);
+        separatorMail.setVisible(false);
+    	
+        GridRespo.add(labelMail, 3, 0);
+        GridRespo.add(mailText, 4, 0);
+        
+    	gridParent2.add(GridRespo, 0, 3, 1, 1);
+    	
+    	Text labelHeure = new Text("Total Horaire (h) : ");
+    	labelHeure.setId("labelHeure");
+    	labelHeure.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+    	labelHeure.setVisible(false);
+        
+        Text heureText = new Text("40.5");
+        heureText.setId("heureText");
+        heureText.setVisible(false);
+        
+        GridPane GridHeure = new GridPane();
+        GridHeure.setAlignment(Pos.BASELINE_LEFT);
+        GridHeure.setPrefHeight(20);
+    	
+        GridHeure.add(labelHeure, 0, 0);
+        GridHeure.add(heureText, 1, 0);
+    	
+    	gridParent2.add(GridHeure, 0, 4, 1, 1);
+    	
+    	Text labelEvaluation = new Text("Evaluation : ");
+    	labelEvaluation.setId("labelNotation");
+    	labelEvaluation.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+    	labelEvaluation.setVisible(false);
+        
+        Text evaluationText = new Text("CC" + "  ");
+        evaluationText.setId("evaluationText");
+        evaluationText.setVisible(false);
+        
+        Text labelCoef = new Text("Coefficient : ");
+        labelCoef.setId("labelCoef");
+        labelCoef.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+        labelCoef.setVisible(false);
+        
+        Text coefText = new Text("3");
+        coefText.setId("mailText");
+        coefText.setVisible(false);
+        
+        GridPane GridEvaluation = new GridPane();
+        GridEvaluation.setAlignment(Pos.BASELINE_LEFT);
+        GridEvaluation.setPrefHeight(20);
+    	
+        GridEvaluation.add(labelEvaluation, 0, 0);
+        GridEvaluation.add(evaluationText, 1, 0);
+        
+        Separator separatorEvaluation = new Separator(Orientation.VERTICAL);
+        separatorEvaluation.setHalignment(HPos.CENTER);
+        GridEvaluation.add(separatorEvaluation, 2, 0);
+        separatorEvaluation.setVisible(false);
+    	
+        GridEvaluation.add(labelCoef, 3, 0);
+        GridEvaluation.add(coefText, 4, 0);
+        
+    	gridParent2.add(GridEvaluation, 0, 5, 1, 1);
+    	
+    	Text labelDesc = new Text("Descriptif : ");
+    	labelDesc.setId("labelDesc");
+    	labelDesc.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
+    	labelDesc.setVisible(false);
+        
+        Label descText = new Label("Ce cours vise à acquérir les compétences nécessaires à la mise en place de méthodes \"Agile\" " + "pour le développement de logiciels. Dans ces contextes, visant la qualité logicielle, le test logiciel sera introduit à travers la conception de suite de tests et leur implémentation via différentes unité de test.");
+        descText.setId("descText");
+        descText.setVisible(false);
+        descText.setWrapText(true);
+        
+        GridPane GridDesc = new GridPane();
+        GridDesc.setAlignment(Pos.TOP_LEFT);
+        GridDesc.setMinHeight(20);
+        GridDesc.setMaxHeight(300);
+        GridDesc.setPrefWidth(500);
+    	
+        GridDesc.add(labelDesc, 0, 0);
+        GridDesc.add(descText, 1, 1);
+    	
+    	gridParent2.add(GridDesc, 0, 6, 1, 1);
+    	
+		/*Separator separatorRespo = new Separator();
+		separatorRespo.setHalignment(HPos.CENTER);
+		separatorRespo.setId("SeparatorId");
+	    gridParent2.add(separatorRespo, 0, 5, 1, 1);
+	    separatorRespo.setVisible(false);*/
+        
+        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(labelUE, ueDataText, nomModuleText, separatorNom, labelResponsable, responsableText, mailText,
+        		labelMail,labelHeure, heureText, labelEvaluation, evaluationText, separatorEvaluation, labelCoef, coefText, labelDesc, descText));
         
         ueChoiceBox.setOnAction((event) -> {
         	moduleChoiceBox.getItems().clear();
-        	travailChoiceBox.getItems().clear();
-        	enseignantChoiceBox.getItems().clear();
         	setAllVisible(listNode,false);
             int selectedIndex = ueChoiceBox.getSelectionModel().getSelectedIndex();
             Object selectedItem = ueChoiceBox.getSelectionModel().getSelectedItem();
@@ -222,10 +298,8 @@ public class InfoModule extends Parent {
         
         
         moduleChoiceBox.setOnAction((event) -> {
-        	travailChoiceBox.getItems().clear();
-        	enseignantChoiceBox.getItems().clear();
-        	setAllVisible(listNode,false);
-        	travailChoiceBox.getItems().add("Saisir un travail");
+        	setAllVisible(listNode,true);
+        	
             int selectedIndex = moduleChoiceBox.getSelectionModel().getSelectedIndex();
             Object selectedItem = moduleChoiceBox.getSelectionModel().getSelectedItem();
             
@@ -233,95 +307,10 @@ public class InfoModule extends Parent {
 	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
-	        		List<Travail> travaux = currentModule.getTravaux();
-	    	        
-	    	        for(Travail travail: travaux) {
-	    	        	if(!eleve.getInformations().get(module).keySet().contains(travail)) {
-	    	        		travailChoiceBox.getItems().add(travail.getNom());
-		    	        	travail2Nom.put(travail, travail.getNom());
-	    	        	}
-	    	        }
+	        		
 	        	}
 	        }
 	        
-        });
-        
-        travailChoiceBox.setOnAction((event) -> {
-        	enseignantChoiceBox.getItems().clear();
-            int selectedIndex = travailChoiceBox.getSelectionModel().getSelectedIndex();
-            Object selectedItem = travailChoiceBox.getSelectionModel().getSelectedItem();
-            String currentTravailString = travailChoiceBox.getValue();
-            
-            	if(currentTravailString != null) {
-            		if(currentTravailString.equals("Saisir un travail")){
-            			isTravail = false;
-            			setAllVisible(listNode,true);
-            			
-            			List<Enseignant> enseignants = currentModule.getEnseignants();
-            	        
-            	        for(Enseignant enseignant : enseignants) {
-            	        	enseignantChoiceBox.getItems().add(enseignant.getNom());
-            	        	enseignant2Nom.put(enseignant, enseignant.getNom());
-            	        }
-		        	}
-		        	else {
-		        		setAllVisible(listNode,false);
-		        		isTravail = true;
-		        		for(Travail travail : travail2Nom.keySet()) {
-		        			if(travail.getNom().equals(currentTravailString)){
-		        				currentTravail = travail;
-		    	        	}
-		        		}
-		        	}
-            	}	
-        });
-        
-        Text noteText = new Text("Note : ");
-        noteText.setId("NoteText");
-        
-        TextField noteField = new TextField();
-        noteField.setId("NoteField");
-        
-        Text coefText = new Text("Coefficient : ");
-        coefText.setId("CoefText");
-        
-        TextField coefField = new TextField();
-        coefField.setId("NoteField");
-        
-        gridParent.add(noteText, 0, count, 1, 1);
-        gridParent.add(noteField, 1, count, 1, 1);
-        count += 1;
-        
-        Separator separatorNote = new Separator();
-        separatorNote.setHalignment(HPos.CENTER);
-        separatorNote.setId("SeparatorId");
-        gridParent.add(separatorNote, 0, count, 1, 1);
-        count += 1;
-        
-        gridParent.add(coefText, 0, count, 1, 1);
-        gridParent.add(coefField, 1, count, 1, 1);
-        count += 1;
-        
-        noteField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(
-                    ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                	noteField.setText(newValue.replaceAll("[^[0-9.]]", ""));
-                }
-            } 
-        });
-        
-        coefField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(
-                    ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                	coefField.setText(newValue.replaceAll("[^[0-9.]]", ""));
-                }
-            } 
         });
         
         ScrollPane scrollPane = new ScrollPane();
@@ -334,77 +323,6 @@ public class InfoModule extends Parent {
         gridGeneral.add(Vseparator, 1, 1);
         
         gridGeneral.add(gridParent2,2,1);
-        
-        Button validateButton = new Button("Ajouter Note");
-        validateButton.setOnAction(event -> {
-        	
-        	//System.out.println(currentUE + " " + currentModule + " " + isTravail + " " + noteField.getText().isBlank() + " " + coefField.getText().isBlank());
-        	
-        	if(this.currentUE != null && this.currentModule != null && this.isTravail != null && !noteField.getText().isBlank() && !coefField.getText().isBlank()) {
-        		UE validateUE = this.currentUE;
-            	
-            	Module validateModule = this.currentModule;
-            	
-            	Double note = Double.parseDouble(noteField.getText());
-            	Double coef = Double.parseDouble(coefField.getText());
-            	double[] infos = new double[]{note, coef};
-            	
-            	if(this.isTravail) {
-            		Travail validateTravail = this.currentTravail;
-            		
-            		// Ajout de la note au travail
-                    eleve.getInformations().get(currentModule).put(validateTravail, infos);
-            		
-            		//Ajout de la note a la bdd
-            		
-            		AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-                    Scene scene = new Scene(accueilEleve);
-                    scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-            	}
-            	else {
-            		if(this.currentDateTravail != null && !nomField.getText().isBlank() && !sujetField.getText().isBlank()) {
-            			String nomTravail = nomField.getText();
-                		String sujetTravail = sujetField.getText();
-                		Date dateTravail = currentDateTravail;
-                		
-                		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
-                        Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
-                		
-                        for(Enseignant enseignant: enseignant2Nom.keySet()) {
-            	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
-            	        		Enseignant enseignantTravail = enseignant;
-            	        	}
-            	        }
-                		
-              
-                		// Création du travail et ajout de la note
-                        eleve.getInformations().get(currentModule).put(new Travail(nomTravail,sujetTravail,dateTravail,currentModule), infos);
-                		
-                		//Ajout du travail a la bdd
-                		
-                		//Ajout de la note a la bdd
-                		
-                		AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-                        Scene scene = new Scene(accueilEleve);
-                        scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-                        primaryStage.setScene(scene);
-                        primaryStage.show();
-            		}
-            		else {
-            			ErrorPopup.display("Un ou plusieurs champs sont manquants.");
-            		}
-            	}
-        	}
-        	else {
-        		ErrorPopup.display("Un ou plusieurs champs sont manquants.");
-    		}
-        	
-        });
-        
-        validateButton.setAlignment(Pos.BOTTOM_RIGHT);
-        gridGeneral.add(validateButton,3,2);
         
         this.getChildren().add(gridGeneral);
         

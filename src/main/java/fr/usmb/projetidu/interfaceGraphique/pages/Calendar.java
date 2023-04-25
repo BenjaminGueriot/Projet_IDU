@@ -42,11 +42,58 @@ public class Calendar extends Parent {
 	
 	public Calendar(Stage primaryStage,Eleve eleve) {
 		
-		Duration tem = Duration.ofMinutes(45);
+		GridPane gridGeneral = new GridPane();
+    	gridGeneral.setAlignment(Pos.CENTER);
+    	gridGeneral.setHgap(10);
+    	gridGeneral.setVgap(10);
+    	gridGeneral.setPadding(new Insets(10, 10, 10, 10));
+    	gridGeneral.setPrefHeight(700);
+    	
+    	GridPane gridParent1 = new GridPane();
+    	gridParent1.setAlignment(Pos.CENTER_LEFT);
+    	gridParent1.setHgap(50);
+    	gridParent1.setPadding(new Insets(10, 10, 10, 10));
+    	gridParent1.setPrefHeight(30);
+    	
+    	
+    	Button backButton = new Button("Back");
+        backButton.setOnAction(event -> {
+        	AccueilEleve.accueilSender(primaryStage, eleve);
+        });
+
+       
+        // Add the back button to the top left corner of the node
+        backButton.setAlignment(Pos.TOP_LEFT);
+        gridParent1.add(backButton,0,0);
 		
+        Button refreshButton = new Button("Recharger l'emploi du temps");
+        refreshButton.setOnAction(event -> {
+        	
+        	//Fonction de scrapping de l'emploi du temps
+        	
+        });
+        
+        refreshButton.setId("refreshButton");
+        gridParent1.add(refreshButton, 1, 0);
+        
+        Button addCourButton = new Button("Ajouter un cour");
+        addCourButton.setOnAction(event -> {
+        	
+        	CourForm courForm = new CourForm(primaryStage,eleve);
+            Scene scene = new Scene(courForm,800,500);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        });
+        
+        addCourButton.setId("addCourButton");
+        gridParent1.add(addCourButton, 2, 0);
+        
+        gridGeneral.add(gridParent1, 0, 0);
+        
 		GridPane calendrier = new GridPane();
 		calendrier.setPrefSize(800,900);
 		calendrier.setPadding(new Insets(10, 0, 0, 0));
+	    calendrier.setAlignment(Pos.TOP_LEFT);
 		//calendrier.setGridLinesVisible(true);
 		//calendrier.gridLinesVisibleProperty();
 		
@@ -54,18 +101,8 @@ public class Calendar extends Parent {
 		LocalDate debutSemaine = today.minusDays(today.getDayOfWeek().getValue() - 1) ;
 		LocalDate finSemaine = debutSemaine.plusDays(4);
 		
-		 Button backButton = new Button("Back");
-	        backButton.setOnAction(event -> {
-	        	AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-	            Scene scene = new Scene(accueilEleve);
-	            scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-	            primaryStage.setScene(scene);
-	            primaryStage.show();
-	        });
-	
-	        // Add the back button to the top left corner of the root node
-	        calendrier.add(backButton,0,0);
-	        calendrier.setAlignment(Pos.TOP_LEFT);
+		
+
 		
 		
 		HashMap<DayOfWeek, HashMap<Cour,List<Object[]>>> values = eleve.getPlanningOfWeek();
@@ -119,17 +156,18 @@ public class Calendar extends Parent {
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
 		for (LocalDateTime startTime = today.atTime(heureMini);!startTime.isAfter(today.atTime(heureMax)); startTime = startTime.plus(tempsSeparation)) {
 			Label label = new Label(startTime.format(timeFormatter));
-			label.setPadding(new Insets(0,0,20,0));
+			label.setPadding(new Insets(0,0,15,0));
 			GridPane.setHalignment(label, HPos.RIGHT);
 			calendrier.add(label, 0, slotIndex);
 			slotIndex++ ;
 		}
 		
 		ScrollPane scroller = new ScrollPane(calendrier);
+		gridGeneral.add(scroller,0,1);
 		
 		
         // Add the scroll pane to the root node
-        this.getChildren().add(scroller);
+        this.getChildren().add(gridGeneral);
 		
 	}
 	

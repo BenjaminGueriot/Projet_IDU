@@ -50,10 +50,10 @@ public class Main extends Application {
 		
 		if(!connectToDatabase()) return;
 		
-		//launch(args);
+		launch(args);
 		
-		DatabaseRequests.addEcoleToBdd("POPO");
-		ScrappingTest.login2USMBIntranet();
+		//DatabaseRequests.addEcoleToBdd("POPO");
+		//ScrappingTest.login2USMBIntranet();
 		
 	}
 	
