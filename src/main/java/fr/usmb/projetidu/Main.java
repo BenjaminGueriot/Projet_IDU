@@ -7,6 +7,8 @@ import fr.usmb.projetidu.handler.ConfigHandler;
 import fr.usmb.projetidu.handler.MySQL;
 import fr.usmb.projetidu.interfaceGraphique.pages.LoginForm;
 import fr.usmb.projetidu.utils.Config;
+import fr.usmb.projetidu.utils.DatabaseRequests;
+import fr.usmb.projetidu.utils.ScrappingTest;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -19,7 +21,7 @@ public class Main extends Application {
      * 
      * @see MySQL#MySQL(String, String, String, String, String)
      */
-	public static MySQL database;
+	private static MySQL database;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -48,7 +50,10 @@ public class Main extends Application {
 		
 		if(!connectToDatabase()) return;
 		
-		launch(args);
+		//launch(args);
+		
+		DatabaseRequests.addEcoleToBdd("POPO");
+		ScrappingTest.login2USMBIntranet();
 		
 	}
 	
@@ -96,6 +101,10 @@ public class Main extends Application {
 		      e.printStackTrace();
 		    } 
 		return false;
+	}
+	
+	public static MySQL getDatabase() {
+		return database;
 	}
 
 }

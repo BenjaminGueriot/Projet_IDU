@@ -21,11 +21,14 @@ import fr.usmb.projetidu.Enseignement.Module.Cour.CourEnum;
 import fr.usmb.projetidu.Enseignement.Module.Cour.CourFactoryImpl;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import fr.usmb.projetidu.handler.MySQL;
 
 public class Initialize {
 	
 	private static HashMap<Integer, Travail> travaux = new HashMap<>();
 	private static ArrayList<Eleve> eleves = new ArrayList<>();
+	
+	private static MySQL database = Main.getDatabase();
 	
 	public static Travail getTravailFromId(int id) {
 		
@@ -71,7 +74,7 @@ public class Initialize {
 		String mdp = "";
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -128,7 +131,7 @@ public class Initialize {
 		
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -167,7 +170,7 @@ public class Initialize {
 		HashMap<Integer, Object[]> eleves_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -214,7 +217,7 @@ public class Initialize {
 		int ecole_id = -1;
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					annee = rs.getDate(2);
@@ -247,7 +250,7 @@ public class Initialize {
 		String description = null;
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					nom = rs.getString(2);
@@ -327,7 +330,7 @@ public class Initialize {
 		List<Integer> ues_id = new ArrayList<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					ues_id.add(rs.getInt(2));
@@ -351,7 +354,7 @@ public class Initialize {
 		String nom = null;
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					nom = rs.getString(2);
@@ -374,7 +377,7 @@ public class Initialize {
 		HashMap<Integer, String> ue_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -402,7 +405,7 @@ public class Initialize {
 		HashMap<Integer, String[]> module_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -454,7 +457,7 @@ public class Initialize {
 		HashMap<Integer, Object[]> cours_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -500,7 +503,7 @@ public class Initialize {
 		List<Integer> liste_ids = new ArrayList<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -529,7 +532,7 @@ public class Initialize {
 		HashMap<Integer, Object[]> enseignant_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -566,7 +569,7 @@ public class Initialize {
 		HashMap<Integer, Object[]> travaux_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
@@ -603,7 +606,7 @@ public class Initialize {
 		HashMap<Integer, double[]> travaux_list = new HashMap<>();
 		
 		try {
-			ResultSet rs = Main.database.querySQL(QUERY);
+			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					travaux_list.put(rs.getInt(2), new double[] {rs.getDouble(3), rs.getDouble(4)});

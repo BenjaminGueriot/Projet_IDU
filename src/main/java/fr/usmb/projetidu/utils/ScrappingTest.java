@@ -1,36 +1,29 @@
 package fr.usmb.projetidu.utils;
 
-import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ScrappingTest {
 	
-	public static void main(String[] args) throws IOException {
-		
-		loginToUSMBIntranet();
-		
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static void loginToUSMBIntranet() {
+	public static void login2USMBIntranet() {
 				
 		String login = "nicolath";
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-		options.setAcceptInsecureCerts(true);
-        options.setHeadless(true);
+	    options.addArguments("--headless");
 
 	    WebDriver driver = new ChromeDriver(options);
 		
@@ -56,23 +49,17 @@ public class ScrappingTest {
 	    
 	    String[] values = getStudentIdentification(fullText);
 	    
+	    
 	    String name = values[0];
 	    String surname = values[1];
 	    String bday = values[2];
 	    String mail = values[3];
-	    String endOfLicence = values[4];
 	    String INE = values[5];
 	    
-	    System.out.println("Nom : " + surname);
-	    System.out.println("Prenom : " + name);
-	    System.out.println("Anniversaire : " + bday);
-	    System.out.println("Mail : " + mail);
-	    System.out.println("Fin de licence : " + endOfLicence);
-	    System.out.println("INE : " + INE);
-	    
+	    driver.quit();
 	    
 	    try {
-			loginToPolytechIntranet(surname, name);
+	    	login2PolytechIntranet(surname, name, bday, mail, INE);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
@@ -80,15 +67,14 @@ public class ScrappingTest {
 		
 	}
 	
-	public static void loginToPolytechIntranet(String surname, String name) throws InterruptedException {
+	public static void login2PolytechIntranet(String surname, String name, String bday, String mail, String INE) throws InterruptedException {
 		
 		String login = "nicolath";
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-		options.setAcceptInsecureCerts(true);
-        options.setHeadless(true);
-        
+	    //options.addArguments("--headless");
+
 	    WebDriver driver = new ChromeDriver(options);
 		
 		driver.get("https://www.polytech.univ-smb.fr/login");
@@ -120,9 +106,6 @@ public class ScrappingTest {
 			 polyPoints += Integer.parseInt(we.getText());
 		}
 		 
-		 System.out.println("Polypoints : " + polyPoints);
-		 
-		 
 		/** Partie récupération de la filière via le trombinoscope **/ 
 		 
 		 driver.get("https://www.polytech.univ-smb.fr/intranet/eleves-ingenieurs.html");
@@ -150,8 +133,6 @@ public class ScrappingTest {
 				 
 				 year = Integer.parseInt(yearFI.substring(yearFI.length() - 1));   
 				 
-				 System.out.println("Annee : " + year);
-				 System.out.println("Filiere : " + filiere);
 				 
 			 }
 			 
@@ -159,31 +140,178 @@ public class ScrappingTest {
 			 
 		 }
 		 
-		 loginToPlanning(filiere, year);
+		 
+		 DatabaseRequests.addFiliereToBdd(filiere + "" + year);
+		 
+		 getAllModulesInfos(driver, filiere, year);
+		 
+		 //login2Moodle(name, surname, bday, mail, polyPoints, INE, year, filiere);
+		 
+		 //loginToPlanning(filiere, year);
 		
-		 
-		 /** Partie récupération des informations liées aux modules **/
-		 
-		/* driver.get("https://www.polytech.univ-smb.fr/intranet/scolarite/programmes-ingenieur.html");
-		 
-		 
-		 WebElement idu = driver.findElement(By.xpath("//*[@id=\"c3506\"]/div/div/form/ul/li[2]/div/label[3]"));
-		 idu.click();
-		 
-		 WebElement validate = driver.findElement(By.className("icon-color"));
-		 validate.click(); */
 		 
 		
 	}
 	
-	public static void loginToPlanning(String filiere, int year){
+	public static void login2Moodle(String name, String surname, String bday, String mail, int polyPoints, String INE, int year, String filiere){
 		
 		String login = "nicolath";
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-		options.setAcceptInsecureCerts(true);
-        //options.setHeadless(true);
+		options.addArguments("headless");
+		options.addArguments("window-size=1920,1080");
+
+	    WebDriver driver = new ChromeDriver(options);
+		
+	    driver.get("https://cas-uds.grenet.fr/login?service=https%3A%2F%2Fintranet.univ-smb.fr%2F");
+		
+		WebElement username = driver.findElement(By.id("username"));
+		WebElement password = driver.findElement(By.id("password"));
+		WebElement submit = driver.findElement(By.className("btn-submit"));
+		
+		username.sendKeys(login);
+		password.sendKeys(pass);
+		submit.click();
+		
+		driver.get("https://moodle.univ-smb.fr/my/");
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		By connect = By.xpath("//*[@id=\"page-wrapper\"]/nav/ul[2]/li[2]/div/span/a");
+		wait.until(ExpectedConditions.elementToBeClickable(connect)).click();
+		
+		By link = By.xpath("//*[@id=\"region-main\"]/div/div[2]/div/div/div/div/div[1]/a");
+		wait.until(ExpectedConditions.elementToBeClickable(link)).click();
+		
+		driver.get("https://moodle.univ-smb.fr/user/profile.php");
+		
+		WebElement firstJoinElement = driver.findElement(By.xpath("//*[@id=\"region-main\"]/div/div/div/section[6]/div/ul/li[1]/dl/dd"));
+		
+		int firstJoin = Integer.parseInt(firstJoinElement.getText().replace(",", "").split(" ")[3]);
+		DatabaseRequests.addPromoToBdd(firstJoin, filiere + "" + year, "POPO");
+		DatabaseRequests.addStudentToBdd(name, surname, bday, mail, polyPoints, INE, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
+		
+		driver.quit();
+		
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	public static void getAllModulesInfos(WebDriver driver, String nomFiliere, int annee){
+		
+		
+		 driver.get("https://www.polytech.univ-smb.fr/intranet/scolarite/programmes-ingenieur.html");
+		 
+		 WebElement years = driver.findElement(By.xpath("//*[@id=\"2021-2025\"]"));
+		 years.click();
+		 
+		 try {
+			 WebElement nameFil = driver.findElement(By.xpath("//*[@id='" + nomFiliere.toLowerCase() + "_5' or @id='" + nomFiliere.toLowerCase() + "_4']"));
+			 nameFil.click();
+		} catch (Exception e) {
+			System.out.println("Not able to pick a promotion");
+		}
+		 
+		 WebElement semester = driver.findElement(By.id("semestre"));
+		 semester.click();
+		 
+		 int firstSemester = (annee * 2) - 1;
+		 
+		 WebElement option = driver.findElement(By.xpath("//*[@id=\"semestre\"]/option[" + (firstSemester + 1) + "]"));
+		 option.click();
+		 
+		 WebElement validate = driver.findElement(By.className("icon-color"));
+		 validate.click();
+		 
+		 List<WebElement> anchors = driver.findElements(By.cssSelector("div[class='value'] ul li a"));
+		 
+		 List<String> links = new ArrayList<>();
+		 
+		 for(WebElement we : anchors) {
+			 
+			 links.add(we.getAttribute("href"));
+			 
+		 }
+		 
+		 for(String link : links) {
+			 
+			 driver.get(link);
+			 
+			 getModuleData(driver);
+			 
+			 try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			 
+		 }
+		 
+		 
+		
+		
+		 //driver.quit();
+		
+	}
+	
+	private static void getModuleData(WebDriver driver) {
+		
+		System.out.println("-----------------------------------------------------------------");
+		
+		/* ------------------------------ UE ----------------------------------------------*/
+		
+		WebElement ue = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]"));
+		String fullTextUe = ue.getText();
+		String ueCode = fullTextUe.split(":")[0].trim();
+		String nom = fullTextUe.split(":")[1].trim();
+		
+		System.out.println(ueCode + " " + nom);
+		
+		
+		
+		/* ------------------------------ Responsable ----------------------------------------------*/
+		
+		WebElement respo = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[3]/div[1]/div[2]"));
+		String fullTextRespo = respo.getText();
+		
+		List<String> respos = new ArrayList<>();
+		
+		
+		if(fullTextRespo.contains(" et ")) {
+			
+			for(String s : fullTextRespo.split("et")) {
+				
+				respos.add(s.trim());
+				
+			}
+			
+		} else {
+			
+			for(String s : fullTextRespo.split(",")) {
+				
+				respos.add(s.trim());
+				
+			}
+			
+		}
+		
+		for(String s : respos) {
+			System.out.println(s);
+		}
+		
+		
+		
+		
+		
+	}
+	
+	public static void login2Planning(String filiere, int year){
+		
+		String login = "nicolath";
+		String pass = "ao61na76&*Tao61na76";
+		
+		ChromeOptions options = new ChromeOptions();
+	    options.addArguments("--headless");
 
 	    WebDriver driver = new ChromeDriver(options);
 		
@@ -209,21 +337,177 @@ public class ScrappingTest {
 		WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"x-auto-138\"]/tbody/tr[2]/td[2]/em/button/img"));
 		searchButton.click();
 		
-		By firstHoraire = By.className("xtn-button");
-		wait.until(ExpectedConditions.presenceOfElementLocated(firstHoraire));
+		By planning = By.className("eventText");
+		wait.until(ExpectedConditions.presenceOfElementLocated(planning));
 		
-		/*** LUNDI ***/
+		/*** Récupération des jours de la semaine ***/
 		
-		WebElement monday = driver.findElement(By.xpath("//*[@id=\"x-auto-161\"]/tbody/tr[2]/td[2]/em/button"));
-		monday.click();
+		By settings = By.xpath("//*[@id=\"x-auto-134\"]/tbody/tr[2]/td[2]/em/button");
+		wait.until(ExpectedConditions.elementToBeClickable(settings)).click();
 		
-		List<WebElement> horaires = driver.findElements(By.className("eventText"));
-		for(WebElement we : horaires) {
-			System.out.println("------------------------------------------------");
-			System.out.println(we.getText());
+		By settings2 = By.xpath("//*[@id=\"x-auto-489\"]");
+		wait.until(ExpectedConditions.elementToBeClickable(settings2)).click();
+		
+		try {
+			Thread.sleep(1000);
+			Actions action = new Actions(driver);
+			action.sendKeys(Keys.ESCAPE).build().perform();
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		
+		
+		By page = By.xpath("//*[@id=\"x-auto-55\"]");
+		wait.until(ExpectedConditions.elementToBeClickable(page)).click();
+		
+		By january = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[1]/td[1]");
+		wait.until(ExpectedConditions.elementToBeClickable(january)).click();
+		
+		By ok = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[7]/td/button[1]");
+		wait.until(ExpectedConditions.elementToBeClickable(ok)).click();
+		
+		By date = By.xpath("//*[@id=\"x-auto-96\"]/a");
+		wait.until(ExpectedConditions.elementToBeClickable(date)).click();
+		
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		
+		for(int i = 197; i < 221; i++) {
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			for(int j = 1; j < 6; j++) {
+			
+				By day = By.xpath("//*[@id=\"x-auto-16" + j + "\"]/tbody/tr[2]/td[2]/em/button");
+				
+				wait.until(ExpectedConditions.elementToBeClickable(day)).click();
+				try {
+					Thread.sleep(2000);
+					getOneDay(driver);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+		
+			} 
+			
+			
+			By next = By.xpath("//*[@id=\"x-auto-174\"]/tbody/tr[2]/td[2]/em/button");
+			wait.until(ExpectedConditions.elementToBeClickable(next)).click();
+			
+			By nextPage = By.xpath("//*[@id=\"x-auto-" + (i + 1) + "\"]/tbody/tr[2]/td[2]/em/button");
+			wait.until(ExpectedConditions.elementToBeClickable(nextPage)).click();
+			
+		}
+		
+		
+		
+		
+		
+			
+		
+		
 		//driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp?data=7020a3fce84ff3ba42e6d53dcf2a8626dbb4ee8dad47f25db24afb2b83a03d759fd8c31cee53c321e535653ae26cd5be,1&ticket=ST-684424-XUQCf9grD0dqbZOiamLU-cas-uds.grenet.fr");
+		//driver.quit();
+	}
+	
+	private static void getOneDay(WebDriver driver) {
+		
+		WebElement dayNotFormatted = driver.findElement(By.id("4"));
+		String day = dayNotFormatted.getText().split(" ")[1];
+		
+		System.out.println("--------------------- "+ day + " ---------------------------");
+		
+		List<WebElement> elements = driver.findElements(By.className("eventText"));
+		
+		for(WebElement we : elements) {
+			String[] splited = we.getText().split("\\s+");
+			
+			if(splited.length > 6) {
+				System.out.println("------------------------------------------------");
+				
+				String module = splited[0].split("_")[0];
+				
+				String startingHourNotFormated = splited[splited.length - 3];
+				String endingHourNotFormated = splited[splited.length - 1];
+				
+				int number =  Integer.parseInt(splited[splited.length - 4].split("/")[0]);
+				
+				String startingHour = getFormattedHour(startingHourNotFormated);
+				char c = startingHour.charAt(0);
+				if(c == '0') {
+					startingHour = startingHour.substring(1, startingHour.length());
+				}
+				
+				String endingHour = getFormattedHour(endingHourNotFormated);
+				
+				System.out.println(number);
+				System.out.println(module);
+				System.out.println(startingHour);
+				
+				double duree = Double.parseDouble(endingHour.replace(",", "."))   - Double.parseDouble(startingHour.replace(",", "."));
+				System.out.println(duree);
+				
+				
+				String type = "";
+				
+				if(splited[0].contains("CM")) {
+					type = "CM";
+				} else if(splited[0].contains("TD")) {
+					type = "TD";
+				} else if(splited[0].contains("TP")) {
+					type = "TP";
+				} else {
+					type = "Special";
+				} 
+				
+				
+				System.out.println(type);
+				
+			}
+			
+			
+		} 
+		
+	}
+	
+	private static String getFormattedHour(String hourNotFormatted) {
+		
+		String hour = "";
+		
+		if(!hourNotFormatted.contains("h")) return null;
+		
+		if(hourNotFormatted.split("h")[1].equalsIgnoreCase("00")) {
+			hour = hourNotFormatted.split("h")[0];
+		} else {
+			
+			switch (hourNotFormatted.split("h")[1]) {
+				case "15": {
+					hour = hourNotFormatted.split("h")[0] + ".25";
+					break;
+				}
+				case "30": {
+					hour = hourNotFormatted.split("h")[0] + ".5";
+					break;
+				}
+				case "45": {
+					hour = hourNotFormatted.split("h")[0] + ".75";
+					break;
+				}
+			
+			}
+		
+		}
+		
+		return hour;
 		
 	}
 	
