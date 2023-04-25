@@ -39,7 +39,14 @@ public class InfoModule extends Parent {
 	private UE currentUE = null;
 	private Module currentModule = null;
 	
-	
+	private Text nomModuleText;
+	private Text ueDataText;
+	private Text responsableText;
+	private Text mailText;
+	private Text heureText;
+	private Text evaluationText;
+	private Text coefText;
+	private Label descText;
 	
     public InfoModule(Stage primaryStage,Eleve eleve) { 
     	
@@ -120,16 +127,16 @@ public class InfoModule extends Parent {
         
         /*------------------------------------------PARTIE 2---------------------------------------*/
         
-        Text nomModuleText = new Text("DATA832 : Machine Learning");
-        nomModuleText.setId("SujetText");
-        nomModuleText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: black;");
-        nomModuleText.setVisible(false);
+        this.nomModuleText = new Text();
+        this.nomModuleText.setId("SujetText");
+        this.nomModuleText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: black;");
+        this.nomModuleText.setVisible(false);
         
         GridPane GridModule = new GridPane();
         GridModule.setAlignment(Pos.BASELINE_LEFT);
         GridModule.setPrefHeight(20);
     	
-        GridModule.add(nomModuleText, 0, 0);
+        GridModule.add(this.nomModuleText, 0, 0);
     	
     	gridParent2.add(GridModule, 0, 0, 1, 1);
     	
@@ -144,16 +151,16 @@ public class InfoModule extends Parent {
         labelUE.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelUE.setVisible(false);
         
-        Text ueDataText = new Text("UE803 : Données et Aide à la Décision");
-        ueDataText.setId("NomText");
-        ueDataText.setVisible(false);
+        this.ueDataText = new Text();
+        this.ueDataText.setId("NomText");
+        this.ueDataText.setVisible(false);
         
         GridPane GridUE = new GridPane();
         GridUE.setAlignment(Pos.BASELINE_LEFT);
     	GridUE.setPrefHeight(20);
     	
     	GridUE.add(labelUE, 0, 0);
-    	GridUE.add(ueDataText, 1, 0);
+    	GridUE.add(this.ueDataText, 1, 0);
     	
     	gridParent2.add(GridUE, 0, 2, 1, 1);
         
@@ -162,25 +169,25 @@ public class InfoModule extends Parent {
         labelResponsable.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelResponsable.setVisible(false);
         
-        Text responsableText = new Text("Marc-Philippe Huget" + "  ");
-        responsableText.setId("responsableText");
-        responsableText.setVisible(false);
+        this.responsableText = new Text();
+        this.responsableText.setId("responsableText");
+        this.responsableText.setVisible(false);
         
         Text labelMail = new Text("Mail : ");
         labelMail.setId("labelMail");
         labelMail.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelMail.setVisible(false);
         
-        Text mailText = new Text("Marc-Philippe.Huget@univ-smb.fr");
-        mailText.setId("mailText");
-        mailText.setVisible(false);
+        this.mailText = new Text();
+        this.mailText.setId("mailText");
+        this.mailText.setVisible(false);
         
         GridPane GridRespo = new GridPane();
         GridRespo.setAlignment(Pos.BASELINE_LEFT);
         GridRespo.setPrefHeight(20);
     	
         GridRespo.add(labelResponsable, 0, 0);
-        GridRespo.add(responsableText, 1, 0);
+        GridRespo.add(this.responsableText, 1, 0);
         
         Separator separatorMail = new Separator(Orientation.VERTICAL);
         separatorMail.setHalignment(HPos.CENTER);
@@ -188,7 +195,7 @@ public class InfoModule extends Parent {
         separatorMail.setVisible(false);
     	
         GridRespo.add(labelMail, 3, 0);
-        GridRespo.add(mailText, 4, 0);
+        GridRespo.add(this.mailText, 4, 0);
         
     	gridParent2.add(GridRespo, 0, 3, 1, 1);
     	
@@ -197,16 +204,16 @@ public class InfoModule extends Parent {
     	labelHeure.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
     	labelHeure.setVisible(false);
         
-        Text heureText = new Text("40.5");
-        heureText.setId("heureText");
-        heureText.setVisible(false);
+    	this.heureText = new Text();
+    	this.heureText.setId("heureText");
+    	this.heureText.setVisible(false);
         
         GridPane GridHeure = new GridPane();
         GridHeure.setAlignment(Pos.BASELINE_LEFT);
         GridHeure.setPrefHeight(20);
     	
         GridHeure.add(labelHeure, 0, 0);
-        GridHeure.add(heureText, 1, 0);
+        GridHeure.add(this.heureText, 1, 0);
     	
     	gridParent2.add(GridHeure, 0, 4, 1, 1);
     	
@@ -215,25 +222,25 @@ public class InfoModule extends Parent {
     	labelEvaluation.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
     	labelEvaluation.setVisible(false);
         
-        Text evaluationText = new Text("CC" + "  ");
-        evaluationText.setId("evaluationText");
-        evaluationText.setVisible(false);
+    	this.evaluationText = new Text();
+    	this.evaluationText.setId("evaluationText");
+    	this.evaluationText.setVisible(false);
         
         Text labelCoef = new Text("Coefficient : ");
         labelCoef.setId("labelCoef");
         labelCoef.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelCoef.setVisible(false);
         
-        Text coefText = new Text("3");
-        coefText.setId("mailText");
-        coefText.setVisible(false);
+        this.coefText = new Text();
+        this.coefText.setId("mailText");
+        this.coefText.setVisible(false);
         
         GridPane GridEvaluation = new GridPane();
         GridEvaluation.setAlignment(Pos.BASELINE_LEFT);
         GridEvaluation.setPrefHeight(20);
     	
         GridEvaluation.add(labelEvaluation, 0, 0);
-        GridEvaluation.add(evaluationText, 1, 0);
+        GridEvaluation.add(this.evaluationText, 1, 0);
         
         Separator separatorEvaluation = new Separator(Orientation.VERTICAL);
         separatorEvaluation.setHalignment(HPos.CENTER);
@@ -241,7 +248,7 @@ public class InfoModule extends Parent {
         separatorEvaluation.setVisible(false);
     	
         GridEvaluation.add(labelCoef, 3, 0);
-        GridEvaluation.add(coefText, 4, 0);
+        GridEvaluation.add(this.coefText, 4, 0);
         
     	gridParent2.add(GridEvaluation, 0, 5, 1, 1);
     	
@@ -250,10 +257,10 @@ public class InfoModule extends Parent {
     	labelDesc.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
     	labelDesc.setVisible(false);
         
-        Label descText = new Label("Ce cours vise à acquérir les compétences nécessaires à la mise en place de méthodes \"Agile\" " + "pour le développement de logiciels. Dans ces contextes, visant la qualité logicielle, le test logiciel sera introduit à travers la conception de suite de tests et leur implémentation via différentes unité de test.");
-        descText.setId("descText");
-        descText.setVisible(false);
-        descText.setWrapText(true);
+    	this.descText = new Label();
+    	this.descText.setId("descText");
+    	this.descText.setVisible(false);
+    	this.descText.setWrapText(true);
         
         GridPane GridDesc = new GridPane();
         GridDesc.setAlignment(Pos.TOP_LEFT);
@@ -262,7 +269,7 @@ public class InfoModule extends Parent {
         GridDesc.setPrefWidth(500);
     	
         GridDesc.add(labelDesc, 0, 0);
-        GridDesc.add(descText, 1, 1);
+        GridDesc.add(this.descText, 1, 1);
     	
     	gridParent2.add(GridDesc, 0, 6, 1, 1);
     	
@@ -272,8 +279,8 @@ public class InfoModule extends Parent {
 	    gridParent2.add(separatorRespo, 0, 5, 1, 1);
 	    separatorRespo.setVisible(false);*/
         
-        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(labelUE, ueDataText, nomModuleText, separatorNom, labelResponsable, responsableText, mailText,
-        		labelMail,labelHeure, heureText, labelEvaluation, evaluationText, separatorEvaluation, labelCoef, coefText, labelDesc, descText));
+        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(labelUE, this.ueDataText, this.nomModuleText, separatorNom, labelResponsable, this.responsableText, this.mailText,
+        		labelMail,labelHeure, this.heureText, labelEvaluation, this.evaluationText, separatorEvaluation, labelCoef, this.coefText, labelDesc, this.descText));
         
         ueChoiceBox.setOnAction((event) -> {
         	moduleChoiceBox.getItems().clear();
@@ -307,6 +314,14 @@ public class InfoModule extends Parent {
 	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
+	        		this.nomModuleText.setText("DATA832 : Machine Learning");
+	        		this.ueDataText.setText("UE803 : Données et Aide à la Décision");
+	        		this.responsableText.setText("Marc-Philippe Huget" + "  ");
+	        		this.mailText.setText("Marc-Philippe.Huget@univ-smb.fr");
+	        		this.heureText.setText("40.5");
+	        		this.evaluationText.setText("CC" + "  ");
+	        		this.coefText.setText("3");
+	        		this.descText.setText("Ce cours vise à acquérir les compétences nécessaires à la mise en place de méthodes \"Agile\" pour le développement de logiciels. Dans ces contextes, visant la qualité logicielle, le test logiciel sera introduit à travers la conception de suite de tests et leur implémentation via différentes unité de test.");
 	        		
 	        	}
 	        }
