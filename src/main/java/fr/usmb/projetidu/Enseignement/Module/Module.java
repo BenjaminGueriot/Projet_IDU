@@ -83,6 +83,10 @@ public class Module {
 		this.travaux = travaux;
 	}
 	
+	public void addTravail(Travail travail) {
+		this.travaux.add(travail);
+	}
+	
 	public void addCour(Cour cour) {
 		this.cours.add(cour);
 	}

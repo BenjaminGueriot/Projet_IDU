@@ -11,6 +11,7 @@ import fr.usmb.projetidu.Enseignement.UE;
 import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
+import fr.usmb.projetidu.Personne.Enseignant;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
@@ -90,6 +91,9 @@ public class NoteForm extends Parent {
         HashMap<Travail,String> travail2Nom = new HashMap<>();
         ChoiceBox<String> travailChoiceBox = new ChoiceBox<>();
         
+        HashMap<Enseignant,String> enseignant2Nom = new HashMap<>();
+        ChoiceBox<String> enseignantChoiceBox = new ChoiceBox<>();
+        enseignantChoiceBox.setVisible(false);
         
         for(UE ue: ues) {
         	ueChoiceBox.getItems().add(ue.getNom());
@@ -166,6 +170,19 @@ public class NoteForm extends Parent {
         gridParent2.add(separatorSujet, 0, 3, 1, 1);
         separatorSujet.setVisible(false);
         
+        Text enseignantText = new Text("Enseignant : ");
+        enseignantText.setId("EnseignantText");
+        enseignantText.setVisible(false);
+        
+        gridParent2.add(enseignantText, 0, 4, 1, 1);
+        gridParent2.add(enseignantChoiceBox, 1, 4, 1, 1);
+        
+        Separator separatorEnseignant = new Separator();
+        separatorEnseignant.setHalignment(HPos.CENTER);
+        separatorEnseignant.setId("SeparatorId");
+        gridParent2.add(separatorEnseignant, 0, 5, 1, 1);
+        separatorEnseignant.setVisible(false);
+        
         Text dateText = new Text("Date : ");
         dateText.setId("DateText");
         dateText.setVisible(false);
@@ -177,14 +194,15 @@ public class NoteForm extends Parent {
         	currentDateTravail = Date.from(datePicker.getValue().atStartOfDay(defaultZoneId).toInstant());
         });
         
-        gridParent2.add(dateText, 0, 4, 1, 1);
-        gridParent2.add(datePicker, 1, 4, 1, 1);
+        gridParent2.add(dateText, 0, 6, 1, 1);
+        gridParent2.add(datePicker, 1, 6, 1, 1);
         
-        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(nomText, nomField, sujetText, sujetField, separatorNom, separatorSujet, dateText, datePicker));
+        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(nomText, nomField, sujetText, sujetField, separatorNom, separatorSujet, enseignantText, enseignantChoiceBox, separatorEnseignant, dateText, datePicker));
         
         ueChoiceBox.setOnAction((event) -> {
         	moduleChoiceBox.getItems().clear();
         	travailChoiceBox.getItems().clear();
+        	enseignantChoiceBox.getItems().clear();
         	setAllVisible(listNode,false);
             int selectedIndex = ueChoiceBox.getSelectionModel().getSelectedIndex();
             Object selectedItem = ueChoiceBox.getSelectionModel().getSelectedItem();
@@ -207,6 +225,7 @@ public class NoteForm extends Parent {
         
         moduleChoiceBox.setOnAction((event) -> {
         	travailChoiceBox.getItems().clear();
+        	enseignantChoiceBox.getItems().clear();
         	setAllVisible(listNode,false);
         	travailChoiceBox.getItems().add("Saisir un travail");
             int selectedIndex = moduleChoiceBox.getSelectionModel().getSelectedIndex();
@@ -219,8 +238,10 @@ public class NoteForm extends Parent {
 	        		List<Travail> travaux = currentModule.getTravaux();
 	    	        
 	    	        for(Travail travail: travaux) {
-	    	        	travailChoiceBox.getItems().add(travail.getNom());
-	    	        	travail2Nom.put(travail, travail.getNom());
+	    	        	if(!eleve.getInformations().get(module).keySet().contains(travail)) {
+	    	        		travailChoiceBox.getItems().add(travail.getNom());
+		    	        	travail2Nom.put(travail, travail.getNom());
+	    	        	}
 	    	        }
 	        	}
 	        }
@@ -228,6 +249,7 @@ public class NoteForm extends Parent {
         });
         
         travailChoiceBox.setOnAction((event) -> {
+        	enseignantChoiceBox.getItems().clear();
             int selectedIndex = travailChoiceBox.getSelectionModel().getSelectedIndex();
             Object selectedItem = travailChoiceBox.getSelectionModel().getSelectedItem();
             String currentTravailString = travailChoiceBox.getValue();
@@ -236,6 +258,13 @@ public class NoteForm extends Parent {
             		if(currentTravailString.equals("Saisir un travail")){
             			isTravail = false;
             			setAllVisible(listNode,true);
+            			
+            			List<Enseignant> enseignants = currentModule.getEnseignants();
+            	        
+            	        for(Enseignant enseignant : enseignants) {
+            	        	enseignantChoiceBox.getItems().add(enseignant.getNom());
+            	        	enseignant2Nom.put(enseignant, enseignant.getNom());
+            	        }
 		        	}
 		        	else {
 		        		setAllVisible(listNode,false);
@@ -314,10 +343,15 @@ public class NoteForm extends Parent {
             	
             	Module validateModule = this.currentModule;
             	
+            	Double note = Double.parseDouble(noteField.getText());
+            	Double coef = Double.parseDouble(coefField.getText());
+            	double[] infos = new double[]{note, coef};
+            	
             	if(this.isTravail) {
             		Travail validateTravail = this.currentTravail;
             		
-            		//Ajout de la node dans l'objet
+            		// Ajout de la note au travail
+                    eleve.getInformations().get(currentModule).put(validateTravail, infos);
             		
             		//Ajout de la note a la bdd
             		
@@ -333,9 +367,18 @@ public class NoteForm extends Parent {
                 		String sujetTravail = sujetField.getText();
                 		Date dateTravail = currentDateTravail;
                 		
-                		//Ajout du travail dans l'objet
+                		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
+                        Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
                 		
-                		//Ajout de la node dans l'objet
+                        for(Enseignant enseignant: enseignant2Nom.keySet()) {
+            	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
+            	        		Enseignant enseignantTravail = enseignant;
+            	        	}
+            	        }
+                		
+              
+                		// Création du travail et ajout de la note
+                        eleve.getInformations().get(currentModule).put(new Travail(nomTravail,sujetTravail,dateTravail,currentModule), infos);
                 		
                 		//Ajout du travail a la bdd
                 		
