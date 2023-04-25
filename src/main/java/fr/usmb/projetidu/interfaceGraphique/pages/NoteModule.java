@@ -23,9 +23,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 @SuppressWarnings("unused")
-public class ModuleInfo extends Parent {
+public class NoteModule extends Parent {
 	  
-    public ModuleInfo(Stage primaryStage,Eleve eleve) { 
+    public NoteModule(Stage primaryStage,Eleve eleve) { 
     	
     	GridPane gridParent = new GridPane();
     	gridParent.setAlignment(Pos.CENTER);
@@ -59,7 +59,7 @@ public class ModuleInfo extends Parent {
         	UEText.setStyle("-fx-font-weight: bold;");
         	UEText.setTextAlignment(TextAlignment.CENTER);
             gridParent.add(UEText, 0, count, 1, 1);
-            Text MoyenneUEText = new Text("Moyenne de l'UE: " + eleve.getMeanOfUe(ue) + " | Moyenne g�n�rale: " + eleve.getPromo().getPromoMeanOfUE(ue));
+            Text MoyenneUEText = new Text("Moyenne de l'UE: " + eleve.getMeanOfUe(ue));
             MoyenneUEText.setId("MoyenneUEText");
             gridParent.add(MoyenneUEText, 0, count+1, 1, 1);
             count += 2;
@@ -102,9 +102,17 @@ public class ModuleInfo extends Parent {
 	            HashMap<Travail, double[]> travaux = eleve.getInfosFromModule(module);
 	            
 	            for (Travail travail : travaux.keySet()) {
-	            	Text travailText = new Text(travail.getNom() + ": " + travaux.get(travail)[0] +" | Moyenne: " + eleve.getPromo().getPromoMeanOfTravail(travail));
+	            	
+	            	GridPane GridTravail = new GridPane();
+	            	GridTravail.setAlignment(Pos.BASELINE_LEFT);
+	            	GridTravail.setPrefHeight(20);
+	            	
+	            	
+	            	Text travailText = new Text(travail.getNom() + ": " + travaux.get(travail)[0]);
 	            	travailText.setId("TravailText");
-	            	gridParent.add(travailText, 0, count+3, 1, 1);
+	            	GridTravail.add(travailText, 0, 0);
+	            	//GridTravail.add();
+	            	gridParent.add(GridTravail, 0, count+3, 1, 1);
 	            	
 	            	Text coefText = new Text("coefficient: " + travaux.get(travail)[1]);
 	            	coefText.setId("CoefText");
@@ -112,7 +120,7 @@ public class ModuleInfo extends Parent {
 	            	count+=1;
 	    		}
 	            
-	            Text MoyenneText = new Text("Moyenne du module: " + eleve.getMeanOfModule(module) + " | Moyenne de classe: " + eleve.getPromo().getPromoMeanOfModule(module));
+	            Text MoyenneText = new Text("Moyenne du module: " + eleve.getMeanOfModule(module));
 	            MoyenneText.setId("MoyenneText");
 	        	gridParent.add(MoyenneText, 0, count+3, 1, 1);
 	            

@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 public class Calendar extends Parent {
 
 	private final LocalTime heureMini = LocalTime.of(8, 0);
-	private final Duration tempsSeparation = Duration.ofMinutes(30);
+	private final Duration tempsSeparation = Duration.ofMinutes(15);
 	private final LocalTime heureMax = LocalTime.of(20, 0);
 	
 	private final List<Emplacement> timeSlots = new ArrayList<>();

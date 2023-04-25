@@ -32,7 +32,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 @SuppressWarnings("unused")
-public class NoteForm extends Parent {
+public class InfoModule extends Parent {
 	
 	private UE currentUE = null;
 	private Module currentModule = null;
@@ -40,7 +40,7 @@ public class NoteForm extends Parent {
 	private Boolean isTravail = null;
 	private Date currentDateTravail = null;
 	  
-    public NoteForm(Stage primaryStage,Eleve eleve) { 
+    public InfoModule(Stage primaryStage,Eleve eleve) { 
     	
     	GridPane gridGeneral = new GridPane();
     	gridGeneral.setAlignment(Pos.CENTER);
@@ -75,9 +75,6 @@ public class NoteForm extends Parent {
         // Add the back button to the top left corner of the root node
         gridGeneral.add(backButton,0,0);
         gridGeneral.setAlignment(Pos.TOP_LEFT);
-        /*Separator topseparator = new Separator();
-        topseparator.setHalignment(HPos.CENTER);
-        gridParent.add(topseparator, 0, 1, 1, 1);*/
         
         int count = 2;
         
@@ -420,4 +417,5 @@ public class NoteForm extends Parent {
     	}
     }
 }
+
 

@@ -7,23 +7,14 @@ import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.utils.Initialize;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -71,7 +62,7 @@ public class AccueilEleve extends Parent {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                	ModuleInfo moduleInfo = new ModuleInfo(primaryStage,eleve);
+                	NoteModule moduleInfo = new NoteModule(primaryStage,eleve);
                     Scene scene = new Scene(moduleInfo);
                     primaryStage.setScene(scene);
                     primaryStage.show();
@@ -153,7 +144,7 @@ public class AccueilEleve extends Parent {
         	
         	NoteForm noteForm = new NoteForm(primaryStage,eleve);
     		// Add a style sheet to the scene
-            Scene scene = new Scene(noteForm,700,500);
+            Scene scene = new Scene(noteForm,800,500);
             //scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
