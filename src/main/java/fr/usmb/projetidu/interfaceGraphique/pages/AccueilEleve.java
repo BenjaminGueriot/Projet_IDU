@@ -54,31 +54,9 @@ public class AccueilEleve extends Parent {
         });
         
         // Ajout Lien Module
-        Text ModuleText = new Text("Mes modules");
-        ModuleText.setId("ModuleText");
-        gridParent.add(ModuleText, 5, 0, 1, 1);
-        
-        ModuleText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                	NoteModule moduleInfo = new NoteModule(primaryStage,eleve);
-                    Scene scene = new Scene(moduleInfo);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        
-        GridPane gridtitleright = new GridPane();
-        gridtitleright.setPadding(new Insets(0, 0, 0, 0));
-        
-        // Ajout Lien Module
         Text PlanningText = new Text("Planning");
         PlanningText.setId("PlanningText");
-        gridtitleright.add(PlanningText, 0, 0, 1, 1);
+        gridParent.add(PlanningText, 5, 0, 1, 1);
         
         PlanningText.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -108,18 +86,53 @@ public class AccueilEleve extends Parent {
             primaryStage.show();
         });
         
-        Text gap1 = new Text("            ");
-        gridtitleright.add(gap1, 1, 0, 1, 1);
-        
-        gridtitleright.add(decoButton,2,0,1,1);
         decoButton.setAlignment(Pos.BOTTOM_RIGHT);
-        gridParent.add(gridtitleright,10,0,1,1);
+        gridParent.add(decoButton, 20, 0, 1, 1);
+        
+
+        // Ajout Lien Module
+        Text lienNoteText = new Text("Mes Notes");
+        lienNoteText.setId("LienNoteText");
+        gridParent.add(lienNoteText, 10, 0, 1, 1);
+        
+        lienNoteText.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                	NoteModule noteModule = new NoteModule(primaryStage,eleve);
+                    Scene scene = new Scene(noteModule);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        
+        // Ajout Lien Module
+        Text moduleInfoText = new Text("Modules");
+        moduleInfoText.setId("ModuleInfoText");
+        gridParent.add(moduleInfoText, 15, 0, 1, 1);
+        
+        moduleInfoText.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                	InfoModule infoModule = new InfoModule(primaryStage,eleve);
+                    Scene scene = new Scene(infoModule,800,500);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         
         
         GridPane MoyenneGrid = new GridPane();
         MoyenneGrid.setId("MoyenneGrid");
         // Ajout Semaine
-        Text MoyenneText = new Text("Moyenne generale : ");
+        Text MoyenneText = new Text("Moyenne genérale : ");
         MoyenneText.setId("MoyenneText");
         Text MoyenneNote = new Text("" + eleve.getGlobalMean());
         
@@ -143,9 +156,7 @@ public class AccueilEleve extends Parent {
         addNoteButton.setOnAction(event -> {
         	
         	NoteForm noteForm = new NoteForm(primaryStage,eleve);
-    		// Add a style sheet to the scene
             Scene scene = new Scene(noteForm,800,500);
-            //scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
@@ -230,11 +241,11 @@ public class AccueilEleve extends Parent {
         childGrid3.getStyleClass().add("grid-pane");
         
         // Add the child grid panes to the parent grid pane
-        Text titreGrid1 = new Text("Prochaine �ch�ance");
+        Text titreGrid1 = new Text("Prochaine échéance");
         titreGrid1.setId("titre-grid");
         Text titreGrid2 = new Text("Niveau de charge");
         titreGrid2.setId("titre-grid");
-        Text titreGrid3 = new Text("Derni�res notes");
+        Text titreGrid3 = new Text("Dernières notes");
         titreGrid3.setId("titre-grid");
         
         gridParent.add(titreGrid1, 0, 4, 1, 1);
@@ -248,5 +259,13 @@ public class AccueilEleve extends Parent {
 
         // Add the grid pane to the root node
         this.getChildren().add(gridParent);
+    }
+    
+    public static void accueilSender(Stage primaryStage,Eleve eleve) {
+    	AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
+        Scene scene = new Scene(accueilEleve);
+        scene.getStylesheets().add("accueil.css");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

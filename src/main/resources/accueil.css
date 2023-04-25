@@ -2,10 +2,20 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-fill: black;
+    -fx-underline: true;
     -fx-font-family: 'Helvetica Neue', sans-serif;
 }
 
-#ModuleText {
+#ModuleInfoText {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-font-family: 'Georgia', serif;
+}
+
+#LienNoteText {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-fill: black;
