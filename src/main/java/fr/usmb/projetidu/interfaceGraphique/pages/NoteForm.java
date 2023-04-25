@@ -208,7 +208,7 @@ public class NoteForm extends Parent {
         moduleChoiceBox.setOnAction((event) -> {
         	travailChoiceBox.getItems().clear();
         	setAllVisible(listNode,false);
-        	travailChoiceBox.getItems().add("Non disponible");
+        	travailChoiceBox.getItems().add("Saisir un travail");
             int selectedIndex = moduleChoiceBox.getSelectionModel().getSelectedIndex();
             Object selectedItem = moduleChoiceBox.getSelectionModel().getSelectedItem();
             
@@ -233,7 +233,7 @@ public class NoteForm extends Parent {
             String currentTravailString = travailChoiceBox.getValue();
             
             	if(currentTravailString != null) {
-            		if(currentTravailString.equals("Non disponible")){
+            		if(currentTravailString.equals("Saisir un travail")){
             			isTravail = false;
             			setAllVisible(listNode,true);
 		        	}
@@ -317,6 +317,8 @@ public class NoteForm extends Parent {
             	if(this.isTravail) {
             		Travail validateTravail = this.currentTravail;
             		
+            		//Ajout de la node dans l'objet
+            		
             		//Ajout de la note a la bdd
             		
             		AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
@@ -330,6 +332,10 @@ public class NoteForm extends Parent {
             			String nomTravail = nomField.getText();
                 		String sujetTravail = sujetField.getText();
                 		Date dateTravail = currentDateTravail;
+                		
+                		//Ajout du travail dans l'objet
+                		
+                		//Ajout de la node dans l'objet
                 		
                 		//Ajout du travail a la bdd
                 		

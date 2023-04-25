@@ -102,9 +102,17 @@ public class ModuleInfo extends Parent {
 	            HashMap<Travail, double[]> travaux = eleve.getInfosFromModule(module);
 	            
 	            for (Travail travail : travaux.keySet()) {
+	            	
+	            	GridPane GridTravail = new GridPane();
+	            	GridTravail.setAlignment(Pos.BASELINE_LEFT);
+	            	GridTravail.setPrefHeight(20);
+	            	
+	            	
 	            	Text travailText = new Text(travail.getNom() + ": " + travaux.get(travail)[0]);
 	            	travailText.setId("TravailText");
-	            	gridParent.add(travailText, 0, count+3, 1, 1);
+	            	GridTravail.add(travailText, 0, 0);
+	            	//GridTravail.add();
+	            	gridParent.add(GridTravail, 0, count+3, 1, 1);
 	            	
 	            	Text coefText = new Text("coefficient: " + travaux.get(travail)[1]);
 	            	coefText.setId("CoefText");
