@@ -23,9 +23,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 @SuppressWarnings("unused")
-public class ModuleInfo extends Parent {
+public class NoteModule extends Parent {
 	  
-    public ModuleInfo(Stage primaryStage,Eleve eleve) { 
+    public NoteModule(Stage primaryStage,Eleve eleve) { 
     	
     	GridPane gridParent = new GridPane();
     	gridParent.setAlignment(Pos.CENTER);
