@@ -52,7 +52,7 @@ public class Main extends Application {
 		
 		//launch(args);
 		
-		DatabaseRequests.addEcoleToBdd("POPO");
+		DatabaseRequests.addEcole2Bdd("POPO");
 		ScrappingTest.login2USMBIntranet();
 		
 	}

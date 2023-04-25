@@ -2,7 +2,6 @@ package fr.usmb.projetidu.utils;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -73,7 +72,8 @@ public class ScrappingTest {
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-	    //options.addArguments("--headless");
+		options.addArguments("--headless");
+		options.addArguments("window-size=1920,1080");
 
 	    WebDriver driver = new ChromeDriver(options);
 		
@@ -141,13 +141,13 @@ public class ScrappingTest {
 		 }
 		 
 		 
-		 DatabaseRequests.addFiliereToBdd(filiere + "" + year);
+		 DatabaseRequests.addFiliere2Bdd(filiere + "" + year);
 		 
-		 getAllModulesInfos(driver, filiere, year);
+		 //getAllModulesInfos(driver, filiere, year);
 		 
 		 //login2Moodle(name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
-		 //loginToPlanning(filiere, year);
+		 login2Planning(filiere, year);
 		
 		 
 		
@@ -189,14 +189,13 @@ public class ScrappingTest {
 		WebElement firstJoinElement = driver.findElement(By.xpath("//*[@id=\"region-main\"]/div/div/div/section[6]/div/ul/li[1]/dl/dd"));
 		
 		int firstJoin = Integer.parseInt(firstJoinElement.getText().replace(",", "").split(" ")[3]);
-		DatabaseRequests.addPromoToBdd(firstJoin, filiere + "" + year, "POPO");
-		DatabaseRequests.addStudentToBdd(name, surname, bday, mail, polyPoints, INE, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
+		DatabaseRequests.addPromo2Bdd(firstJoin, filiere + "" + year, "POPO");
+		DatabaseRequests.addStudent2Bdd(name, surname, bday, mail, polyPoints, INE, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
 		
 		driver.quit();
 		
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public static void getAllModulesInfos(WebDriver driver, String nomFiliere, int annee){
 		
 		
@@ -216,8 +215,25 @@ public class ScrappingTest {
 		 semester.click();
 		 
 		 int firstSemester = (annee * 2) - 1;
+		 int secondSemester = annee * 2;
 		 
-		 WebElement option = driver.findElement(By.xpath("//*[@id=\"semestre\"]/option[" + (firstSemester + 1) + "]"));
+		 launchModuleSearch(driver, firstSemester, nomFiliere + "" + annee);
+		 
+		 try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		 
+		 launchModuleSearch(driver, secondSemester, nomFiliere + "" + annee);
+		
+		 driver.quit();
+		
+	}
+	
+	private static void launchModuleSearch(WebDriver driver, int semester, String filiere) {
+		
+		 WebElement option = driver.findElement(By.xpath("//*[@id=\"semestre\"]/option[" + (semester + 1) + "]"));
 		 option.click();
 		 
 		 WebElement validate = driver.findElement(By.className("icon-color"));
@@ -237,37 +253,37 @@ public class ScrappingTest {
 			 
 			 driver.get(link);
 			 
-			 getModuleData(driver);
-			 
-			 try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			 getModuleData(driver, filiere);
 			 
 		 }
-		 
-		 
 		
-		
-		 //driver.quit();
 		
 	}
 	
-	private static void getModuleData(WebDriver driver) {
+	private static void getModuleData(WebDriver driver, String filiere) {
 		
-		System.out.println("-----------------------------------------------------------------");
+		/* ------------------------------ Module ----------------------------------------------*/
+		
+		WebElement module = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[1]/div[2]"));
+		String fullTextModule = module.getText();
+		String moduleCode = fullTextModule.split(":")[0].trim();
+		
+		char c = moduleCode.charAt(moduleCode.length() - 1);
+		if(c == 'a') {
+			moduleCode = moduleCode.substring(0, moduleCode.length() - 1);
+		}
+		
+		String nomModule = fullTextModule.split(":")[1].trim(); 
 		
 		/* ------------------------------ UE ----------------------------------------------*/
 		
 		WebElement ue = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]"));
 		String fullTextUe = ue.getText();
 		String ueCode = fullTextUe.split(":")[0].trim();
-		String nom = fullTextUe.split(":")[1].trim();
+		String nomUe = fullTextUe.split(":")[1].trim();
 		
-		System.out.println(ueCode + " " + nom);
-		
-		
+		DatabaseRequests.addUe2Bdd(ueCode, nomUe);
+		DatabaseRequests.addRelationUeFiliere2Bdd(filiere, ueCode);
 		
 		/* ------------------------------ Responsable ----------------------------------------------*/
 		
@@ -279,7 +295,23 @@ public class ScrappingTest {
 		
 		if(fullTextRespo.contains(" et ")) {
 			
-			for(String s : fullTextRespo.split("et")) {
+			for(String s : fullTextRespo.split(" et ")) {
+				
+				respos.add(s.trim());
+				
+			}
+			
+		} else if(fullTextRespo.contains("/")) {
+			
+			for(String s : fullTextRespo.split("/")) {
+				
+				respos.add(s.trim());
+				
+			}
+			
+		} else if(fullTextRespo.contains(";")) {
+			
+			for(String s : fullTextRespo.split(";")) {
 				
 				respos.add(s.trim());
 				
@@ -295,12 +327,95 @@ public class ScrappingTest {
 			
 		}
 		
-		for(String s : respos) {
-			System.out.println(s);
+		/* ------------------------------ Mail ----------------------------------------------*/
+		
+		WebElement mail = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[3]/div[2]/div[2]"));
+		String fullTextMail = mail.getText();
+		List<String> mails = new ArrayList<>();
+		
+		
+		if(fullTextMail.contains(" et ")) {
+			
+			for(String s : fullTextMail.split(" et ")) {
+				
+				mails.add(s.trim());
+				
+			}
+			
+		} else if(fullTextRespo.contains("/")) {
+			
+			for(String s : fullTextRespo.split("/")) {
+				
+				respos.add(s.trim());
+				
+			}
+			
+		} else if(fullTextMail.contains(";")) {
+			
+			for(String s : fullTextMail.split(";")) {
+				
+				mails.add(s.trim());
+				
+			}
+			
+		} else {
+			
+			for(String s : fullTextMail.split(",")) {
+				
+				mails.add(s.trim());
+				
+			}
+			
 		}
 		
 		
+		/* ------------------------------ Total hour ----------------------------------------------*/
 		
+		List<WebElement> totalHourNotFormatted = driver.findElements(By.cssSelector("div[class='field nbHeures'] div[class='value']"));
+		
+		double totalHour = Double.parseDouble(totalHourNotFormatted.get(totalHourNotFormatted.size() - 2).getText());
+		
+		/* ------------------------------ Coeff ----------------------------------------------*/
+		
+		WebElement coeffNotFormatted = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[6]/div[2]/div[2]"));
+		
+		double coeff;
+		if(coeffNotFormatted.getText() == "") {
+			coeff = 0.0;
+		} else {
+			coeff = Double.parseDouble(coeffNotFormatted.getText());
+		}
+		
+		/* ------------------------------ Evaluation ----------------------------------------------*/
+		
+		WebElement eval = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[7]/div[1]/div[2]"));
+		String evaluation = eval.getText();
+		
+		/* ------------------------------ Descriptif ----------------------------------------------*/
+
+		String descriptif = null;
+		
+		try {
+			WebElement desc = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[11]/div[1]/div[2]/div/p[1]"));
+			descriptif = desc.getText();
+		} catch (Exception e) {	
+			descriptif = "No data";
+		}
+		
+		DatabaseRequests.addModule2Bdd(moduleCode, nomModule.replace("'", " "), totalHour, coeff, evaluation, descriptif.replace("'", " "), ueCode);
+		
+		for(String enseignant : respos) {
+			
+			String prenom = enseignant.replace(".", " ").split(" ")[0];
+			String nom = enseignant.replace(".", " ").split(" ")[1];
+			
+			int index = respos.indexOf(enseignant);
+			
+			String email = mails.get(index);
+			
+			DatabaseRequests.addProf2Bdd(nom.toUpperCase(), prenom, email);
+			DatabaseRequests.addEnseigne2Bdd(nom, prenom, moduleCode);
+		}
 		
 		
 	}
@@ -311,7 +426,7 @@ public class ScrappingTest {
 		String pass = "ao61na76&*Tao61na76";
 		
 		ChromeOptions options = new ChromeOptions();
-	    options.addArguments("--headless");
+	    //options.addArguments("--headless");
 
 	    WebDriver driver = new ChromeDriver(options);
 		
@@ -410,11 +525,6 @@ public class ScrappingTest {
 		
 		
 		
-		
-		
-			
-		
-		
 		//driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp?data=7020a3fce84ff3ba42e6d53dcf2a8626dbb4ee8dad47f25db24afb2b83a03d759fd8c31cee53c321e535653ae26cd5be,1&ticket=ST-684424-XUQCf9grD0dqbZOiamLU-cas-uds.grenet.fr");
 		//driver.quit();
 	}
@@ -432,9 +542,23 @@ public class ScrappingTest {
 			String[] splited = we.getText().split("\\s+");
 			
 			if(splited.length > 6) {
-				System.out.println("------------------------------------------------");
+				//System.out.println("------------------------------------------------");
 				
-				String module = splited[0].split("_")[0];
+				String module = null;
+				
+				if(splited[0].contains("_") && splited[0].contains("-")) {
+					if(splited[0].contains("_")){
+						module = splited[0].split("_")[0];
+					}
+				} else {
+					if(splited[0].contains("_")){
+						module = splited[0].split("_")[0];
+					}
+					if(splited[0].contains("-")){
+						module = splited[0].split("-")[0];
+					}
+				}
+				
 				
 				String startingHourNotFormated = splited[splited.length - 3];
 				String endingHourNotFormated = splited[splited.length - 1];
@@ -449,12 +573,12 @@ public class ScrappingTest {
 				
 				String endingHour = getFormattedHour(endingHourNotFormated);
 				
-				System.out.println(number);
-				System.out.println(module);
-				System.out.println(startingHour);
+				//System.out.println(number);
+				//System.out.println(module);
+				//System.out.println(startingHour);
 				
 				double duree = Double.parseDouble(endingHour.replace(",", "."))   - Double.parseDouble(startingHour.replace(",", "."));
-				System.out.println(duree);
+				//System.out.println(duree);
 				
 				
 				String type = "";
@@ -470,7 +594,11 @@ public class ScrappingTest {
 				} 
 				
 				
-				System.out.println(type);
+				//System.out.println(type);
+				
+				
+				DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
+				
 				
 			}
 			
