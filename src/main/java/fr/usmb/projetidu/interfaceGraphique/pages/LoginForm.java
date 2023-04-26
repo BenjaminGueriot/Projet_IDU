@@ -2,6 +2,7 @@ package fr.usmb.projetidu.interfaceGraphique.pages;
 
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.utils.Initialize;
+import fr.usmb.projetidu.utils.ScrappingData;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -73,23 +74,17 @@ public class LoginForm extends Parent {
             String password = passwordField.getText();
             
             // Connect to the database and check the username and password
-            if (Initialize.checkConnexion(username, password)) {
-                actionTarget.setText("Bien jou� mec!");
-                Eleve eleve = Initialize.InitializeEleve(username);
-        	 try {
-	        		 AccueilEleve accueilEleve = new AccueilEleve(primaryStage,eleve);
-	                 Scene scene = new Scene(accueilEleve);
-	                 scene.getStylesheets().add(getClass().getResource("/accueil.css").toExternalForm());
-	                 primaryStage.setScene(scene);
-	                 primaryStage.show();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            } else {
-                actionTarget.setText("Erreur lors de la connexion");
+            
+            actionTarget.setText("Veuillez patienter ...");
+            
+            ScrappingData.login2USMBIntranet(primaryStage, username, password);
+            
+            	
+            actionTarget.setText("Bien jou� mec!");
+            
             }
             
-        }});
+        });
 
         grid.getStyleClass().add("grid-pane");
      // Add the grid pane to the root node

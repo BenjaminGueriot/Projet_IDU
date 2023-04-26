@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -68,30 +70,6 @@ public class Initialize {
 		promo = null;
 		
 		eleve = null;
-		
-	}
-	
-	public static boolean checkConnexion(String login, String mot_de_passe) {
-		String QUERY = "SELECT * FROM eleve WHERE login_eleve = '" + login + "';";
-		
-		String mdp = "";
-		
-		try {
-			ResultSet rs = database.querySQL(QUERY);
-			
-				while(rs.next()){
-					
-					mdp = rs.getString(5);
-					
-				}
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		
-		String pass_hash = generatePassword(mot_de_passe);
-		
-		return pass_hash.equals(mdp) ? true : false;
 		
 	}
 	
@@ -196,7 +174,7 @@ public class Initialize {
 					if(rs.getInt(1) != id_eleve) {
 						
 						
-						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8)});
+						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(9)});
 					}
 					
 				}
@@ -210,12 +188,12 @@ public class Initialize {
 			Object[] values = eleves_list.get(id);
 			
 			String nom = (String) values[0];
-			String prenom = (String) values[0];
-			String date_naissance = (String) values[0];
-			String mail = (String) values[0];
-			int polypoints = (int) values[0];
-			String ine = (String) values[0];
-			int id_new_eleve_promo = (int) values[0];
+			String prenom = (String) values[1];
+			String date_naissance = (String) values[2];
+			String mail = (String) values[3];
+			int polypoints = (int) values[4];
+			String ine = (String) values[5];
+			int id_new_eleve_promo = (int) values[6];
 			
 			DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
@@ -459,7 +437,7 @@ public class Initialize {
 			
 				while(rs.next()){
 					
-					cours_list.put(rs.getInt(1), new Object[] {rs.getInt(2), rs.getDate(3), rs.getDouble(4), rs.getDouble(5), rs.getString(6)});
+					cours_list.put(rs.getInt(1), new Object[] {rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getDouble(5), rs.getString(6)});
 					
 				}
 			
@@ -472,12 +450,14 @@ public class Initialize {
 			Object[] values = cours_list.get(id);
 			
 			int num_seance = (int) values[0];
-			Date date = (Date) values[1];
+			String date_cours = (String) values[1];
 			double heure_debut = (double) values[2];
 			double duree = (double) values[3];
 			String type = (String) values[4];
 			
 			CourFactoryImpl factory = new CourFactoryImpl();
+			
+			Date date = parseDate(date_cours, "dd/MM/yyyy");
 			
 			switch (type.toLowerCase()) {
 			case "cm":
@@ -577,7 +557,7 @@ public class Initialize {
 			
 				while(rs.next()){
 					
-					travaux_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getDate(4)});
+					travaux_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4)});
 					
 				}
 			
@@ -591,9 +571,11 @@ public class Initialize {
 			
 			String nom = (String) values[0];
 			String sujet = (String) values[1];
-			Date date_rendu = (Date) values[2];
+			String date_rendu = (String) values[2];
 			
-			Travail travail = new Travail(nom, sujet, date_rendu, module);
+			Date date = parseDate(date_rendu, "dd/MM/yyyy");
+			
+			Travail travail = new Travail(nom, sujet, date, module);
 			
 			travaux.put(id, travail);
 			module.addTravail(travail);
@@ -601,6 +583,16 @@ public class Initialize {
 		}
 		
 		
+	}
+	
+	private static Date parseDate(String date, String format){
+	    SimpleDateFormat formatter = new SimpleDateFormat(format);
+	    try {
+			return formatter.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private static void InitializeNote(Eleve eleve, int id_eleve) {

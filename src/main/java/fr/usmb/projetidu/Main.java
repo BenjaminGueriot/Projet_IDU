@@ -10,7 +10,7 @@ import fr.usmb.projetidu.interfaceGraphique.pages.LoginForm;
 import fr.usmb.projetidu.utils.Config;
 import fr.usmb.projetidu.utils.DatabaseRequests;
 import fr.usmb.projetidu.utils.Initialize;
-import fr.usmb.projetidu.utils.ScrappingTest;
+import fr.usmb.projetidu.utils.ScrappingData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -52,12 +52,12 @@ public class Main extends Application {
 		
 		if(!connectToDatabase()) return;
 		
-		//launch(args);
+		launch(args);
 		
-		DatabaseRequests.addEcole2Bdd("POPO");
-		ScrappingTest.login2USMBIntranet();
+		//DatabaseRequests.addEcole2Bdd("POPO");
+		//ScrappingTest.login2USMBIntranet();
 		
-		/*Eleve testos = Initialize.InitializeEleve("nicolath");
+		/*Eleve testos = Initialize.InitializeEleve("gueriotb");
 		
 		System.out.println(testos.getPrenom());
 		System.out.println(testos.getNom());

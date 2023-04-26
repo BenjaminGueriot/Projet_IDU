@@ -1,11 +1,7 @@
 package fr.usmb.projetidu.utils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,13 +14,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ScrappingTest {
+import fr.usmb.projetidu.Personne.Eleve;
+import fr.usmb.projetidu.interfaceGraphique.pages.AccueilEleve;
+import javafx.stage.Stage;
+
+public class ScrappingData {
 	
-	public static void login2USMBIntranet() {
+	public static void login2USMBIntranet(Stage stage, String login, String pass) {
 				
-		String login = "gueriotb";
-		String pass = "Benji23/11/2001";
-		
 		ChromeOptions options = new ChromeOptions();
 	    options.addArguments("--headless");
 
@@ -62,7 +59,7 @@ public class ScrappingTest {
 	    driver.quit();
 	    
 	    try {
-	    	login2PolytechIntranet(surname, name, bday, mail, INE);
+	    	login2PolytechIntranet(stage, login, pass, surname, name, bday, mail, INE);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
@@ -70,10 +67,8 @@ public class ScrappingTest {
 		
 	}
 	
-	public static void login2PolytechIntranet(String surname, String name, String bday, String mail, String INE) throws InterruptedException {
+	public static void login2PolytechIntranet(Stage stage, String login, String pass, String surname, String name, String bday, String mail, String INE) throws InterruptedException {
 		
-		String login = "gueriotb";        
-		String pass = "Benji23/11/2001";  
 		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
@@ -147,9 +142,9 @@ public class ScrappingTest {
 		 
 		 DatabaseRequests.addFiliere2Bdd(filiere + "" + year);
 		 
-		 getAllModulesInfos(driver, filiere, year);
+		 //getAllModulesInfos(driver, filiere, year);
 		 
-		 login2Moodle(name, surname, bday, mail, polyPoints, INE, year, filiere);
+		 login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
 		 //login2Planning(filiere, year);
 		
@@ -157,10 +152,7 @@ public class ScrappingTest {
 		
 	}
 	
-	public static void login2Moodle(String name, String surname, String bday, String mail, int polyPoints, String INE, int year, String filiere){
-		
-		String login = "gueriotb";        
-		String pass = "Benji23/11/2001";  
+	public static void login2Moodle(Stage stage, String login, String pass, String name, String surname, String bday, String mail, int polyPoints, String INE, int year, String filiere){
 		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("headless");
@@ -197,6 +189,11 @@ public class ScrappingTest {
 		DatabaseRequests.addStudent2Bdd(surname, name, bday, mail, polyPoints, INE, login, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
 		
 		driver.quit();
+		
+		Eleve eleve = Initialize.InitializeEleve(login);
+		
+		AccueilEleve.accueilSender(stage, eleve);
+		
 		
 	}
 	
@@ -424,13 +421,10 @@ public class ScrappingTest {
 		
 	}
 	
-	public static void login2Planning(String filiere, int year){
-		
-		String login = "gueriotb";        
-		String pass = "Benji23/11/2001";  
+	public static void login2Planning(String login, String pass, String filiere, int year){
 		
 		ChromeOptions options = new ChromeOptions();
-	    //options.addArguments("--headless");
+		//options.addArguments("--headless");
 
 	    WebDriver driver = new ChromeDriver(options);
 		
@@ -528,9 +522,7 @@ public class ScrappingTest {
 		}
 		
 		
-		
-		//driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp?data=7020a3fce84ff3ba42e6d53dcf2a8626dbb4ee8dad47f25db24afb2b83a03d759fd8c31cee53c321e535653ae26cd5be,1&ticket=ST-684424-XUQCf9grD0dqbZOiamLU-cas-uds.grenet.fr");
-		//driver.quit();
+		driver.quit();
 	}
 	
 	private static void getOneDay(WebDriver driver) {
@@ -599,17 +591,8 @@ public class ScrappingTest {
 				
 				if(splited[0].contains("Exam")) {
 					type = "Exam";
+					DatabaseRequests.addTravailExam2Bdd("Examen " + module, "Exam de module", day, module);
 					
-					DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
-					
-					Date date = null;
-					try {
-						date = sourceFormat.parse(day);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					
-					DatabaseRequests.addTravail2Bdd("Examen", "Exam de module", date, module, null, null);
 				}
 				
 				DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);

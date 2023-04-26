@@ -12,6 +12,7 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import io.netty.handler.codec.string.StringDecoder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
@@ -314,14 +315,36 @@ public class InfoModule extends Parent {
 	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
-	        		this.nomModuleText.setText("DATA832 : Machine Learning");
+	        		this.nomModuleText.setText(module.getCode() + " : " + module.getNom());
 	        		this.ueDataText.setText("UE803 : Données et Aide à la Décision");
-	        		this.responsableText.setText("Marc-Philippe Huget" + "  ");
-	        		this.mailText.setText("Marc-Philippe.Huget@univ-smb.fr");
-	        		this.heureText.setText("40.5");
-	        		this.evaluationText.setText("CC" + "  ");
-	        		this.coefText.setText("3");
-	        		this.descText.setText("Ce cours vise à acquérir les compétences nécessaires à la mise en place de méthodes \"Agile\" pour le développement de logiciels. Dans ces contextes, visant la qualité logicielle, le test logiciel sera introduit à travers la conception de suite de tests et leur implémentation via différentes unité de test.");
+	        		
+	        		String respos = "";
+	        		String mails = "";
+	        		
+	        		for(Enseignant respo : module.getEnseignants()) {
+	        			
+	        			if(module.getEnseignants().get(module.getEnseignants().size() - 1).equals(respo)) {
+	        				
+	        				respos += respo.getNom().toUpperCase() + " " + respo.getPrenom();
+	        				mails += respo.getMail();
+	        				
+	        			} else {
+	        				
+	        				respos += respo.getNom() + ", ";
+	        				mails += respo.getMail() + ", ";
+	        				
+	        			}
+	        			
+	        		}
+	        		
+	        		this.responsableText.setText(respos);
+	        		this.mailText.setText(mails);
+	        		
+	        		
+	        		this.heureText.setText(String.valueOf(module.getNbHeures()));
+	        		this.evaluationText.setText(module.getEvaluation() + "  ");
+	        		this.coefText.setText(String.valueOf(module.getCoeff()));
+	        		this.descText.setText(module.getDescription());
 	        		
 	        	}
 	        }

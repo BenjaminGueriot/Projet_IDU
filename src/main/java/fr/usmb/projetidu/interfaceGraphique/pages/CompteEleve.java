@@ -56,11 +56,11 @@ public class CompteEleve extends Parent{
         
         
         
-        Text filiereText = new Text("Fili�re :");
+        Text filiereText = new Text("Filière :");
         String filiere = eleve.getPromo().getFiliere().getNom();
         Text filiereEleve = new Text(filiere);
         
-        Text DescriptionText = new Text("Description de la fili�re :");
+        Text DescriptionText = new Text("Description de la filière :");
         String descfiliere = eleve.getPromo().getFiliere().getDescription();
         Text descfiliereEleve = new Text(descfiliere);
         

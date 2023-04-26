@@ -22,6 +22,12 @@ public class CourFactoryImpl implements CourFactory {
 		case TP:
 			cour = new TP(num_seance, date, heure_debut, duree, module, cour_enum);
 			break;
+		case EXAM:
+			cour = new EXAM(num_seance, date, heure_debut, duree, module, cour_enum);
+			break;
+		case SPECIAL:
+			cour = new SPECIAL(num_seance, date, heure_debut, duree, module, cour_enum);
+			break;
 
 		default:
 			throw new RuntimeException( "Format de cours incorrect" );

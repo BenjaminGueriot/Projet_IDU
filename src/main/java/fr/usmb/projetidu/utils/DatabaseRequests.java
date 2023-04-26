@@ -477,33 +477,37 @@ public class DatabaseRequests {
 		
 	}
 	
-	public static void addTravail2Bdd(String nomTravail, String sujet, Date date_rendu, String code, String nom, String prenom) {
+	public static void addTravail2Bdd(String nomTravail, String sujet, String date_rendu, String code, String nom, String prenom) {
 		
 		int id_module = getIdOfModule(code);
 		int id_enseignant = getIdOfEnseignant(nom, prenom);
 		
-		if(nom == null && prenom == null) {
-			if(isNewTravail(nomTravail)) {
-				String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + null  + "')";
-				
-				try {
-					database.updateSQL(request);
-				} catch (ClassNotFoundException | SQLException e) {
-					e.printStackTrace();
-				}
-			} 
-		} else {
-			if(isNewTravail(nomTravail)) {
-				String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + id_enseignant  + "')";
-				
-				try {
-					database.updateSQL(request);
-				} catch (ClassNotFoundException | SQLException e) {
-					e.printStackTrace();
-				}
-			} 
-		}
+		if(isNewTravail(nomTravail)) {
+			String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + id_enseignant  + "')";
+			
+			try {
+				database.updateSQL(request);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		} 
 		
+		
+	}
+	
+	public static void addTravailExam2Bdd(String nomTravail, String sujet, String date_rendu, String code) {
+		
+		int id_module = getIdOfModule(code);
+		
+		if(isNewTravail(nomTravail)) {
+			String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "')";
+			
+			try {
+				database.updateSQL(request);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		} 
 		
 	}
 	
