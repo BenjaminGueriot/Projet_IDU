@@ -12,10 +12,11 @@ public class DatabaseRequests {
 	
 	private static MySQL database = Main.getDatabase();
 	
-	public static void addStudent2Bdd(String nom, String prenom, String date, String mail, int polypoints, String ine, int id_promo) {
+	public static void addStudent2Bdd(String nom, String prenom, String date, String mail, int polypoints, String ine, String login, int id_promo) {
 		
 		if(isNewStudent(ine)) {
-			String request = "INSERT INTO eleve(nom, prenom, date_naissance, mail, polypoints, ine, id_promo) VALUES ('" + nom  + "', '" + prenom  + "', '" + date + "', '" + mail + "', '" + polypoints + "', '" + ine + "', '" + id_promo + "')";
+			
+			String request = "INSERT INTO eleve(nom, prenom, date_naissance, mail, polypoints, ine, login, id_promo) VALUES ('" + nom  + "', '" + prenom  + "', '" + date + "', '" + mail + "', '" + polypoints + "', '" + ine + "', '" + login + "', '" + id_promo + "')";
 			
 			try {
 				database.updateSQL(request);
@@ -481,15 +482,28 @@ public class DatabaseRequests {
 		int id_module = getIdOfModule(code);
 		int id_enseignant = getIdOfEnseignant(nom, prenom);
 		
-		if(isNewTravail(nomTravail)) {
-			String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + id_enseignant  + "')";
-			
-			try {
-				database.updateSQL(request);
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-			}
-		} 
+		if(nom == null && prenom == null) {
+			if(isNewTravail(nomTravail)) {
+				String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + null  + "')";
+				
+				try {
+					database.updateSQL(request);
+				} catch (ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+		} else {
+			if(isNewTravail(nomTravail)) {
+				String request = "INSERT INTO travail(nom, sujet, date_rendu, id_module, id_enseignant) VALUES ('" + nomTravail  + "', '" + sujet  + "', '" + date_rendu  + "', '" + id_module  + "', '" + id_enseignant  + "')";
+				
+				try {
+					database.updateSQL(request);
+				} catch (ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+		}
+		
 		
 	}
 	

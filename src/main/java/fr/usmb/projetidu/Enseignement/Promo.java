@@ -1,7 +1,6 @@
 package fr.usmb.projetidu.Enseignement;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fr.usmb.projetidu.Enseignement.Module.Module;
@@ -12,10 +11,10 @@ public class Promo {
 	
 	private int id;
 	private Filiere filiere;
-	private Date date;
+	private int date;
 	private List<Eleve> eleves = new ArrayList<>();
 	
-	public Promo(Filiere filiere, Date date, int id) {
+	public Promo(Filiere filiere, int date, int id) {
 		super();
 		this.filiere = filiere;
 		this.date = date;
@@ -26,18 +25,10 @@ public class Promo {
 		return this.filiere;
 	}
 
-	public void setFiliere(Filiere filiere) {
-		this.filiere = filiere;
-	}
-
-	public Date getDate() {
+	public Integer getDatePromotion() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
 	public String toString() {
 		return this.filiere.getNom();
 	}
@@ -50,16 +41,8 @@ public class Promo {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public List<Eleve> getEleves() {
 		return eleves;
-	}
-
-	public void setEleves(List<Eleve> eleves) {
-		this.eleves = eleves;
 	}
 
 	public Double getPromoMeanOfModule(Module module){

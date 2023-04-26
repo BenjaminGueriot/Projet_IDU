@@ -19,13 +19,18 @@ public class Eleve extends Personne {
 
 	private Promo promo;
 	private HashMap<Module, HashMap<Travail, double[]>> informations = new HashMap<>();
-	String login;
-	Date date_arrivee;
+	private Date date_naissance;
+	private int polypoints = 0;;
+	private String ine;
+	private String login;
 	
-	public Eleve(String nom, String prenom, Promo promo, String login, Date date_arrivee) {
-		super(nom, prenom, date_arrivee);
+	
+	public Eleve(String nom, String prenom, Promo promo, String mail, Date date_naissance, int polypoints, String ine) {
+		super(nom, prenom, mail);
 		this.promo = promo;
-		this.login = login;
+		this.date_naissance = date_naissance;
+		this.polypoints = polypoints;
+		this.ine = ine;
 	}
 	
 	public void addUE(UE ue) {
@@ -124,6 +129,10 @@ public class Eleve extends Personne {
 		return Math.round(mean*100.0)/100.0;
 	}
 
+	public String getLogin() {
+		return this.login;
+	}
+	
 	public Promo getPromo() {
 		return this.promo;
 	}
@@ -133,19 +142,23 @@ public class Eleve extends Personne {
 	}
 
 	public HashMap<Module, HashMap<Travail, double[]>> getInformations() {
-		return informations;
+		return this.informations;
 	}
 
 	public void setInformations(HashMap<Module, HashMap<Travail, double[]>> informations) {
 		this.informations = informations;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getIne() {
+		return this.ine;
 	}
-
-	public void setLogin(String login) {
-		this.login = login;
+	
+	public Integer getPolypoints() {
+		return this.polypoints;
+	}
+	
+	public Date getBday() {
+		return this.date_naissance;
 	}
 
 	public void setPromo(Promo promo) {
@@ -367,7 +380,7 @@ public class Eleve extends Personne {
 			          }
 		        	  
 		        	  if(((val - 8) * 2) == id) {
-		        		  line = cour.getModule().getNom() + "\n" + cour.getCourenum().getNom();
+		        		  line = cour.getModule().getNom() + "\n" + cour.getType().getNom();
 		        	  } 
 		        	  
 		        	  

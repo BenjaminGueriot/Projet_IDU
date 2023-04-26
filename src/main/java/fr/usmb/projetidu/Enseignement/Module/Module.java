@@ -12,12 +12,20 @@ public class Module {
 	private String nom;
 	private String description;
 	private String couleurEDT;
+	private String code;
+	private double nbHeures;
+	private double coeff;
+	private String evaluation;
 	private List<Enseignant> enseignants = new ArrayList<>();
 	private List<Travail> travaux = new ArrayList<>();
 	private List<Cour> cours = new ArrayList<>();
 	
-	public Module(String nom, String description, String couleurEDT) {
+	public Module(String code, String nom, double nbHeures, double coeff, String evaluation, String description, String couleurEDT) {
+		this.code = code;
 		this.nom = nom;
+		this.nbHeures = nbHeures;
+		this.coeff = coeff;
+		this.evaluation = evaluation;
 		this.description = description;
 		this.couleurEDT = couleurEDT;
 	}
@@ -50,39 +58,39 @@ public class Module {
 		return (100 * already_past) / total_cours;
 		
 	}
-
-	public String getNom() {
-		return nom;
+	
+	public Double getNbHeures() {
+		return this.nbHeures;
+	}
+	
+	public Double getCoeff() {
+		return this.coeff;
+	}
+	
+	public String getEvaluation() {
+		return this.evaluation;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public String getCode() {
+		return this.code;
 	}
 
 	public List<Enseignant> getEnseignants() {
-		return enseignants;
-	}
-
-	public void setEnseignants(List<Enseignant> enseignants) {
-		this.enseignants = enseignants;
+		return this.enseignants;
 	}
 
 	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+		return this.description;
 	}
 
 	public List<Travail> getTravaux() {
-		return travaux;
+		return this.travaux;
 	}
 
-	public void setTravaux(List<Travail> travaux) {
-		this.travaux = travaux;
-	}
-	
 	public void addTravail(Travail travail) {
 		this.travaux.add(travail);
 	}
@@ -92,15 +100,11 @@ public class Module {
 	}
 
 	public List<Cour> getCours() {
-		return cours;
-	}
-
-	public void setCours(List<Cour> cours) {
-		this.cours = cours;
+		return this.cours;
 	}
 
 	public String getCouleurEDT() {
-		return couleurEDT;
+		return this.couleurEDT;
 	}
 
 	public void setCouleurEDT(String couleurEDT) {

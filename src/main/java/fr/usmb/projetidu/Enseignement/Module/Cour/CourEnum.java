@@ -2,7 +2,7 @@ package fr.usmb.projetidu.Enseignement.Module.Cour;
 
 public enum CourEnum {
 
-	CM("CM"), TD("TD"), TP("TP");
+	CM("CM"), TD("TD"), TP("TP"), EXAM("EXAM"), SPECIAL("SPECIAL");
 	
 	private String nom;
 	

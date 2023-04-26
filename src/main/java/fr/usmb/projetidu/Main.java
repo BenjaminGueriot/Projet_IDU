@@ -3,11 +3,13 @@ package fr.usmb.projetidu;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
+import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.handler.ConfigHandler;
 import fr.usmb.projetidu.handler.MySQL;
 import fr.usmb.projetidu.interfaceGraphique.pages.LoginForm;
 import fr.usmb.projetidu.utils.Config;
 import fr.usmb.projetidu.utils.DatabaseRequests;
+import fr.usmb.projetidu.utils.Initialize;
 import fr.usmb.projetidu.utils.ScrappingTest;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -54,6 +56,14 @@ public class Main extends Application {
 		
 		DatabaseRequests.addEcole2Bdd("POPO");
 		ScrappingTest.login2USMBIntranet();
+		
+		/*Eleve testos = Initialize.InitializeEleve("nicolath");
+		
+		System.out.println(testos.getPrenom());
+		System.out.println(testos.getNom());
+		System.out.println(testos.getPromo().getDatePromotion());
+		System.out.println(testos.getPromo().getFiliere().getDescription());
+		System.out.println(testos.getPromo().getFiliere().getListe_ue()); */
 		
 	}
 	

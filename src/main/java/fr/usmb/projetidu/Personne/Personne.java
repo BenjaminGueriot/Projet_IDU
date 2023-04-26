@@ -1,18 +1,15 @@
 package fr.usmb.projetidu.Personne;
 
-import java.util.Date;
-
 public abstract class Personne {
 
 	protected String nom;
 	protected String prenom;
-	protected Date date_arrivee;
+	protected String mail;
 	
-	public Personne(String nom, String prenom, Date date_arrivee) {
-		super();
+	public Personne(String nom, String prenom, String mail) {
 		this.nom = nom;
 		this.prenom = prenom;
-		this.date_arrivee = date_arrivee;
+		this.mail = mail;
 	}
 	
 	public String getNom() {
@@ -22,19 +19,14 @@ public abstract class Personne {
 		this.nom = nom;
 	}
 	public String getPrenom() {
-		return prenom;
+		return this.prenom;
 	}
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
-	public Date getDate_arrivee() {
-		return date_arrivee;
+	public String getMail() {
+		return this.mail;
 	}
-
-	public void setDate_arrivee(Date date_arrivee) {
-		this.date_arrivee = date_arrivee;
-	}
-	
 	
 }

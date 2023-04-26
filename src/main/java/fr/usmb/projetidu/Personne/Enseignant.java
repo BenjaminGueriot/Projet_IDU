@@ -10,8 +10,8 @@ public class Enseignant extends Personne {
 
 	private List<Module> modules = new ArrayList<>();
 	
-	public Enseignant(String nom, String prenom, Date date_arrivee) {
-		super(nom, prenom, date_arrivee);
+	public Enseignant(String nom, String prenom, String mail) {
+		super(nom, prenom, mail);
 	}
 	
 	public void addModule(Module... modules) {

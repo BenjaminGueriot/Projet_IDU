@@ -4,6 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -121,13 +124,17 @@ public class Initialize {
 	
 	public static Eleve InitializeEleve(String login) {
 		
-		String QUERY = "SELECT * FROM eleve WHERE login_eleve = '" + login + "';";
+		String QUERY = "SELECT * FROM eleve WHERE login = '" + login + "';";
 		
 		int id_eleve = -1;
 		String nom = "";
 		String prenom = "";
-		Date date_arrive = null;
-		int promo_id = -1;
+		String date_naissance = "";
+		String mail = "";
+		int polypoints = -1;
+		String ine = "";
+		
+		int id_promo = -1;
 		
 		
 		try {
@@ -138,8 +145,11 @@ public class Initialize {
 					id_eleve = rs.getInt(1);
 					nom = rs.getString(2);
 					prenom = rs.getString(3);
-					date_arrive = rs.getDate(6);
-					promo_id = rs.getInt(7);
+					date_naissance = rs.getString(4);
+					mail = rs.getString(5);
+					polypoints = rs.getInt(6);
+					ine = rs.getString(7);
+					id_promo = rs.getInt(9);
 					
 				}
 			
@@ -149,9 +159,18 @@ public class Initialize {
 		
 		ModuleColor.generateColors();
 		
-		Promo promo = InitializePromo(id_eleve, promo_id);
+		Promo promo = InitializePromo(id_eleve, id_promo);
 		
-		Eleve eleve = new Eleve(nom, prenom, promo, login, date_arrive);
+		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date date = null;
+		try {
+			date = sourceFormat.parse(date_naissance);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Eleve eleve = new Eleve(nom, prenom, promo, mail, date, polypoints, ine);
 		
 		eleves.add(eleve);
 		promo.addEleve(eleve);
@@ -177,7 +196,7 @@ public class Initialize {
 					if(rs.getInt(1) != id_eleve) {
 						
 						
-						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(6), rs.getInt(7)});
+						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(8)});
 					}
 					
 				}
@@ -191,20 +210,30 @@ public class Initialize {
 			Object[] values = eleves_list.get(id);
 			
 			String nom = (String) values[0];
-			String prenom = (String) values[1];
-			String login = (String) values[2];
-			Date date_arrivee = (Date) values[3];
-			int id_new_eleve_promo = (int) values[4];
+			String prenom = (String) values[0];
+			String date_naissance = (String) values[0];
+			String mail = (String) values[0];
+			int polypoints = (int) values[0];
+			String ine = (String) values[0];
+			int id_new_eleve_promo = (int) values[0];
 			
+			DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+			
+			Date date = null;
+			try {
+				date = sourceFormat.parse(date_naissance);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			
 			if(id_new_eleve_promo == id_promo) {
-				Eleve new_eleve = new Eleve(nom, prenom, eleve.getPromo(), login, date_arrivee);
+				Eleve new_eleve = new Eleve(nom, prenom, eleve.getPromo(), mail, date, polypoints, ine);
 				eleves.add(eleve);
 				eleve.getPromo().addEleve(new_eleve);
 				
 				InitializeNote(new_eleve, id);
 			}
-		}
+		} 
 		
 	}
 	
@@ -212,7 +241,7 @@ public class Initialize {
 		
 		String QUERY = "SELECT * FROM promo WHERE id_promo = " + id_promo + ";";
 		
-		Date annee = null;
+		int annee = -1;
 		int filiere_id = -1;
 		int ecole_id = -1;
 		
@@ -220,7 +249,7 @@ public class Initialize {
 			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
-					annee = rs.getDate(2);
+					annee = Integer.parseInt(rs.getString(2));
 					filiere_id = rs.getInt(3);
 					ecole_id = rs.getInt(4);
 					
@@ -246,8 +275,8 @@ public class Initialize {
 		
 		String QUERY = "SELECT * FROM filiere WHERE id_filiere = " + id_filiere + ";";
 		
-		String nom = null;
-		String description = null;
+		String nom = "";
+		String description = "";
 		
 		try {
 			ResultSet rs = database.querySQL(QUERY);
@@ -262,59 +291,18 @@ public class Initialize {
 			e.printStackTrace();
 		}
 		
-		
 		Filiere filiere = null;
-		
-		switch (nom.toUpperCase()) {
-			case "IDU3":
-				filiere = Filiere.IDU3;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "IDU4":
-				filiere = Filiere.IDU4;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "IDU5":
-				filiere = Filiere.IDU5;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "SNI3":
-				filiere = Filiere.SNI3;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "SNI4":
-				filiere = Filiere.SNI4;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "SNI5":
-				filiere = Filiere.SNI5;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "MM3":
-				filiere = Filiere.MM3;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "MM4":
-				filiere = Filiere.MM4;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "MM5":
-				filiere = Filiere.MM5;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "PEIP1":
-				filiere = Filiere.PEIP1;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "PEIP2":
-				filiere = Filiere.PEIP2;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
-			case "DIPLOME":
-				filiere = Filiere.DIPLOME;
-				InitializeUE_Filiere(filiere, id_filiere);
-				break;
+		for (Filiere fil : Filiere.values()) { 
+			
+			if(fil.getNom().equalsIgnoreCase(nom)) {
+				
+				filiere = fil;
+				
+			}
+			
 		}
+		
+		InitializeUE_Filiere(filiere, id_filiere);
 		
 		filiere.setDescription(description);
 		filiere.setNom(nom);
@@ -374,14 +362,16 @@ public class Initialize {
 		
 		String QUERY = "SELECT * FROM ue WHERE id_ue = " + id_ue + ";";
 		
-		HashMap<Integer, String> ue_list = new HashMap<>();
+		HashMap<Integer, String[]> ue_list = new HashMap<>();
 		
 		try {
 			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
-					ue_list.put(rs.getInt(1), rs.getString(2));
+					String[] values = new String[] {rs.getString(2), rs.getString(3)};
+					
+					ue_list.put(rs.getInt(1), values);
 					
 				}
 			
@@ -390,7 +380,12 @@ public class Initialize {
 		}
 		
 		for(int id : ue_list.keySet()){
-			UE ue = new UE(ue_list.get(id));
+			
+			String code = ue_list.get(id)[0];
+			String nom = ue_list.get(id)[1];
+			
+			UE ue = new UE(code, nom);
+			
 			filiere.addUe(ue);
 			InitializeModule(ue, id);
 		}
@@ -402,14 +397,14 @@ public class Initialize {
 		
 		String QUERY = "SELECT * FROM module WHERE id_ue = " + id_ue + ";";
 		
-		HashMap<Integer, String[]> module_list = new HashMap<>();
+		HashMap<Integer, Object[]> module_list = new HashMap<>();
 		
 		try {
 			ResultSet rs = database.querySQL(QUERY);
 			
 				while(rs.next()){
 					
-					module_list.put(rs.getInt(1), new String[] {rs.getString(2), rs.getString(3), rs.getString(4)});
+					module_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getFloat(4), rs.getFloat(5), rs.getString(6), rs.getString(7)});
 					
 				}
 			
@@ -419,11 +414,14 @@ public class Initialize {
 		
 		for(int id : module_list.keySet()){
 			
-			String[] values = module_list.get(id);
+			Object[] values = module_list.get(id);
 			
-			String nom = values[0];
-			String description = values[1];
-			
+			String code = (String) values[0];
+			String nom = (String) values[1];
+			float nbHeures = (float) values[2];
+			float coeff = (float) values[3];
+			String evaluation = (String) values[4];
+			String description = (String) values[5];
 			
 			String color = "";
 			
@@ -439,7 +437,7 @@ public class Initialize {
 				
 			}
 			
-			Module module = new Module(nom, description, color);
+			Module module = new Module(code, nom, nbHeures, coeff, evaluation, description, color);
 			
 			ue.addModule(module);
 			
@@ -491,6 +489,12 @@ public class Initialize {
 			case "tp":
 				module.addCour(factory.createCour(CourEnum.TP, num_seance, date, heure_debut, duree, module));
 				break;
+			case "exam":
+				module.addCour(factory.createCour(CourEnum.EXAM, num_seance, date, heure_debut, duree, module));
+				break;
+			case "special":
+				module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
+				break;
 			}
 		}
 		
@@ -536,7 +540,7 @@ public class Initialize {
 			
 				while(rs.next()){
 					
-					enseignant_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getDate(4)});
+					enseignant_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4)});
 					
 				}
 			
@@ -550,9 +554,9 @@ public class Initialize {
 			
 			String nom = (String) values[0];
 			String prenom = (String) values[1];
-			Date date_arrivee = (Date) values[2];
+			String mail = (String) values[2];
 			
-			Enseignant enseignant = new Enseignant(nom, prenom, date_arrivee);
+			Enseignant enseignant = new Enseignant(nom, prenom, mail);
 			module.addEnseignant(enseignant);
 			enseignant.addModule(module);
 			

@@ -7,11 +7,12 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 
 public class UE {
 
+	private String code;
 	private String nom;
 	private List<Module> modules = new ArrayList<>();
 	
-	public UE(String nom) {
-		super();
+	public UE(String code, String nom) {
+		this.code = code;
 		this.nom = nom;
 	}
 	
@@ -26,17 +27,14 @@ public class UE {
 		return this.nom;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
 	public List<Module> getModules() {
 		return this.modules;
 	}
-
-	public void setModules(List<Module> modules) {
-		this.modules = modules;
+	
+	public String getCode() {
+		return this.code;
 	}
+
 
 	
 	

@@ -1,7 +1,11 @@
 package fr.usmb.projetidu.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,8 +22,8 @@ public class ScrappingTest {
 	
 	public static void login2USMBIntranet() {
 				
-		String login = "nicolath";
-		String pass = "ao61na76&*Tao61na76";
+		String login = "gueriotb";
+		String pass = "Benji23/11/2001";
 		
 		ChromeOptions options = new ChromeOptions();
 	    options.addArguments("--headless");
@@ -68,8 +72,8 @@ public class ScrappingTest {
 	
 	public static void login2PolytechIntranet(String surname, String name, String bday, String mail, String INE) throws InterruptedException {
 		
-		String login = "nicolath";
-		String pass = "ao61na76&*Tao61na76";
+		String login = "gueriotb";        
+		String pass = "Benji23/11/2001";  
 		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
@@ -143,11 +147,11 @@ public class ScrappingTest {
 		 
 		 DatabaseRequests.addFiliere2Bdd(filiere + "" + year);
 		 
-		 //getAllModulesInfos(driver, filiere, year);
+		 getAllModulesInfos(driver, filiere, year);
 		 
-		 //login2Moodle(name, surname, bday, mail, polyPoints, INE, year, filiere);
+		 login2Moodle(name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
-		 login2Planning(filiere, year);
+		 //login2Planning(filiere, year);
 		
 		 
 		
@@ -155,8 +159,8 @@ public class ScrappingTest {
 	
 	public static void login2Moodle(String name, String surname, String bday, String mail, int polyPoints, String INE, int year, String filiere){
 		
-		String login = "nicolath";
-		String pass = "ao61na76&*Tao61na76";
+		String login = "gueriotb";        
+		String pass = "Benji23/11/2001";  
 		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("headless");
@@ -190,7 +194,7 @@ public class ScrappingTest {
 		
 		int firstJoin = Integer.parseInt(firstJoinElement.getText().replace(",", "").split(" ")[3]);
 		DatabaseRequests.addPromo2Bdd(firstJoin, filiere + "" + year, "POPO");
-		DatabaseRequests.addStudent2Bdd(name, surname, bday, mail, polyPoints, INE, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
+		DatabaseRequests.addStudent2Bdd(surname, name, bday, mail, polyPoints, INE, login, DatabaseRequests.getIdOfPromo(firstJoin, filiere + "" + year, "POPO"));
 		
 		driver.quit();
 		
@@ -422,8 +426,8 @@ public class ScrappingTest {
 	
 	public static void login2Planning(String filiere, int year){
 		
-		String login = "nicolath";
-		String pass = "ao61na76&*Tao61na76";
+		String login = "gueriotb";        
+		String pass = "Benji23/11/2001";  
 		
 		ChromeOptions options = new ChromeOptions();
 	    //options.addArguments("--headless");
@@ -593,9 +597,20 @@ public class ScrappingTest {
 					type = "Special";
 				} 
 				
-				
-				//System.out.println(type);
-				
+				if(splited[0].contains("Exam")) {
+					type = "Exam";
+					
+					DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+					
+					Date date = null;
+					try {
+						date = sourceFormat.parse(day);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+					DatabaseRequests.addTravail2Bdd("Examen", "Exam de module", date, module, null, null);
+				}
 				
 				DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
 				
