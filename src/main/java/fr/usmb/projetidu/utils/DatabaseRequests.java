@@ -585,6 +585,75 @@ public class DatabaseRequests {
 		
 	}
 	
+	public static void addCourPerso2Bdd(int id_eleve, String codeModule, String date, double heuredebut, double duree, String type) {
+		
+		int id_module = getIdOfModule(codeModule);
+		
+		if(codeModule == null) return;
+		
+		String request = "INSERT INTO cours(num_seance, date, heuredebut, duree, type, perso, id_module) VALUES ('" + 1  + "', '" + date  + "', '" + heuredebut  + "', '" + duree  + "', '" + type  + "', '" + 1  + "', '" + id_module  + "')";
+		
+		System.out.println(request + "   " + codeModule);
+		
+		try {
+			database.updateSQL(request);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		int id_cours = getIdOfCours(1, date, type);
+		
+		String request2 = "INSERT INTO cours_perso(id_eleve, id_cours) VALUES ('" + id_eleve  + "', '" + id_cours  + "')";
+		
+		
+		try {
+			database.updateSQL(request2);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private static Integer getIdOfCours(int num_seance, String date, String type) {
+		
+		String QUERY = "SELECT * FROM cours WHERE num_seance = '" + num_seance + "' and date = '" + date + "' and type = " + type + ";";
+		
+		int result = -1;
+		
+		try {
+			ResultSet rs = database.querySQL(QUERY);
+			
+				while(rs.next()){
+					result = rs.getInt(1);
+				}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public static boolean hasCourPerso(int id_eleve, int id_cours) {
+		
+		String QUERY = "SELECT * FROM cours_perso WHERE id_eleve = '" + id_eleve + "' and id_cours = '" + id_cours + ";";
+		
+		int result = -1;
+		
+		try {
+			ResultSet rs = database.querySQL(QUERY);
+			
+				while(rs.next()){
+					result = rs.getInt(1);
+				}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result > 0;
+	}
+	
 	private static boolean isNewCour(int num_seance, String type) {
 		
 		int count = 0;

@@ -220,7 +220,7 @@ public class Initialize {
 		}
 		
 		
-		Filiere filiere = InitializeFiliere(filiere_id);
+		Filiere filiere = InitializeFiliere(id_eleve, filiere_id);
 		InitializeEcole(ecole_id);
 		
 		Promo promo = new Promo(filiere, annee, id_promo);
@@ -231,7 +231,7 @@ public class Initialize {
 		
 	}
 	
-	private static Filiere InitializeFiliere(int id_filiere) {
+	private static Filiere InitializeFiliere(int id_eleve, int id_filiere) {
 		
 		String QUERY = "SELECT * FROM filiere WHERE id_filiere = " + id_filiere + ";";
 		
@@ -262,7 +262,7 @@ public class Initialize {
 			
 		}
 		
-		InitializeUE_Filiere(filiere, id_filiere);
+		InitializeUE_Filiere(id_eleve, filiere, id_filiere);
 		
 		filiere.setDescription(description);
 		filiere.setNom(nom);
@@ -271,7 +271,7 @@ public class Initialize {
 		
 	}
 	
-	private static void InitializeUE_Filiere(Filiere filiere, int id_filiere) {
+	private static void InitializeUE_Filiere(int id_eleve, Filiere filiere, int id_filiere) {
 		
 		String QUERY = "SELECT * FROM ue_filiere WHERE id_filiere = " + id_filiere + ";";
 		
@@ -289,7 +289,7 @@ public class Initialize {
 		}
 		
 		for(int id : ues_id) {
-			InitializeUE(filiere, id);
+			InitializeUE(id_eleve, filiere, id);
 		}
 		
 		
@@ -318,7 +318,7 @@ public class Initialize {
 		
 	}
 	
-	private static void InitializeUE(Filiere filiere, int id_ue) {
+	private static void InitializeUE(int id_eleve, Filiere filiere, int id_ue) {
 		
 		String QUERY = "SELECT * FROM ue WHERE id_ue = " + id_ue + ";";
 		
@@ -351,13 +351,13 @@ public class Initialize {
 			UE ue = new UE(code, nom, semester);
 			
 			filiere.addUe(ue);
-			InitializeModule(ue, id);
+			InitializeModule(id_eleve, ue, id);
 		}
 		
 		
 	}
 	
-	private static void InitializeModule(UE ue, int id_ue) {
+	private static void InitializeModule(int id_eleve, UE ue, int id_ue) {
 		
 		String QUERY = "SELECT * FROM module WHERE id_ue = " + id_ue + ";";
 		
@@ -405,14 +405,14 @@ public class Initialize {
 			
 			ue.addModule(module);
 			
-			InitializeCour(module, id);
+			InitializeCour(id_eleve, module, id);
 			InitializeEnseigne(id, module);
 			InitializeTravail(id, module);
 		}
 		
 	}
 	
-	private static void InitializeCour(Module module, int id_module) {
+	private static void InitializeCour(int id_eleve, Module module, int id_module) {
 		
 		String QUERY = "SELECT * FROM cours WHERE id_module = " + id_module + ";";
 		
@@ -423,7 +423,7 @@ public class Initialize {
 			
 				while(rs.next()){
 					
-					cours_list.put(rs.getInt(1), new Object[] {rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getDouble(5), rs.getString(6)});
+					cours_list.put(rs.getInt(1), new Object[] {rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getDouble(5), rs.getString(6), rs.getInt(7)});
 					
 				}
 			
@@ -431,37 +431,44 @@ public class Initialize {
 			e.printStackTrace();
 		}
 		
-		for(int id : cours_list.keySet()){
+		for(int id_cour : cours_list.keySet()){
 			
-			Object[] values = cours_list.get(id);
+			Object[] values = cours_list.get(id_cour);
 			
 			int num_seance = (int) values[0];
 			String date_cours = (String) values[1];
 			double heure_debut = (double) values[2];
 			double duree = (double) values[3];
 			String type = (String) values[4];
+			int perso = (int) values[5];
 			
-			CourFactoryImpl factory = new CourFactoryImpl();
-			
-			Date date = parseDate(date_cours, "dd/MM/yyyy");
-			
-			switch (type.toLowerCase()) {
-			case "cm":
-				module.addCour(factory.createCour(CourEnum.CM, num_seance, date, heure_debut, duree, module));
-				break;
-			case "td":
-				module.addCour(factory.createCour(CourEnum.TD, num_seance, date, heure_debut, duree, module));
-				break;
-			case "tp":
-				module.addCour(factory.createCour(CourEnum.TP, num_seance, date, heure_debut, duree, module));
-				break;
-			case "exam":
-				module.addCour(factory.createCour(CourEnum.EXAM, num_seance, date, heure_debut, duree, module));
-				break;
-			case "special":
-				module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
-				break;
+			if((perso == 1 && DatabaseRequests.hasCourPerso(id_eleve, id_cour)) || perso == 0) {
+				
+				CourFactoryImpl factory = new CourFactoryImpl();
+				
+				Date date = parseDate(date_cours, "dd/MM/yyyy");
+				
+				switch (type.toLowerCase()) {
+				case "cm":
+					module.addCour(factory.createCour(CourEnum.CM, num_seance, date, heure_debut, duree, module));
+					break;
+				case "td":
+					module.addCour(factory.createCour(CourEnum.TD, num_seance, date, heure_debut, duree, module));
+					break;
+				case "tp":
+					module.addCour(factory.createCour(CourEnum.TP, num_seance, date, heure_debut, duree, module));
+					break;
+				case "exam":
+					module.addCour(factory.createCour(CourEnum.EXAM, num_seance, date, heure_debut, duree, module));
+					break;
+				case "special":
+					module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
+					break;
+				}
+				
+				
 			}
+			
 		}
 		
 	}
