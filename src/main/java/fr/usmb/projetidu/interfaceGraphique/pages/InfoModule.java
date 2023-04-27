@@ -12,6 +12,7 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import fr.usmb.projetidu.utils.ScrappingData;
 import io.netty.handler.codec.string.StringDecoder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -84,7 +85,7 @@ public class InfoModule extends Parent {
         Button refreshButton = new Button("Recharger les informations des modules");
         refreshButton.setOnAction(event -> {
         	
-        	//Fonction de scrapping d'infos de modules
+        	ScrappingData.getAllModulesInfos();
         	
         });
         // Add the back button to the top left corner of the root node

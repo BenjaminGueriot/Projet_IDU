@@ -12,8 +12,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ErrorPopup {
-
-    public static void display(String errorMessage) {
+	
+	private String errorMessage;
+	
+	public ErrorPopup(String errorMessage) {
+		this.errorMessage = errorMessage;
+		display();
+	}
+	
+    public void display() {
         Stage window = new Stage();
 
         // Block user interaction with other windows until this window is closed
@@ -23,7 +30,7 @@ public class ErrorPopup {
         window.setMinWidth(500);
 
         // Create a label with the error message
-        Label label = new Label(errorMessage);
+        Label label = new Label(this.errorMessage);
         label.setStyle("-fx-font-size: 16px;");
 
         // Create a VBox layout for the label

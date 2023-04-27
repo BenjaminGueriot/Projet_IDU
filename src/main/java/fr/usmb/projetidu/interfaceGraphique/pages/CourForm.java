@@ -313,7 +313,7 @@ public class CourForm extends Parent {
             	
     		}
     		else {
-    			ErrorPopup.display("Un ou plusieurs champs sont manquants.");
+    			new ErrorPopup("Un ou plusieurs champs sont manquants.");
     		}
         });
         

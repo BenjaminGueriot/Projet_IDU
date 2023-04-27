@@ -16,54 +16,68 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.interfaceGraphique.pages.AccueilEleve;
+import fr.usmb.projetidu.interfaceGraphique.pages.ErrorPopup;
 import javafx.stage.Stage;
 
 public class ScrappingData {
 	
-	public static void login2USMBIntranet(Stage stage, String login, String pass) {
+	private static String username;
+	private static String passwordSaved;
+	private static String filiereEleve;
+	private static int yearEleve;
+	
+	public static boolean login2USMBIntranet(Stage stage, String login, String pass) {
 				
-		ChromeOptions options = new ChromeOptions();
-	    options.addArguments("--headless");
+		try {
+			
+			ChromeOptions options = new ChromeOptions();
+		    options.addArguments("--headless");
 
-	    WebDriver driver = new ChromeDriver(options);
+		    WebDriver driver = new ChromeDriver(options);
+			
+			driver.get("https://cas-uds.grenet.fr/login?service=https%3A%2F%2Fintranet.univ-smb.fr%2F");
+			
+			WebElement username = driver.findElement(By.id("username"));
+			WebElement password = driver.findElement(By.id("password"));
+			WebElement submit = driver.findElement(By.className("btn-submit"));
+			
+			username.sendKeys(login);
+			password.sendKeys(pass);
+			submit.click();
+			
+			driver.get("https://monprofil.univ-smb.fr/profil/fr/" + login);
+			
+			// Trouver les éléments qui contiennent les informations
+		    List<WebElement> indentificationElement = driver.findElements(By.className("table"));
+		    
+		    String fullText = "";
+		    for(WebElement we : indentificationElement) {
+		    	fullText += we.getText() + " ";
+		    }
+		    
+		    String[] values = getStudentIdentification(fullText);
+		    
+		    
+		    String name = values[0];
+		    String surname = values[1];
+		    String bday = values[2];
+		    String mail = values[3];
+		    String INE = values[5];
+		    
+		    driver.quit();
+		    
+		    try {
+		    	login2PolytechIntranet(stage, login, pass, surname, name, bday, mail, INE);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} 
+			
+		} catch (Exception e) {
+			new ErrorPopup("Identifiant ou mot de passe incorrect !");
+			return false;
+		}
 		
-		driver.get("https://cas-uds.grenet.fr/login?service=https%3A%2F%2Fintranet.univ-smb.fr%2F");
-		
-		WebElement username = driver.findElement(By.id("username"));
-		WebElement password = driver.findElement(By.id("password"));
-		WebElement submit = driver.findElement(By.className("btn-submit"));
-		
-		username.sendKeys(login);
-		password.sendKeys(pass);
-		submit.click();
-		
-		driver.get("https://monprofil.univ-smb.fr/profil/fr/" + login);
-		
-		// Trouver les éléments qui contiennent les informations
-	    List<WebElement> indentificationElement = driver.findElements(By.className("table"));
-	    
-	    String fullText = "";
-	    for(WebElement we : indentificationElement) {
-	    	fullText += we.getText() + " ";
-	    }
-	    
-	    String[] values = getStudentIdentification(fullText);
-	    
-	    
-	    String name = values[0];
-	    String surname = values[1];
-	    String bday = values[2];
-	    String mail = values[3];
-	    String INE = values[5];
-	    
-	    driver.quit();
-	    
-	    try {
-	    	login2PolytechIntranet(stage, login, pass, surname, name, bday, mail, INE);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} 
-	    
+	    return true;
 		
 	}
 	
@@ -146,8 +160,12 @@ public class ScrappingData {
 		 
 		 login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
-		 //login2Planning(login, pass, filiere, year);
-		
+		 ScrappingData.username = login;
+		 ScrappingData.passwordSaved = pass;
+		 ScrappingData.filiereEleve = filiere;
+		 ScrappingData.yearEleve = year;
+			
+		 driver.quit();
 		 
 		
 	}
@@ -190,23 +208,47 @@ public class ScrappingData {
 		
 		driver.quit();
 		
-		//Eleve eleve = Initialize.InitializeEleve(login);
+		Eleve eleve = Initialize.InitializeEleve(login);
 		
-		//AccueilEleve.accueilSender(stage, eleve);
+		AccueilEleve.accueilSender(stage, eleve);
 		
 		
 	}
 	
-	public static void getAllModulesInfos(WebDriver driver, String nomFiliere, int annee){
+	public static void getAllModulesInfos(){
 		
+		 ChromeOptions options = new ChromeOptions();
+
+		 options.addArguments("--headless");
+
+		 options.addArguments("window-size=1920,1080");
+
+		 WebDriver driver = new ChromeDriver(options);
 		
+		 driver.get("https://www.polytech.univ-smb.fr/login");
+		
+		 By cookies_accept = By.xpath("//*[@id=\"tarteaucitronPersonalize\"]");
+		
+		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		 wait.until(ExpectedConditions.elementToBeClickable(cookies_accept)).click();
+		 wait.until(ExpectedConditions.invisibilityOfElementLocated(cookies_accept));
+		
+		 WebElement username = driver.findElement(By.id("user"));
+		 WebElement password = driver.findElement(By.id("pass"));
+		 WebElement submit = driver.findElement(By.className("submit"));
+
+		 username.sendKeys(ScrappingData.username);
+		 password.sendKeys(ScrappingData.passwordSaved);
+
+		 submit.click();
+
 		 driver.get("https://www.polytech.univ-smb.fr/intranet/scolarite/programmes-ingenieur.html");
 		 
 		 WebElement years = driver.findElement(By.xpath("//*[@id=\"2021-2025\"]"));
 		 years.click();
 		 
 		 try {
-			 WebElement nameFil = driver.findElement(By.xpath("//*[@id='" + nomFiliere.toLowerCase() + "_5' or @id='" + nomFiliere.toLowerCase() + "_4']"));
+			 WebElement nameFil = driver.findElement(By.xpath("//*[@id='" + ScrappingData.filiereEleve.toLowerCase() + "_5' or @id='" + ScrappingData.filiereEleve.toLowerCase() + "_4']"));
 			 nameFil.click();
 		} catch (Exception e) {
 			System.out.println("Not able to pick a promotion");
@@ -215,10 +257,10 @@ public class ScrappingData {
 		 WebElement semester = driver.findElement(By.id("semestre"));
 		 semester.click();
 		 
-		 int firstSemester = (annee * 2) - 1;
-		 int secondSemester = annee * 2;
+		 int firstSemester = (ScrappingData.yearEleve * 2) - 1;
+		 int secondSemester = ScrappingData.yearEleve * 2;
 		 
-		 launchModuleSearch(driver, firstSemester, nomFiliere + "" + annee);
+		 launchModuleSearch(driver, firstSemester, ScrappingData.filiereEleve + "" + ScrappingData.yearEleve);
 		 
 		 try {
 			Thread.sleep(500);
@@ -226,7 +268,7 @@ public class ScrappingData {
 			e.printStackTrace();
 		}
 		 
-		 launchModuleSearch(driver, secondSemester, nomFiliere + "" + annee);
+		 launchModuleSearch(driver, secondSemester, ScrappingData.filiereEleve + "" + ScrappingData.yearEleve);
 		
 		 driver.quit();
 		
@@ -421,7 +463,9 @@ public class ScrappingData {
 		
 	}
 	
-	public static void login2Planning(String login, String pass, String filiere, int year){
+	public static void login2Planning(){
+		
+		getAllModulesInfos();
 		
 		ChromeOptions options = new ChromeOptions();
 		//options.addArguments("--headless");
@@ -435,8 +479,8 @@ public class ScrappingData {
 		WebElement password = driver.findElement(By.id("password"));
 		WebElement submit = driver.findElement(By.className("btn-submit"));
 		
-		username.sendKeys(login);
-		password.sendKeys(pass);
+		username.sendKeys(ScrappingData.username);
+		password.sendKeys(ScrappingData.passwordSaved);
 		submit.click();
 		
 		By validateButton = By.className("x-btn-text");
@@ -446,7 +490,7 @@ public class ScrappingData {
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(validateButton));
 		
 		By searchArea = By.xpath("//*[@id=\"x-auto-136-input\"]");
-		wait.until(ExpectedConditions.elementToBeClickable(searchArea)).sendKeys(filiere + "-" + year);
+		wait.until(ExpectedConditions.elementToBeClickable(searchArea)).sendKeys(ScrappingData.filiereEleve + "-" + ScrappingData.yearEleve);
 		
 		WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"x-auto-138\"]/tbody/tr[2]/td[2]/em/button/img"));
 		searchButton.click();
