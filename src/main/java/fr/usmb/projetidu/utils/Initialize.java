@@ -137,16 +137,8 @@ public class Initialize {
 		
 		Promo promo = InitializePromo(id_eleve, id_promo);
 		
-		DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Date date = null;
-		try {
-			date = sourceFormat.parse(date_naissance);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		Eleve eleve = new Eleve(nom, prenom, promo, mail, date, polypoints, ine);
+		Eleve eleve = new Eleve(id_eleve, nom, prenom, promo, mail, date_naissance, polypoints, ine);
 		
 		eleves.add(eleve);
 		promo.addEleve(eleve);
@@ -193,17 +185,9 @@ public class Initialize {
 			String ine = (String) values[5];
 			int id_new_eleve_promo = (int) values[6];
 			
-			DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
-			
-			Date date = null;
-			try {
-				date = sourceFormat.parse(date_naissance);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
 			
 			if(id_new_eleve_promo == id_promo) {
-				Eleve new_eleve = new Eleve(nom, prenom, eleve.getPromo(), mail, date, polypoints, ine);
+				Eleve new_eleve = new Eleve(id_new_eleve_promo, nom, prenom, eleve.getPromo(), mail, date_naissance, polypoints, ine);
 				eleves.add(eleve);
 				eleve.getPromo().addEleve(new_eleve);
 				

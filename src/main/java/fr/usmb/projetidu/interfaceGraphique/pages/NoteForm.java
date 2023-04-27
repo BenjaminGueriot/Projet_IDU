@@ -1,5 +1,6 @@
 package fr.usmb.projetidu.interfaceGraphique.pages;
 
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import fr.usmb.projetidu.utils.DatabaseRequests;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
@@ -20,7 +22,6 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -40,6 +41,7 @@ public class NoteForm extends Parent {
 	private Boolean isTravail = null;
 	private Boolean isAfter = null;
 	private Date currentDateTravail = null;
+	private Enseignant enseignantTravail = null;
 	  
     public NoteForm(Stage primaryStage,Eleve eleve) { 
     	
@@ -91,8 +93,8 @@ public class NoteForm extends Parent {
         enseignantChoiceBox.setVisible(false);
         
         for(UE ue: ues) {
-        	ueChoiceBox.getItems().add(ue.getNom());
-        	ue2Nom.put(ue, ue.getNom());
+        	ueChoiceBox.getItems().add(ue.getCode());
+        	ue2Nom.put(ue, ue.getCode());
         }
         
         Text ueText = new Text("UE : ");
@@ -268,14 +270,14 @@ public class NoteForm extends Parent {
             Object selectedItem = ueChoiceBox.getSelectionModel().getSelectedItem();
             
             for(UE ue: ue2Nom.keySet()) {
-	        	if(ue.getNom().equals(ueChoiceBox.getValue())){
+	        	if(ue.getCode().equals(ueChoiceBox.getValue())){
 	        		currentUE = ue;
 	        		
 	        		List<Module> modules = currentUE.getModules();
 	    	        
 	    	        for(Module module: modules) {
-	    	        	moduleChoiceBox.getItems().add(module.getNom());
-	    	        	module2Nom.put(module, module.getNom());
+	    	        	moduleChoiceBox.getItems().add(module.getCode());
+	    	        	module2Nom.put(module, module.getCode());
 	    	        }
 	        	}
 	        }
@@ -292,7 +294,7 @@ public class NoteForm extends Parent {
             Object selectedItem = moduleChoiceBox.getSelectionModel().getSelectedItem();
             
             for(Module module: module2Nom.keySet()) {
-	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
+	        	if(module.getCode().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
 	        		List<Travail> travaux = currentModule.getTravaux();
@@ -367,7 +369,7 @@ public class NoteForm extends Parent {
                     eleve.getInformations().get(currentModule).put(validateTravail, infos);
             		
             		//Ajout de la note a la bdd
-                    
+                    DatabaseRequests.addNote2Bdd(eleve.getId(), currentModule.getCode(), currentTravail.getNom(), note, coef);
             		
                     AccueilEleve.accueilSender(primaryStage,eleve);
             	}
@@ -385,7 +387,7 @@ public class NoteForm extends Parent {
                     		
                             for(Enseignant enseignant: enseignant2Nom.keySet()) {
                 	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
-                	        		Enseignant enseignantTravail = enseignant;
+                	        		enseignantTravail = enseignant;
                 	        	}
                 	        }
                     		
@@ -393,6 +395,11 @@ public class NoteForm extends Parent {
                     		// Création du travail
                             Travail newTravail = new Travail(nomTravail,sujetTravail,dateTravail,currentModule);
                             currentModule.addTravail(newTravail);
+                            
+                            //Ajout Travail bdd
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+                            String travailDate = formatter.format(dateTravail);                            
+                            DatabaseRequests.addTravail2Bdd(nomTravail, sujetTravail, travailDate, currentModule.getCode(), enseignantTravail.getNom(), enseignantTravail.getPrenom());
                             
                             AccueilEleve.accueilSender(primaryStage,eleve);
             			}

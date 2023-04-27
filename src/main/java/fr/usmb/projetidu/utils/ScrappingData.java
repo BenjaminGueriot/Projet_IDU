@@ -381,7 +381,7 @@ public class ScrappingData {
 		WebElement coeffNotFormatted = driver.findElement(By.xpath("//*[@id=\"c853\"]/div/div[2]/div[2]/div[6]/div[2]/div[2]"));
 		
 		double coeff;
-		if(coeffNotFormatted.getText() == "") {
+		if(coeffNotFormatted.getText().isEmpty()) {
 			coeff = 0.0;
 		} else {
 			coeff = Double.parseDouble(coeffNotFormatted.getText());

@@ -170,11 +170,11 @@ public class AccueilEleve extends Parent {
         childGrid1.setVgap(10);
         childGrid1.setPadding(new Insets(10, 10, 10, 10));
         
-        HashMap<Travail, Date> rendu = eleve.getNextTravaux();
+        HashMap<Travail, String> rendu = eleve.getNextTravaux();
         
         int countrendu = 0;
         for (Travail travail : rendu.keySet()) {
-        	Text noteText = new Text("[" + travail.getModule().getNom() + "] " + travail.getNom() + " -> Date : " + rendu.get(travail));
+        	Text noteText = new Text("[" + travail.getModule().getCode() + "] " + travail.getNom() + " -> Date : " + rendu.get(travail));
         	noteText.setId("RenduText");
         	childGrid1.add(noteText, 0, countrendu, 1, 1);
     

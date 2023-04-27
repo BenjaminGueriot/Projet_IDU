@@ -1,5 +1,6 @@
 package fr.usmb.projetidu.Personne;
 
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,14 +20,16 @@ public class Eleve extends Personne {
 
 	private Promo promo;
 	private HashMap<Module, HashMap<Travail, double[]>> informations = new HashMap<>();
-	private Date date_naissance;
+	private String date_naissance;
 	private int polypoints = 0;;
 	private String ine;
 	private String login;
+	private int id;
 	
 	
-	public Eleve(String nom, String prenom, Promo promo, String mail, Date date_naissance, int polypoints, String ine) {
+	public Eleve(int id,String nom, String prenom, Promo promo, String mail, String date_naissance, int polypoints, String ine) {
 		super(nom, prenom, mail);
+		this.id = id;
 		this.promo = promo;
 		this.date_naissance = date_naissance;
 		this.polypoints = polypoints;
@@ -136,9 +139,9 @@ public class Eleve extends Personne {
 	public Promo getPromo() {
 		return this.promo;
 	}
-
-	public void setpromo(Promo promo) {
-		this.promo = promo;
+	
+	public int getId() {
+		return this.id;
 	}
 
 	public HashMap<Module, HashMap<Travail, double[]>> getInformations() {
@@ -157,7 +160,7 @@ public class Eleve extends Personne {
 		return this.polypoints;
 	}
 	
-	public Date getBday() {
+	public String getBday() {
 		return this.date_naissance;
 	}
 
@@ -242,15 +245,16 @@ public class Eleve extends Personne {
 		
 	}
 	
-	public HashMap<Travail, Date> getNextTravaux(){
+	public HashMap<Travail, String> getNextTravaux(){
 		
-		HashMap<Travail, Date> map = new HashMap<>();
+		HashMap<Travail, String> map = new HashMap<>();
 		
 		for(Travail travail : getTravaux()) {
 			
 			Date date_travail = travail.getDate();
 			
 			Date now = new Date();
+	        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
 			
 			if (now.before(date_travail)) {
 				
@@ -258,7 +262,7 @@ public class Eleve extends Personne {
 				long days = diff / (24 * 60 * 60 * 1000);
 				
 				if (days <= 7 && days >= 0) {
-					map.put(travail, date_travail);
+					map.put(travail, formatter.format(date_travail));
 				}
 				
 				
