@@ -81,8 +81,15 @@ public class InfoModule extends Parent {
             primaryStage.show();
         });
 
+        Button refreshButton = new Button("Recharger les informations des modules");
+        refreshButton.setOnAction(event -> {
+        	
+        	//Fonction de scrapping d'infos de modules
+        	
+        });
         // Add the back button to the top left corner of the root node
         gridGeneral.add(backButton,0,0);
+        gridGeneral.add(refreshButton,2,0);
         gridGeneral.setAlignment(Pos.TOP_LEFT);
         
         int count = 0;

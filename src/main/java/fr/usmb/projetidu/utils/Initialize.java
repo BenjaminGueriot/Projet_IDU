@@ -442,6 +442,9 @@ public class Initialize {
 			String type = (String) values[4];
 			int perso = (int) values[5];
 			
+			if(heure_debut <= 0) {
+				return;
+			}
 			
 			if(duree != 0.0) {
 				if((perso == 1 && DatabaseRequests.hasCourPerso(id_eleve, id_cour)) || perso == 0) {
@@ -467,7 +470,6 @@ public class Initialize {
 						module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
 						break;
 					}
-					
 					
 				}
 			}
@@ -649,11 +651,5 @@ public class Initialize {
 			
 			
 		}
-			
-		
 	}
-	
-	
-	
-
 }

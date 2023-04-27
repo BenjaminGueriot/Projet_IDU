@@ -1,5 +1,6 @@
 package fr.usmb.projetidu.interfaceGraphique.pages;
 
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,8 +11,12 @@ import java.util.List;
 import fr.usmb.projetidu.Enseignement.UE;
 import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
+import fr.usmb.projetidu.Enseignement.Module.Cour.Cour;
+import fr.usmb.projetidu.Enseignement.Module.Cour.CourEnum;
+import fr.usmb.projetidu.Enseignement.Module.Cour.CourFactoryImpl;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import fr.usmb.projetidu.utils.DatabaseRequests;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
@@ -36,9 +41,6 @@ public class CourForm extends Parent {
 	
 	private UE currentUE = null;
 	private Module currentModule = null;
-	private Travail currentTravail = null;
-	private Boolean isTravail = null;
-	private Boolean isAfter = null;
 	private Date currentDateTravail = null;
 	  
     public CourForm(Stage primaryStage,Eleve eleve) { 
@@ -118,45 +120,25 @@ public class CourForm extends Parent {
         
         /*------------------------------------------PARTIE 2---------------------------------------*/
         
-        Text nomUEText = new Text("Nom du travail : ");
-        nomUEText.setId("NomText");
-        nomUEText.setVisible(false);
+        ChoiceBox<Integer> heureChoiceBox = new ChoiceBox<>();
+        heureChoiceBox.setVisible(false);
+        ChoiceBox<Integer> minChoiceBox = new ChoiceBox<>();
+        minChoiceBox.setVisible(false);
+        ChoiceBox<Integer> dureeHeureChoiceBox = new ChoiceBox<>();
+        dureeHeureChoiceBox.setVisible(false);
+        ChoiceBox<Integer> dureeMinChoiceBox = new ChoiceBox<>();
+        dureeMinChoiceBox.setVisible(false);
         
-        Text nomText = new Text(" ");
-        nomText.setId("NomText");
-        nomText.setVisible(false);
-        
-        GridPane GridUE = new GridPane();
-        GridUE.setAlignment(Pos.BASELINE_LEFT);
-    	GridUE.setPrefHeight(20);
-    	
-    	GridUE.add(nomUEText, 0, 0);
-    	GridUE.add(nomText, 1, 0);
-    	
-    	gridParent2.add(GridUE, 0, 0, 1, 1);
-        
-        Separator separatorNom = new Separator();
-        separatorNom.setHalignment(HPos.CENTER);
-        separatorNom.setId("SeparatorId");
-        gridParent2.add(separatorNom, 0, 1, 1, 1);
-        separatorNom.setVisible(false);
-        
-        Text sujetText = new Text("Sujet : ");
-        sujetText.setId("SujetText");
-        sujetText.setVisible(false);
-        
-        TextField sujetField = new TextField();
-        sujetField.setId("SujetField");
-        sujetField.setVisible(false);
-        
-        gridParent2.add(sujetText, 0, 2, 1, 1);
-        gridParent2.add(sujetField, 1, 2, 1, 1);
-        
-        Separator separatorSujet = new Separator();
-        separatorSujet.setHalignment(HPos.CENTER);
-        separatorSujet.setId("SeparatorId");
-        gridParent2.add(separatorSujet, 0, 3, 1, 1);
-        separatorSujet.setVisible(false);
+        for(int i = 8; i < 20; i++) {
+        	heureChoiceBox.getItems().add(i);
+        }
+        for(int i = 0; i <= 12; i++) {
+        	dureeHeureChoiceBox.getItems().add(i);
+        }
+        for(int i = 0; i <= 45; i+= 15) {
+        	minChoiceBox.getItems().add(i);
+        	dureeMinChoiceBox.getItems().add(i);
+        }
         
         Text dateText = new Text("Date : ");
         dateText.setId("DateText");
@@ -169,10 +151,66 @@ public class CourForm extends Parent {
         	currentDateTravail = Date.from(datePicker.getValue().atStartOfDay(defaultZoneId).toInstant());
         });
         
-        gridParent2.add(dateText, 0, 6, 1, 1);
-        gridParent2.add(datePicker, 1, 6, 1, 1);
+        GridPane gridDate = new GridPane();
+        gridDate.setAlignment(Pos.BASELINE_LEFT);
+        gridDate.setPrefHeight(20);
         
-        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(nomUEText, nomText, sujetText, sujetField, separatorNom, separatorSujet, dateText, datePicker));
+    	
+        gridDate.add(dateText, 0, 1, 1, 1);
+        gridDate.add(datePicker, 1, 1, 1, 1);
+    	
+    	gridParent2.add(gridDate, 0,1);
+        
+        Separator separatorDate = new Separator();
+        separatorDate.setHalignment(HPos.CENTER);
+        separatorDate.setId("SeparatorId");
+        gridParent2.add(separatorDate, 0, 2, 1, 1);
+        separatorDate.setVisible(false);
+        
+        Text nomHeureText = new Text("Heure de début : ");
+        nomHeureText.setId("NomText");
+        nomHeureText.setVisible(false);
+        
+        Text separatorHeure = new Text(" : ");
+        separatorHeure.setVisible(false);
+        
+        GridPane GridHeure = new GridPane();
+        GridHeure.setAlignment(Pos.BASELINE_LEFT);
+    	GridHeure.setPrefHeight(20);
+    	
+    	GridHeure.add(nomHeureText, 0, 0);
+    	GridHeure.add(heureChoiceBox, 1, 0);
+    	GridHeure.add(separatorHeure, 2, 0);
+    	GridHeure.add(minChoiceBox, 3, 0);
+    	
+    	gridParent2.add(GridHeure, 0, 3, 1, 1);
+        
+        Separator separatorNom = new Separator();
+        separatorNom.setHalignment(HPos.CENTER);
+        separatorNom.setId("SeparatorId");
+        gridParent2.add(separatorNom, 0, 4, 1, 1);
+        separatorNom.setVisible(false);
+        
+        Text nomDureeText = new Text("Durée : ");
+        nomDureeText.setId("NomText");
+        nomDureeText.setVisible(false);
+        
+        Text separatorDuree = new Text(" : ");
+        separatorDuree.setVisible(false);
+        
+        GridPane GridDuree = new GridPane();
+        GridDuree.setAlignment(Pos.BASELINE_LEFT);
+        GridDuree.setPrefHeight(20);
+    	
+        GridDuree.add(nomDureeText, 0, 0);
+        GridDuree.add(dureeHeureChoiceBox, 1, 0);
+        GridDuree.add(separatorDuree, 2, 0);
+        GridDuree.add(dureeMinChoiceBox, 3, 0);
+    	
+    	gridParent2.add(GridDuree, 0, 5, 1, 1);
+        
+        ArrayList<Node> listNode = new ArrayList<>(Arrays.asList(nomHeureText, nomDureeText, separatorNom, dateText, datePicker, separatorDate,
+        		dureeMinChoiceBox, dureeHeureChoiceBox, minChoiceBox, heureChoiceBox, separatorHeure, separatorDuree));
         
         ueChoiceBox.setOnAction((event) -> {
         	moduleChoiceBox.getItems().clear();
@@ -206,7 +244,6 @@ public class CourForm extends Parent {
 	        	if(module.getCode().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
-	        		
 	        	}
 	        }
 	        
@@ -222,6 +259,66 @@ public class CourForm extends Parent {
         gridGeneral.add(Vseparator, 1, 1);
         
         gridGeneral.add(gridParent2,2,1);
+        
+        Button validateButton = new Button("Ajouter Cour");
+        validateButton.setOnAction(event -> {
+        	
+        	
+        	if(this.currentUE != null && this.currentModule != null) {
+        		UE validateUE = this.currentUE;
+            	
+            	Module validateModule = this.currentModule;
+            		
+        		int heure = heureChoiceBox.getValue();
+            	int min = minChoiceBox.getValue();
+            	
+            	int heureDuree = dureeHeureChoiceBox.getValue();
+            	int minDuree = dureeMinChoiceBox.getValue();
+        		
+            	double minTot = 0;
+            	if(min == 15) {
+            		minTot = 0.25;
+            	}
+            	else if(min == 30) {
+            		minTot = 0.50;
+            	}
+            	else if(min == 45) {
+            		minTot = 0.75;
+            	}
+            	
+            	double minDureeTot = 0;
+            	if(minDuree == 15) {
+            		minDureeTot = 0.25;
+            	}
+            	else if(minDuree == 30) {
+            		minDureeTot = 0.50;
+            	}
+            	else if(minDuree == 45) {
+            		minDureeTot = 0.75;
+            	}
+            	
+            	Double heureTot = heure + minTot;
+            	Double dureeTot = heureDuree + minDureeTot;
+            	
+        		//Ajout de la note a la bdd
+            	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+                String travailDate = formatter.format(currentDateTravail);
+                
+                CourFactoryImpl factory = new CourFactoryImpl();
+                currentModule.addCour(factory.createCour(CourEnum.SPECIAL, 1, currentDateTravail, heureTot, dureeTot, currentModule));
+                
+                DatabaseRequests.addCourPerso2Bdd(eleve.getId(), currentModule.getCode(), travailDate, heureTot, dureeTot);
+        	
+                AccueilEleve.accueilSender(primaryStage,eleve);
+            	
+    		}
+    		else {
+    			ErrorPopup.display("Un ou plusieurs champs sont manquants.");
+    		}
+        });
+        
+        validateButton.setAlignment(Pos.BOTTOM_RIGHT);
+        gridGeneral.add(validateButton,3,2);
         
         this.getChildren().add(gridGeneral);
         

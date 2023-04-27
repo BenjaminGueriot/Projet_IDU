@@ -616,7 +616,7 @@ public class DatabaseRequests {
 	
 	private static Integer getIdOfCours(int num_seance, String date, String type) {
 		
-		String QUERY = "SELECT * FROM cours WHERE num_seance = '" + num_seance + "' and date = '" + date + "' and type = " + type + ";";
+		String QUERY = "SELECT * FROM cours WHERE num_seance = '" + num_seance + "' and date = '" + date + "' and type = '" + type + "';";
 		
 		int result = -1;
 		
@@ -636,7 +636,7 @@ public class DatabaseRequests {
 	
 	public static boolean hasCourPerso(int id_eleve, int id_cours) {
 		
-		String QUERY = "SELECT * FROM cours_perso WHERE id_eleve = '" + id_eleve + "' and id_cours = '" + id_cours + ";";
+		String QUERY = "SELECT * FROM cours_perso WHERE id_eleve = '" + id_eleve + "' and id_cours = '" + id_cours + "';";
 		
 		int result = -1;
 		
