@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,19 +31,30 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class Calendar extends Parent {
+public class Planning extends Parent {
 
 	private final LocalTime heureMini = LocalTime.of(8, 0);
 	private final Duration tempsSeparation = Duration.ofMinutes(15);
 	private final LocalTime heureMax = LocalTime.of(20, 0);
 	
 	private final List<Emplacement> timeSlots = new ArrayList<>();
+	private Eleve eleve;
+	private Text semaineText = new Text();
+	private int semaine;
+	private int decalage = 0;
 	
-	public Calendar(Stage primaryStage,Eleve eleve) {
+	public Planning(Stage primaryStage,Eleve eleve) {
 		
+		Date date = new Date(); 
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+	    this.semaine = cal.get(Calendar.WEEK_OF_YEAR);
+		
+		this.eleve = eleve;
 		GridPane gridGeneral = new GridPane();
     	gridGeneral.setAlignment(Pos.CENTER);
     	gridGeneral.setHgap(10);
@@ -90,6 +103,68 @@ public class Calendar extends Parent {
         
         gridGeneral.add(gridParent1, 0, 0);
         
+        GridPane gridParent2 = new GridPane();
+        gridParent2.setAlignment(Pos.CENTER_LEFT);
+        gridParent2.setHgap(20);
+        gridParent2.setPadding(new Insets(10, 10, 10, 10));
+        gridParent2.setPrefHeight(30);
+        
+        Button nextWeekButton = new Button(">");
+        nextWeekButton.setId("nextWeekButton");
+        gridParent2.add(nextWeekButton, 17, 0);
+        
+        Button backWeekButton = new Button("<");
+        backWeekButton.setId("backWeekButton");
+        gridParent2.add(backWeekButton, 15, 0);
+        
+        this.semaineText = new Text("Semaine : " + semaine);
+        this.semaineText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        this.semaineText.setId("semaineText");
+        gridParent2.add(semaineText,16, 0);
+        
+        gridGeneral.add(gridParent2,0,1);
+        
+        
+        backWeekButton.setOnAction(event -> {
+        	
+        	if(semaine > 1) {
+        		semaine -= 1;
+        	}
+        	else {
+        		semaine = 52;
+        	}
+        	
+        	decalage -= 1;
+        	CreateCalendar(gridGeneral, decalage);
+        	
+        });
+        
+        nextWeekButton.setOnAction(event -> {
+        	
+        	if(semaine < 52) {
+        		semaine += 1;
+        		
+        	}
+        	else {
+        		semaine = 1;
+        	}
+        	
+        	decalage +=1;
+        	CreateCalendar(gridGeneral, decalage);
+        	
+        });
+       
+        
+        CreateCalendar(gridGeneral, decalage);
+        
+	}
+	
+	public void CreateCalendar(GridPane gridGeneral, int decalage) {
+		
+		this.getChildren().remove(gridGeneral);
+		
+		this.semaineText.setText("Semaine : " + this.semaine);
+		
 		GridPane calendrier = new GridPane();
 		calendrier.setPrefSize(800,900);
 		calendrier.setPadding(new Insets(10, 0, 0, 0));
@@ -101,11 +176,7 @@ public class Calendar extends Parent {
 		LocalDate debutSemaine = today.minusDays(today.getDayOfWeek().getValue() - 1) ;
 		LocalDate finSemaine = debutSemaine.plusDays(4);
 		
-		
-
-		
-		
-		HashMap<DayOfWeek, HashMap<Cour,List<Object[]>>> values = eleve.getPlanningOfWeek();
+		HashMap<DayOfWeek, HashMap<Cour,List<Object[]>>> values = this.eleve.getPlanningOfWeek(decalage);
 		
 		for(DayOfWeek day : values.keySet()) {
 			
@@ -163,12 +234,11 @@ public class Calendar extends Parent {
 		}
 		
 		ScrollPane scroller = new ScrollPane(calendrier);
-		gridGeneral.add(scroller,0,1);
+		gridGeneral.add(scroller,0,2);
 		
 		
         // Add the scroll pane to the root node
         this.getChildren().add(gridGeneral);
-		
 	}
 	
 public static class Emplacement {

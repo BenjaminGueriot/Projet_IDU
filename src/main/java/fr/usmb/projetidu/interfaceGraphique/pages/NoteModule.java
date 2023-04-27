@@ -54,7 +54,7 @@ public class NoteModule extends Parent {
         
         List<UE> ues = eleve.getPromo().getFiliere().getListe_ue();
         for(UE ue: ues) {
-        	Text UEText = new Text(ue.getNom().toUpperCase());
+        	Text UEText = new Text(ue.getCode() + " | " + ue.getNom().toUpperCase());
         	UEText.setId("UEText");
         	UEText.setStyle("-fx-font-weight: bold;");
         	UEText.setTextAlignment(TextAlignment.CENTER);
@@ -75,7 +75,7 @@ public class NoteModule extends Parent {
 	        for (Module module : modules) {
 				
 	        	// Ajout Nom Prenom
-	            Text ModuleText = new Text(module.getNom());
+	            Text ModuleText = new Text(module.getCode() + " | " + module.getNom());
 	            ModuleText.setId("ModuleText");
 	            gridParent.add(ModuleText, 0, count, 1, 1);
 	            
@@ -83,21 +83,6 @@ public class NoteModule extends Parent {
 	            ProgressBar progressBar = new ProgressBar();
 	            progressBar.setProgress(progressValue / 100.0);
 	            gridParent.add(progressBar, 5, count+0, 1, 1);
-	            
-	            String enseignantText = "";
-	            List<Enseignant> enseignants = module.getEnseignants();
-	            for (Enseignant enseignant : enseignants) {
-	    			if (enseignantText != "") {
-	    				enseignantText += ", " + enseignant.getNom() + " " + enseignant.getPrenom();
-	    			}
-	    			else{
-	    				enseignantText += enseignant.getNom() + " " + enseignant.getPrenom();
-	    			}
-	    		}
-	            
-	            Text EnseignantText = new Text("Enseignant(s) : " + enseignantText);
-	            EnseignantText.setId("EnseignantText");
-	            gridParent.add(EnseignantText, 0, count+1, 1, 1);
 	            
 	            HashMap<Travail, double[]> travaux = eleve.getInfosFromModule(module);
 	            

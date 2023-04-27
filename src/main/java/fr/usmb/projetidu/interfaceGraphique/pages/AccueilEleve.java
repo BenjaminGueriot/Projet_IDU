@@ -1,6 +1,5 @@
 package fr.usmb.projetidu.interfaceGraphique.pages;
 
-import java.util.Date;
 import java.util.HashMap;
 
 import fr.usmb.projetidu.Enseignement.Module.Travail;
@@ -63,7 +62,7 @@ public class AccueilEleve extends Parent {
             public void handle(MouseEvent event) {
             	try {
 
-                	Calendar c = new Calendar(primaryStage,eleve);
+                	Planning c = new Planning(primaryStage,eleve);
                 	
                     Scene scene = new Scene(c);
                     primaryStage.setScene(scene);
@@ -225,7 +224,7 @@ public class AccueilEleve extends Parent {
         
         int count = 0;
         for (Travail travail : lastNotes.keySet()) {
-        	Text noteText = new Text("[" + travail.getModule().getNom() + "] " + travail.getNom() + " -> Note : " + lastNotes.get(travail)[0] +" | Coef : " + lastNotes.get(travail)[1]);
+        	Text noteText = new Text("[" + travail.getModule().getCode() + "] " + travail.getNom() + " -> Note : " + lastNotes.get(travail)[0] +" | Coef : " + lastNotes.get(travail)[1]);
         	noteText.setId("NoteText");
         	childGrid3.add(noteText, 0, count, 1, 1);
     

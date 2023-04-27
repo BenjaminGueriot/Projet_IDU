@@ -1,7 +1,5 @@
 package fr.usmb.projetidu.interfaceGraphique.pages;
 
-import java.util.Date;
-
 import fr.usmb.projetidu.Personne.Eleve;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -68,9 +66,9 @@ public class CompteEleve extends Parent{
         String birth = eleve.getBday();
         Text birthEleve = new Text(birth);
         
-        Text polypointText = new Text("Date de naissance :");
+        Text polypointText = new Text("Polypoints :");
         String polypoint = Integer.toString(eleve.getPolypoints());
-        Text polypointEleve = new Text(birth);
+        Text polypointEleve = new Text(polypoint);
         
         Text filiereText = new Text("Filière :");
         String filiere = eleve.getPromo().getFiliere().getNom();
@@ -92,11 +90,13 @@ public class CompteEleve extends Parent{
         gridParent.add(ineEleve, 1, 6, 1, 1);
         gridParent.add(birthText, 0, 7, 1, 1);
         gridParent.add(birthEleve, 1, 7, 1, 1);
+        gridParent.add(polypointText, 0, 8, 1, 1);
+        gridParent.add(polypointEleve, 1, 8, 1, 1);
         
-        gridParent.add(filiereText, 0, 8, 1, 1);
-        gridParent.add(filiereEleve, 1, 8, 1, 1);
-        gridParent.add(DescriptionText, 0, 9, 1, 1);
-        gridParent.add(descfiliereEleve, 1, 9, 1, 1);
+        gridParent.add(filiereText, 0, 9, 1, 1);
+        gridParent.add(filiereEleve, 1, 9, 1, 1);
+        gridParent.add(DescriptionText, 0, 10, 1, 1);
+        gridParent.add(descfiliereEleve, 1, 10, 1, 1);
         
 	    
 	    

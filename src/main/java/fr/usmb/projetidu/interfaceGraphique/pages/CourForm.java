@@ -67,7 +67,7 @@ public class CourForm extends Parent {
         Button backButton = new Button("Back");
         backButton.setOnAction(event -> {
             
-            Calendar c = new Calendar(primaryStage,eleve);
+            Planning c = new Planning(primaryStage,eleve);
             Scene scene = new Scene(c);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -87,8 +87,8 @@ public class CourForm extends Parent {
         ChoiceBox<String> moduleChoiceBox = new ChoiceBox<>();
         
         for(UE ue: ues) {
-        	ueChoiceBox.getItems().add(ue.getNom());
-        	ue2Nom.put(ue, ue.getNom());
+        	ueChoiceBox.getItems().add(ue.getCode());
+        	ue2Nom.put(ue, ue.getCode());
         }
         
         Text ueText = new Text("UE : ");
@@ -181,14 +181,14 @@ public class CourForm extends Parent {
             Object selectedItem = ueChoiceBox.getSelectionModel().getSelectedItem();
             
             for(UE ue: ue2Nom.keySet()) {
-	        	if(ue.getNom().equals(ueChoiceBox.getValue())){
+	        	if(ue.getCode().equals(ueChoiceBox.getValue())){
 	        		currentUE = ue;
 	        		
 	        		List<Module> modules = currentUE.getModules();
 	    	        
 	    	        for(Module module: modules) {
-	    	        	moduleChoiceBox.getItems().add(module.getNom());
-	    	        	module2Nom.put(module, module.getNom());
+	    	        	moduleChoiceBox.getItems().add(module.getCode());
+	    	        	module2Nom.put(module, module.getCode());
 	    	        }
 	        	}
 	        }
@@ -203,7 +203,7 @@ public class CourForm extends Parent {
             Object selectedItem = moduleChoiceBox.getSelectionModel().getSelectedItem();
             
             for(Module module: module2Nom.keySet()) {
-	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
+	        	if(module.getCode().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
 	        		
