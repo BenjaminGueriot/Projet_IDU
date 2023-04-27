@@ -22,9 +22,6 @@ public class ScrappingData {
 	
 	public static void login2USMBIntranet(Stage stage, String login, String pass) {
 				
-		login = "nicolath";
-		pass = "ao61na76&*Tao61na76";
-		
 		ChromeOptions options = new ChromeOptions();
 	    options.addArguments("--headless");
 
@@ -147,9 +144,9 @@ public class ScrappingData {
 		 
 		 //getAllModulesInfos(driver, filiere, year);
 		 
-		 //login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
+		 login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
-		 login2Planning(login, pass, filiere, year);
+		 //login2Planning(login, pass, filiere, year);
 		
 		 
 		
