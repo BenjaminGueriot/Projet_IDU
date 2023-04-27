@@ -337,6 +337,37 @@ public class Eleve extends Personne {
 		return dates;
 	}
 	
+	private String getFormattedHour(double heure) {
+		
+		String start = String.valueOf(heure).replace(".", " ");
+		String beginning = start.split(" ")[0];
+   	  	int end = Integer.parseInt(start.split(" ")[1]);
+		
+   	  	String finalEnd = null;
+   	  	
+   	  	switch (end) {
+   	  		case 0: {
+				finalEnd = "00";
+				break;
+   	  		}
+			case 25: {
+				finalEnd = "15";
+				break;
+			}
+			case 5: {
+				finalEnd = "30";			
+				break;
+			}
+			case 75: {
+				finalEnd = "45";
+				break;
+			}
+
+   	  	}
+   	  	
+		return beginning + "h" + finalEnd;
+	}
+	
 	public HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> getPlanningOfWeek() {
 		
 		HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> map = new HashMap<>();
@@ -364,14 +395,15 @@ public class Eleve extends Personne {
 		          
 		          double duree = cour.getDuree();
 		          
-		          int middle = (int) (duree / 2);
+		          int middle = (int) ((duree) / 2);
 		          
 		          double val = heure_debut + middle;
 		          
-		          for(double i = heure_debut; i < heure_debut + duree; i+=0.5) {
+		          double end = heure_debut + duree;
+		          
+		          for(double i = heure_debut; i < heure_debut + (duree); i+=0.25) {
 		        	  
-		        	  int id = (int) ((i-8) * 2);
-		        	  
+		        	  int id = (int) ((i-8) * 4);
 		        	  
 		        	  String line = "";
 		        	  
@@ -379,8 +411,9 @@ public class Eleve extends Personne {
 		        		  val = heure_debut + 0.5;
 			          }
 		        	  
-		        	  if(((val - 8) * 2) == id) {
-		        		  line = cour.getModule().getNom() + "\n" + cour.getType().getNom();
+		        	  
+		        	  if(((val - 8) * 4) == id) {
+		        		  line = cour.getModule().getCode() + " - " + cour.getType().getNom() + "\n" + getFormattedHour(heure_debut) + " - " + getFormattedHour(end);
 		        	  } 
 		        	  
 		        	  

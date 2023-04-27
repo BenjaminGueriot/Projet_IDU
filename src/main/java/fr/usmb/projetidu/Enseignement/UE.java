@@ -10,10 +10,12 @@ public class UE {
 	private String code;
 	private String nom;
 	private List<Module> modules = new ArrayList<>();
+	private int semester;
 	
-	public UE(String code, String nom) {
+	public UE(String code, String nom, int semester) {
 		this.code = code;
 		this.nom = nom;
+		this.semester = semester;
 	}
 	
 	public void addModule(Module... modules) {
@@ -22,6 +24,9 @@ public class UE {
 		}
 	}
 	
+	public Integer getSemester() {
+		return this.semester;
+	}
 
 	public String getNom() {
 		return this.nom;

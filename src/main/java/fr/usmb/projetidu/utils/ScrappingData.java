@@ -142,7 +142,7 @@ public class ScrappingData {
 		 
 		 DatabaseRequests.addFiliere2Bdd(filiere + "" + year);
 		 
-		 //getAllModulesInfos(driver, filiere, year);
+		 getAllModulesInfos(driver, filiere, year);
 		 
 		 login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 

@@ -54,8 +54,8 @@ public class Main extends Application {
 		
 		launch(args);
 		
-		//DatabaseRequests.addEcole2Bdd("POPO");
-		//ScrappingTest.login2USMBIntranet();
+		DatabaseRequests.addEcole2Bdd("POPO");
+		//ScrappingData.login2USMBIntranet();
 		
 		/*Eleve testos = Initialize.InitializeEleve("gueriotb");
 		

@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -362,7 +360,11 @@ public class Initialize {
 			String code = ue_list.get(id)[0];
 			String nom = ue_list.get(id)[1];
 			
-			UE ue = new UE(code, nom);
+			char semesterChar = code.charAt(code.length() - 3);
+			String semesterCasted = String.valueOf(semesterChar);
+			int semester = Integer.parseInt(semesterCasted);
+			
+			UE ue = new UE(code, nom, semester);
 			
 			filiere.addUe(ue);
 			InitializeModule(ue, id);

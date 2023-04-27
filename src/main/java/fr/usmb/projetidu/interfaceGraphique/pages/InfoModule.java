@@ -95,8 +95,8 @@ public class InfoModule extends Parent {
         ChoiceBox<String> moduleChoiceBox = new ChoiceBox<>();
         
         for(UE ue: ues) {
-        	ueChoiceBox.getItems().add(ue.getNom());
-        	ue2Nom.put(ue, ue.getNom());
+        	ueChoiceBox.getItems().add(ue.getCode());
+        	ue2Nom.put(ue, ue.getCode());
         }
         
         Text ueText = new Text("UE : ");
@@ -290,14 +290,14 @@ public class InfoModule extends Parent {
             Object selectedItem = ueChoiceBox.getSelectionModel().getSelectedItem();
             
             for(UE ue: ue2Nom.keySet()) {
-	        	if(ue.getNom().equals(ueChoiceBox.getValue())){
+	        	if(ue.getCode().equals(ueChoiceBox.getValue())){
 	        		currentUE = ue;
 	        		
 	        		List<Module> modules = currentUE.getModules();
 	    	        
 	    	        for(Module module: modules) {
-	    	        	moduleChoiceBox.getItems().add(module.getNom());
-	    	        	module2Nom.put(module, module.getNom());
+	    	        	moduleChoiceBox.getItems().add(module.getCode());
+	    	        	module2Nom.put(module, module.getCode());
 	    	        }
 	        	}
 	        }
@@ -312,11 +312,11 @@ public class InfoModule extends Parent {
             Object selectedItem = moduleChoiceBox.getSelectionModel().getSelectedItem();
             
             for(Module module: module2Nom.keySet()) {
-	        	if(module.getNom().equals(moduleChoiceBox.getValue())){
+	        	if(module.getCode().equals(moduleChoiceBox.getValue())){
 	        		currentModule = module;
 	        		
 	        		this.nomModuleText.setText(module.getCode() + " : " + module.getNom());
-	        		this.ueDataText.setText("UE803 : Données et Aide à la Décision");
+	        		this.ueDataText.setText(currentUE.getCode() + " - " + currentUE.getNom());
 	        		
 	        		String respos = "";
 	        		String mails = "";
@@ -330,7 +330,7 @@ public class InfoModule extends Parent {
 	        				
 	        			} else {
 	        				
-	        				respos += respo.getNom() + ", ";
+	        				respos += respo.getNom() + " " + respo.getPrenom() + ", ";
 	        				mails += respo.getMail() + ", ";
 	        				
 	        			}

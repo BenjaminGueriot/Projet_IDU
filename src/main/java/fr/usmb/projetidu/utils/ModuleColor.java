@@ -27,6 +27,31 @@ public class ModuleColor {
 		colors.put("#B4C2C3", false);
 		colors.put("#31D6A9", false);
 		
+		colors.put("#D1B9B9", false);
+		colors.put("#643E3E", false);
+		colors.put("#911515", false);
+		colors.put("#3C3086", false);
+		colors.put("#413E5A", false);
+		colors.put("#3618F3", false);
+		
+		colors.put("#18D6F3", false);
+		colors.put("#8DC1C9", false);
+		colors.put("#567D83", false);
+		colors.put("#868B8B", false);
+		colors.put("#B09579", false);
+		colors.put("#E2C8AD", false);
+		colors.put("#F29437", false);
+		colors.put("#FF8000", false);
+		colors.put("#F7FF00", false);
+		colors.put("#D2D493", false);
+		colors.put("#9C6E9C", false);
+		colors.put("#FF00FF", false);
+		colors.put("#DBADDB", false);
+		colors.put("#DB6F6F", false);
+		colors.put("#F0B6B6", false);
+
+		
+		
 	}
 	
 }

@@ -79,7 +79,6 @@ public class LoginForm extends Parent {
             
             ScrappingData.login2USMBIntranet(primaryStage, username, password);
             
-            	
             actionTarget.setText("Bien jou� mec!");
             
             }
