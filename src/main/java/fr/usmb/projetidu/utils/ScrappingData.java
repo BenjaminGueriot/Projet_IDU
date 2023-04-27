@@ -22,6 +22,9 @@ public class ScrappingData {
 	
 	public static void login2USMBIntranet(Stage stage, String login, String pass) {
 				
+		login = "nicolath";
+		pass = "ao61na76&*Tao61na76";
+		
 		ChromeOptions options = new ChromeOptions();
 	    options.addArguments("--headless");
 
@@ -142,11 +145,11 @@ public class ScrappingData {
 		 
 		 DatabaseRequests.addFiliere2Bdd(filiere + "" + year);
 		 
-		 getAllModulesInfos(driver, filiere, year);
+		 //getAllModulesInfos(driver, filiere, year);
 		 
-		 login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
+		 //login2Moodle(stage, login, pass, name, surname, bday, mail, polyPoints, INE, year, filiere);
 		 
-		 //login2Planning(filiere, year);
+		 login2Planning(login, pass, filiere, year);
 		
 		 
 		
@@ -190,9 +193,9 @@ public class ScrappingData {
 		
 		driver.quit();
 		
-		Eleve eleve = Initialize.InitializeEleve(login);
+		//Eleve eleve = Initialize.InitializeEleve(login);
 		
-		AccueilEleve.accueilSender(stage, eleve);
+		//AccueilEleve.accueilSender(stage, eleve);
 		
 		
 	}
@@ -425,7 +428,8 @@ public class ScrappingData {
 		
 		ChromeOptions options = new ChromeOptions();
 		//options.addArguments("--headless");
-
+		options.addArguments("window-size=1920,1080");
+		
 	    WebDriver driver = new ChromeDriver(options);
 		
 		driver.get("https://ade-usmb-ro.grenet.fr/direct/index.jsp");
@@ -458,7 +462,13 @@ public class ScrappingData {
 		By settings = By.xpath("//*[@id=\"x-auto-134\"]/tbody/tr[2]/td[2]/em/button");
 		wait.until(ExpectedConditions.elementToBeClickable(settings)).click();
 		
-		By settings2 = By.xpath("//*[@id=\"x-auto-489\"]");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		By settings2 = By.xpath("//*[@id=\"x-auto-445_x-auto-494\"]");
 		wait.until(ExpectedConditions.elementToBeClickable(settings2)).click();
 		
 		try {
@@ -471,11 +481,16 @@ public class ScrappingData {
 		}
 		
 		
+		
+		
 		By page = By.xpath("//*[@id=\"x-auto-55\"]");
 		wait.until(ExpectedConditions.elementToBeClickable(page)).click();
 		
-		By january = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[1]/td[1]");
-		wait.until(ExpectedConditions.elementToBeClickable(january)).click();
+		By sept = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[3]/td[2]/a");
+		wait.until(ExpectedConditions.elementToBeClickable(sept)).click();
+		
+		By yearStart = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[5]/td[3]/a");
+		wait.until(ExpectedConditions.elementToBeClickable(yearStart)).click();
 		
 		By ok = By.xpath("//*[@id=\"x-auto-118\"]/div[2]/table/tbody/tr[7]/td/button[1]");
 		wait.until(ExpectedConditions.elementToBeClickable(ok)).click();
@@ -483,21 +498,21 @@ public class ScrappingData {
 		By date = By.xpath("//*[@id=\"x-auto-96\"]/a");
 		wait.until(ExpectedConditions.elementToBeClickable(date)).click();
 		
+		
+		
 		try {
 			Thread.sleep(6000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		
-		for(int i = 197; i < 221; i++) {
+		for(int i = 177; i < 221; i++) {
 			
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
 			for(int j = 1; j < 6; j++) {
 			
 				By day = By.xpath("//*[@id=\"x-auto-16" + j + "\"]/tbody/tr[2]/td[2]/em/button");
@@ -520,10 +535,10 @@ public class ScrappingData {
 			wait.until(ExpectedConditions.elementToBeClickable(nextPage)).click();
 			
 		}
-		
-		
-		driver.quit();
-	}
+		 
+		 
+		driver.quit(); 
+ 	}
 	
 	private static void getOneDay(WebDriver driver) {
 		
@@ -559,13 +574,22 @@ public class ScrappingData {
 				String startingHourNotFormated = splited[splited.length - 3];
 				String endingHourNotFormated = splited[splited.length - 1];
 				
-				int number =  Integer.parseInt(splited[splited.length - 4].split("/")[0]);
+				int number;
+				try {
+					number =  Integer.parseInt(splited[splited.length - 4].split("/")[0]);
+				} catch (Exception e) {
+					number =  1;
+				}
+				
 				
 				String startingHour = getFormattedHour(startingHourNotFormated);
-				char c = startingHour.charAt(0);
-				if(c == '0') {
-					startingHour = startingHour.substring(1, startingHour.length());
-				}
+				
+				if(startingHour != null && !startingHour.isEmpty()) {
+					char c = startingHour.charAt(0);
+					if(c == '0') {
+						startingHour = startingHour.substring(1, startingHour.length());
+					}
+				} 
 				
 				String endingHour = getFormattedHour(endingHourNotFormated);
 				
@@ -573,7 +597,12 @@ public class ScrappingData {
 				//System.out.println(module);
 				//System.out.println(startingHour);
 				
-				double duree = Double.parseDouble(endingHour.replace(",", "."))   - Double.parseDouble(startingHour.replace(",", "."));
+				double duree;
+				if(endingHour != null) {
+					duree = Double.parseDouble(endingHour.replace(",", "."))   - Double.parseDouble(startingHour.replace(",", "."));
+				} else {
+					duree = 0.0;
+				}
 				//System.out.println(duree);
 				
 				
@@ -589,13 +618,18 @@ public class ScrappingData {
 					type = "Special";
 				} 
 				
-				if(splited[0].contains("Exam")) {
+				if(splited[0].contains("Exam") || splited[0].contains("EXAM") || splited[0].contains("EX") || splited[0].contains("Ex") || splited[0].contains("CMEX")) {
 					type = "Exam";
 					DatabaseRequests.addTravailExam2Bdd("Examen " + module, "Exam de module", day, module);
 					
 				}
 				
-				DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
+				if(startingHour != null && !startingHour.isEmpty()) {
+					DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
+				} else {
+					DatabaseRequests.addCour2Bdd(number, module, day, 0.0, duree, type);
+				}
+				
 				
 				
 			}

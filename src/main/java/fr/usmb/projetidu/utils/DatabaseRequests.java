@@ -585,13 +585,13 @@ public class DatabaseRequests {
 		
 	}
 	
-	public static void addCourPerso2Bdd(int id_eleve, String codeModule, String date, double heuredebut, double duree, String type) {
+	public static void addCourPerso2Bdd(int id_eleve, String codeModule, String date, double heuredebut, double duree) {
 		
 		int id_module = getIdOfModule(codeModule);
 		
 		if(codeModule == null) return;
 		
-		String request = "INSERT INTO cours(num_seance, date, heuredebut, duree, type, perso, id_module) VALUES ('" + 1  + "', '" + date  + "', '" + heuredebut  + "', '" + duree  + "', '" + type  + "', '" + 1  + "', '" + id_module  + "')";
+		String request = "INSERT INTO cours(num_seance, date, heuredebut, duree, type, perso, id_module) VALUES ('" + 1  + "', '" + date  + "', '" + heuredebut  + "', '" + duree  + "', 'Special', '" + 1  + "', '" + id_module  + "')";
 		
 		System.out.println(request + "   " + codeModule);
 		
@@ -601,7 +601,7 @@ public class DatabaseRequests {
 			e.printStackTrace();
 		}
 		
-		int id_cours = getIdOfCours(1, date, type);
+		int id_cours = getIdOfCours(1, date, "Special");
 		
 		String request2 = "INSERT INTO cours_perso(id_eleve, id_cours) VALUES ('" + id_eleve  + "', '" + id_cours  + "')";
 		

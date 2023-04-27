@@ -77,7 +77,7 @@ public class LoginForm extends Parent {
             
             actionTarget.setText("Veuillez patienter ...");
             
-            //ScrappingData.login2USMBIntranet(primaryStage, username, password);
+            ScrappingData.login2USMBIntranet(primaryStage, username, password);
             Eleve eleve = Initialize.InitializeEleve(username);
             AccueilEleve.accueilSender(primaryStage, eleve);
             

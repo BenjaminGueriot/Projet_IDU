@@ -55,15 +55,6 @@ public class Main extends Application {
 		launch(args);
 		
 		//DatabaseRequests.addEcole2Bdd("POPO");
-		//ScrappingData.login2USMBIntranet();
-		
-		/*Eleve testos = Initialize.InitializeEleve("gueriotb");
-		
-		System.out.println(testos.getPrenom());
-		System.out.println(testos.getNom());
-		System.out.println(testos.getPromo().getDatePromotion());
-		System.out.println(testos.getPromo().getFiliere().getDescription());
-		System.out.println(testos.getPromo().getFiliere().getListe_ue()); */
 		
 	}
 	

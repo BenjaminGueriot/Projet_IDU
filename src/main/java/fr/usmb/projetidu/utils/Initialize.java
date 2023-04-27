@@ -442,32 +442,36 @@ public class Initialize {
 			String type = (String) values[4];
 			int perso = (int) values[5];
 			
-			if((perso == 1 && DatabaseRequests.hasCourPerso(id_eleve, id_cour)) || perso == 0) {
-				
-				CourFactoryImpl factory = new CourFactoryImpl();
-				
-				Date date = parseDate(date_cours, "dd/MM/yyyy");
-				
-				switch (type.toLowerCase()) {
-				case "cm":
-					module.addCour(factory.createCour(CourEnum.CM, num_seance, date, heure_debut, duree, module));
-					break;
-				case "td":
-					module.addCour(factory.createCour(CourEnum.TD, num_seance, date, heure_debut, duree, module));
-					break;
-				case "tp":
-					module.addCour(factory.createCour(CourEnum.TP, num_seance, date, heure_debut, duree, module));
-					break;
-				case "exam":
-					module.addCour(factory.createCour(CourEnum.EXAM, num_seance, date, heure_debut, duree, module));
-					break;
-				case "special":
-					module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
-					break;
+			
+			if(duree != 0.0) {
+				if((perso == 1 && DatabaseRequests.hasCourPerso(id_eleve, id_cour)) || perso == 0) {
+					
+					CourFactoryImpl factory = new CourFactoryImpl();
+					
+					Date date = parseDate(date_cours, "dd/MM/yyyy");
+					
+					switch (type.toLowerCase()) {
+					case "cm":
+						module.addCour(factory.createCour(CourEnum.CM, num_seance, date, heure_debut, duree, module));
+						break;
+					case "td":
+						module.addCour(factory.createCour(CourEnum.TD, num_seance, date, heure_debut, duree, module));
+						break;
+					case "tp":
+						module.addCour(factory.createCour(CourEnum.TP, num_seance, date, heure_debut, duree, module));
+						break;
+					case "exam":
+						module.addCour(factory.createCour(CourEnum.EXAM, num_seance, date, heure_debut, duree, module));
+						break;
+					case "special":
+						module.addCour(factory.createCour(CourEnum.SPECIAL, num_seance, date, heure_debut, duree, module));
+						break;
+					}
+					
+					
 				}
-				
-				
 			}
+			
 			
 		}
 		
