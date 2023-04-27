@@ -40,13 +40,13 @@ public class InfoModule extends Parent {
 	private UE currentUE = null;
 	private Module currentModule = null;
 	
-	private Text nomModuleText;
-	private Text ueDataText;
-	private Text responsableText;
-	private Text mailText;
-	private Text heureText;
-	private Text evaluationText;
-	private Text coefText;
+	private Label nomModuleText;
+	private Label ueDataText;
+	private Label responsableText;
+	private Label mailText;
+	private Label heureText;
+	private Label evaluationText;
+	private Label coefText;
 	private Label descText;
 	
     public InfoModule(Stage primaryStage,Eleve eleve) { 
@@ -128,14 +128,16 @@ public class InfoModule extends Parent {
         
         /*------------------------------------------PARTIE 2---------------------------------------*/
         
-        this.nomModuleText = new Text();
-        this.nomModuleText.setId("SujetText");
+        this.nomModuleText = new Label();
+        this.nomModuleText.setId("nomModuleText");
         this.nomModuleText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-fill: black;");
         this.nomModuleText.setVisible(false);
+        this.nomModuleText.setWrapText(true);
         
         GridPane GridModule = new GridPane();
         GridModule.setAlignment(Pos.BASELINE_LEFT);
-        GridModule.setPrefHeight(20);
+        GridModule.setMaxHeight(50);
+        GridModule.setPrefWidth(500);
     	
         GridModule.add(this.nomModuleText, 0, 0);
     	
@@ -152,13 +154,15 @@ public class InfoModule extends Parent {
         labelUE.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelUE.setVisible(false);
         
-        this.ueDataText = new Text();
-        this.ueDataText.setId("NomText");
+        this.ueDataText = new Label();
+        this.ueDataText.setId("ueDataText");
         this.ueDataText.setVisible(false);
+        this.ueDataText.setWrapText(true);
         
         GridPane GridUE = new GridPane();
         GridUE.setAlignment(Pos.BASELINE_LEFT);
-    	GridUE.setPrefHeight(20);
+    	GridUE.setMaxHeight(50);
+    	GridUE.setPrefWidth(500);
     	
     	GridUE.add(labelUE, 0, 0);
     	GridUE.add(this.ueDataText, 1, 0);
@@ -170,60 +174,65 @@ public class InfoModule extends Parent {
         labelResponsable.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelResponsable.setVisible(false);
         
-        this.responsableText = new Text();
+        this.responsableText = new Label();
         this.responsableText.setId("responsableText");
         this.responsableText.setVisible(false);
+        this.responsableText.setWrapText(true);
+        
+        GridPane GridRespo = new GridPane();
+        GridRespo.setAlignment(Pos.BASELINE_LEFT);
+        GridRespo.setMaxHeight(50);
+        GridRespo.setPrefWidth(500);
+    	
+        GridRespo.add(labelResponsable, 0, 0);
+        GridRespo.add(this.responsableText, 1, 0);
+        
+        gridParent2.add(GridRespo, 0, 3, 1, 1);
         
         Text labelMail = new Text("Mail : ");
         labelMail.setId("labelMail");
         labelMail.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelMail.setVisible(false);
         
-        this.mailText = new Text();
+        this.mailText = new Label();
         this.mailText.setId("mailText");
         this.mailText.setVisible(false);
+        this.mailText.setWrapText(true);
         
-        GridPane GridRespo = new GridPane();
-        GridRespo.setAlignment(Pos.BASELINE_LEFT);
-        GridRespo.setPrefHeight(20);
+        GridPane GridMail = new GridPane();
+        GridMail.setAlignment(Pos.BASELINE_LEFT);
+        GridMail.setMaxHeight(50);
+        GridMail.setPrefWidth(500);
     	
-        GridRespo.add(labelResponsable, 0, 0);
-        GridRespo.add(this.responsableText, 1, 0);
+        GridMail.add(labelMail, 0, 0);
+        GridMail.add(this.mailText, 1, 0);
         
-        Separator separatorMail = new Separator(Orientation.VERTICAL);
-        separatorMail.setHalignment(HPos.CENTER);
-        GridRespo.add(separatorMail, 2, 0);
-        separatorMail.setVisible(false);
-    	
-        GridRespo.add(labelMail, 3, 0);
-        GridRespo.add(this.mailText, 4, 0);
-        
-    	gridParent2.add(GridRespo, 0, 3, 1, 1);
+    	gridParent2.add(GridMail, 0, 4, 1, 1);
     	
     	Text labelHeure = new Text("Total Horaire (h) : ");
     	labelHeure.setId("labelHeure");
     	labelHeure.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
     	labelHeure.setVisible(false);
         
-    	this.heureText = new Text();
+    	this.heureText = new Label();
     	this.heureText.setId("heureText");
     	this.heureText.setVisible(false);
         
         GridPane GridHeure = new GridPane();
         GridHeure.setAlignment(Pos.BASELINE_LEFT);
-        GridHeure.setPrefHeight(20);
+        GridHeure.setMaxHeight(50);
     	
         GridHeure.add(labelHeure, 0, 0);
         GridHeure.add(this.heureText, 1, 0);
     	
-    	gridParent2.add(GridHeure, 0, 4, 1, 1);
+    	gridParent2.add(GridHeure, 0, 5, 1, 1);
     	
     	Text labelEvaluation = new Text("Evaluation : ");
     	labelEvaluation.setId("labelNotation");
     	labelEvaluation.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
     	labelEvaluation.setVisible(false);
         
-    	this.evaluationText = new Text();
+    	this.evaluationText = new Label();
     	this.evaluationText.setId("evaluationText");
     	this.evaluationText.setVisible(false);
         
@@ -232,13 +241,13 @@ public class InfoModule extends Parent {
         labelCoef.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: black;");
         labelCoef.setVisible(false);
         
-        this.coefText = new Text();
+        this.coefText = new Label();
         this.coefText.setId("mailText");
         this.coefText.setVisible(false);
         
         GridPane GridEvaluation = new GridPane();
         GridEvaluation.setAlignment(Pos.BASELINE_LEFT);
-        GridEvaluation.setPrefHeight(20);
+        GridEvaluation.setMaxHeight(50);
     	
         GridEvaluation.add(labelEvaluation, 0, 0);
         GridEvaluation.add(this.evaluationText, 1, 0);
@@ -251,7 +260,7 @@ public class InfoModule extends Parent {
         GridEvaluation.add(labelCoef, 3, 0);
         GridEvaluation.add(this.coefText, 4, 0);
         
-    	gridParent2.add(GridEvaluation, 0, 5, 1, 1);
+    	gridParent2.add(GridEvaluation, 0, 6, 1, 1);
     	
     	Text labelDesc = new Text("Descriptif : ");
     	labelDesc.setId("labelDesc");
@@ -272,7 +281,7 @@ public class InfoModule extends Parent {
         GridDesc.add(labelDesc, 0, 0);
         GridDesc.add(this.descText, 1, 1);
     	
-    	gridParent2.add(GridDesc, 0, 6, 1, 1);
+    	gridParent2.add(GridDesc, 0, 7, 1, 1);
     	
 		/*Separator separatorRespo = new Separator();
 		separatorRespo.setHalignment(HPos.CENTER);
