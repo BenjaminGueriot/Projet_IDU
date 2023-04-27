@@ -2,6 +2,8 @@ package fr.usmb.projetidu.Personne;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -297,9 +299,27 @@ public class Eleve extends Personne {
 		return map;
 	}
 	
-	private Date getLastMonday() {
+	private Date getLastMonday(int current_week) {
 		
 		Date now = new Date();
+		
+		if(current_week != 0 ) {
+			
+			LocalDate date;
+			
+			if(current_week > 0 ) {
+				date = LocalDate.now().plusDays(7 * current_week);
+			} else {
+				date = LocalDate.now().minusDays(7 * Math.abs(current_week));
+			}
+			
+			ZoneId defaultZoneId = ZoneId.systemDefault();
+			now = Date.from(date.atStartOfDay(defaultZoneId).toInstant());
+			
+		}
+		
+		
+		
 		Calendar cal = Calendar.getInstance();
 	    cal.setTime(now);
 	    int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
@@ -323,11 +343,11 @@ public class Eleve extends Personne {
 	    return week;
 	}
 	
-	private List<Date> getDaysOfWeek(){
+	private List<Date> getDaysOfWeek(int current_week){
 		
 		List<Date> dates = new ArrayList<>();
 		
-		Date monday = getLastMonday();
+		Date monday = getLastMonday(current_week);
 		
 		Calendar calendar = Calendar.getInstance();
 	    calendar.setTime(monday);
@@ -372,11 +392,11 @@ public class Eleve extends Personne {
 		return beginning + "h" + finalEnd;
 	}
 	
-	public HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> getPlanningOfWeek() {
+	public HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> getPlanningOfWeek(int current_week) {
 		
 		HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> map = new HashMap<>();
 		  
-		  for (Date date : getDaysOfWeek()) {
+		  for (Date date : getDaysOfWeek(current_week)) {
 		    for (Module module : getAllModules()) {
 		      for (Cour cour : module.getCours()) {
 		    	  
@@ -485,7 +505,7 @@ public class Eleve extends Personne {
 	
 	public int[] getCharged() {
 		
-		Date date = getLastMonday();		
+		Date date = getLastMonday(0);		
 		
 		int week = getNumberOfWeek();
 		
