@@ -406,7 +406,7 @@ public class DatabaseRequests {
 	
 	private static Integer getIdOfEnseignant(String nom, String prenom) {
 		
-		String QUERY = "SELECT * FROM enseignant WHERE nom = '" + nom + "' and prenom = '" + prenom + "';";
+		String QUERY = "SELECT * FROM enseignant WHERE nom = '" + nom.toUpperCase() + "' and prenom = '" + prenom + "';";
 		
 		int result = -1;
 		
@@ -533,7 +533,6 @@ public class DatabaseRequests {
 		
 		int id_travail = getIdOfTravail(codeModule, nomTravail);
 		
-		if(isNewTravail(nomTravail)) {
 			String request = "INSERT INTO note(id_eleve, id_travail, note, coeff) VALUES ('" + id_eleve  + "', '" + id_travail  + "', '" + note  + "', '" + coeff  + "')";
 			
 			try {
@@ -541,7 +540,6 @@ public class DatabaseRequests {
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
-		} 
 		
 	}
 	

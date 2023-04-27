@@ -376,21 +376,20 @@ public class NoteForm extends Parent {
             	else {
             		if(!this.isTravail && this.currentDateTravail != null && !nomField.getText().isBlank() && !sujetField.getText().isBlank() && enseignantChoiceBox.getValue() != null) {
             			
+            			int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
+                        Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
+                		
+                        for(Enseignant enseignant: enseignant2Nom.keySet()) {
+            	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
+            	        		enseignantTravail = enseignant;
+            	        	}
+            	        }
+            			            			
             			if(this.isAfter) {
                 			
                 			String nomTravail = nomField.getText();
                     		String sujetTravail = sujetField.getText();
                     		Date dateTravail = currentDateTravail;
-                    		
-                    		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
-                            Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
-                    		
-                            for(Enseignant enseignant: enseignant2Nom.keySet()) {
-                	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
-                	        		enseignantTravail = enseignant;
-                	        	}
-                	        }
-                    		
                   
                     		// Création du travail
                             Travail newTravail = new Travail(nomTravail,sujetTravail,dateTravail,currentModule);
@@ -412,17 +411,7 @@ public class NoteForm extends Parent {
                     			String nomTravail = nomField.getText();
                         		String sujetTravail = sujetField.getText();
                         		Date dateTravail = currentDateTravail;
-                        		
-                        		int selectedIndex = enseignantChoiceBox.getSelectionModel().getSelectedIndex();
-                                Object selectedItem = enseignantChoiceBox.getSelectionModel().getSelectedItem();
-                        		
-                                for(Enseignant enseignant: enseignant2Nom.keySet()) {
-                    	        	if(enseignant.getNom().equals(enseignantChoiceBox.getValue())){
-                    	        		Enseignant enseignantTravail = enseignant;
-                    	        	}
-                    	        }
-                        		
-                      
+
                         		// Création du travail et ajout de la note
                                 Travail newTravail = new Travail(nomTravail,sujetTravail,dateTravail,currentModule);
                                 currentModule.addTravail(newTravail);
@@ -430,9 +419,12 @@ public class NoteForm extends Parent {
                                 eleve.getInformations().get(currentModule).put(newTravail, infos);
                         		
                         		//Ajout du travail a la bdd
-                                
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+                                String travailDate = formatter.format(dateTravail);  
+                                DatabaseRequests.addTravail2Bdd(nomTravail, sujetTravail, travailDate, currentModule.getCode(), enseignantTravail.getNom(), enseignantTravail.getPrenom());
                         		
                         		//Ajout de la note a la bdd
+                                DatabaseRequests.addNote2Bdd(eleve.getId(), currentModule.getCode(), newTravail.getNom(), note, coef);
                                 
                         		AccueilEleve.accueilSender(primaryStage,eleve);
             				}
