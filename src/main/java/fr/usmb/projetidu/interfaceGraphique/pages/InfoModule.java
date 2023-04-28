@@ -12,6 +12,7 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 import fr.usmb.projetidu.Enseignement.Module.Travail;
 import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.Personne.Enseignant;
+import fr.usmb.projetidu.utils.Initialize;
 import fr.usmb.projetidu.utils.ScrappingData;
 import io.netty.handler.codec.string.StringDecoder;
 import javafx.beans.value.ChangeListener;
@@ -86,6 +87,15 @@ public class InfoModule extends Parent {
         refreshButton.setOnAction(event -> {
         	
         	ScrappingData.getAllModulesInfos();
+        	String login = eleve.getLogin();
+        	System.out.println(login);
+        	Initialize.resetObject(eleve);
+        	Eleve eleve2 = Initialize.InitializeEleve(login);
+        	
+        	InfoModule infoModule = new InfoModule(primaryStage,eleve2);
+            Scene scene = new Scene(infoModule,800,500);
+            primaryStage.setScene(scene);
+            primaryStage.show();
         	
         });
         // Add the back button to the top left corner of the root node

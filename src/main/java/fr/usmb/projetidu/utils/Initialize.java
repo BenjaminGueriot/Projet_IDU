@@ -71,37 +71,9 @@ public class Initialize {
 		
 	}
 	
-	public static String generatePassword(String mdp) {
-		
-		 String passwordToHash = mdp;
-		 String generatedPassword = null;
-		
-		 try 
-		    {
-		      MessageDigest md = MessageDigest.getInstance("MD5");
-
-		      md.update(passwordToHash.getBytes());
-
-		      byte[] bytes = md.digest();
-
-		      StringBuilder sb = new StringBuilder();
-		      for (int i = 0; i < bytes.length; i++) {
-		        sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-		      }
-
-		      generatedPassword = sb.toString();
-		    } catch (NoSuchAlgorithmException e) {
-		      e.printStackTrace();
-		    }
-		    return generatedPassword;
-		 }
-		
-		
-	
 	public static Eleve InitializeEleve(String login) {
 		
 		String QUERY = "SELECT * FROM eleve WHERE login = '" + login + "';";
-		
 		int id_eleve = -1;
 		String nom = "";
 		String prenom = "";
@@ -138,7 +110,7 @@ public class Initialize {
 		Promo promo = InitializePromo(id_eleve, id_promo);
 		
 		
-		Eleve eleve = new Eleve(id_eleve, nom, prenom, promo, mail, date_naissance, polypoints, ine);
+		Eleve eleve = new Eleve(id_eleve, nom, prenom, promo, mail, date_naissance, polypoints, ine, login);
 		
 		eleves.add(eleve);
 		promo.addEleve(eleve);
@@ -153,7 +125,6 @@ public class Initialize {
 	public static void InitializeEleveInSamePromo(int id_eleve, Eleve eleve, int id_promo) {
 		
 		String QUERY = "SELECT * FROM eleve WHERE id_promo = '" + id_promo + "';";
-		
 		HashMap<Integer, Object[]> eleves_list = new HashMap<>();
 		
 		try {
@@ -164,7 +135,7 @@ public class Initialize {
 					if(rs.getInt(1) != id_eleve) {
 						
 						
-						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getInt(9)});
+						eleves_list.put(rs.getInt(1), new Object[] {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7), rs.getString(8), rs.getInt(9)});
 					}
 					
 				}
@@ -183,11 +154,12 @@ public class Initialize {
 			String mail = (String) values[3];
 			int polypoints = (int) values[4];
 			String ine = (String) values[5];
-			int id_new_eleve_promo = (int) values[6];
+			String loginNewEleve = (String) values[6];
+			int idNewElevePromo = (int) values[7];
 			
 			
-			if(id_new_eleve_promo == id_promo) {
-				Eleve new_eleve = new Eleve(id_new_eleve_promo, nom, prenom, eleve.getPromo(), mail, date_naissance, polypoints, ine);
+			if(idNewElevePromo == id_promo) {
+				Eleve new_eleve = new Eleve(idNewElevePromo, nom, prenom, eleve.getPromo(), mail, date_naissance, polypoints, ine, loginNewEleve);
 				eleves.add(eleve);
 				eleve.getPromo().addEleve(new_eleve);
 				
@@ -200,7 +172,6 @@ public class Initialize {
 	private static Promo InitializePromo(int id_eleve, int id_promo) {
 		
 		String QUERY = "SELECT * FROM promo WHERE id_promo = " + id_promo + ";";
-		
 		int annee = -1;
 		int filiere_id = -1;
 		int ecole_id = -1;

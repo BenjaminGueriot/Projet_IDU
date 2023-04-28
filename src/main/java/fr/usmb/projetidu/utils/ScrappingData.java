@@ -208,10 +208,6 @@ public class ScrappingData {
 		
 		driver.quit();
 		
-		Eleve eleve = Initialize.InitializeEleve(login);
-		
-		AccueilEleve.accueilSender(stage, eleve);
-		
 		
 	}
 	

@@ -14,6 +14,9 @@ import java.util.List;
 
 import fr.usmb.projetidu.Enseignement.Module.Cour.Cour;
 import fr.usmb.projetidu.Personne.Eleve;
+import fr.usmb.projetidu.utils.DatabaseRequests;
+import fr.usmb.projetidu.utils.Initialize;
+import fr.usmb.projetidu.utils.ScrappingData;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -83,7 +86,17 @@ public class Planning extends Parent {
         refreshButton.setOnAction(event -> {
         	
         	//Fonction de scrapping de l'emploi du temps
+        	ScrappingData.login2Planning();
         	
+        	String login = eleve.getLogin();
+        	Initialize.resetObject(eleve);
+        	Eleve eleve2 = Initialize.InitializeEleve(login);
+        	
+        	Planning c = new Planning(primaryStage,eleve2);
+        	
+            Scene scene = new Scene(c);
+            primaryStage.setScene(scene);
+            primaryStage.show();
         });
         
         refreshButton.setId("refreshButton");

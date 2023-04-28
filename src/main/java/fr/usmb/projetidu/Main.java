@@ -52,9 +52,9 @@ public class Main extends Application {
 		
 		if(!connectToDatabase()) return;
 		
-		launch(args);
+		DatabaseRequests.addEcole2Bdd("POPO");
 		
-		//DatabaseRequests.addEcole2Bdd("POPO");
+		launch(args);
 		
 	}
 	

@@ -29,13 +29,14 @@ public class Eleve extends Personne {
 	private int id;
 	
 	
-	public Eleve(int id,String nom, String prenom, Promo promo, String mail, String date_naissance, int polypoints, String ine) {
+	public Eleve(int id,String nom, String prenom, Promo promo, String mail, String date_naissance, int polypoints, String ine, String login) {
 		super(nom, prenom, mail);
 		this.id = id;
 		this.promo = promo;
 		this.date_naissance = date_naissance;
 		this.polypoints = polypoints;
 		this.ine = ine;
+		this.login = login;
 	}
 	
 	public void addUE(UE ue) {
