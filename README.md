@@ -87,12 +87,6 @@ Après connexion, l'utilisateur récupère l'ensemble de ses travaux avec son ob
 
 Les notes sont stockées dans l'attribut informations de l'objet Eleve, donc il suffit de retourner cet attribut.
 
-### Diagramme d'états - transitions
-
-Voici le diagramme d'état de notre application, ce dernier nous aide à conceptualiser l'évolution des états de l'applications et donc des différents écrans à présenter à l'utilisateur :
-
-![Diagramme d'état](Images/diagrammeEtat.png)
-
 ---
 ## Fonctionnalités
 Lors du lancement de l'application, vous devez vous connecter :
@@ -132,6 +126,9 @@ Prérequis:
 - Avoir une base de données mysql et importer le fichier .sql fourni.
 
 - Avoir Java Runtime Environment à jour (version 17 ou plus).
+
+---
+## Difficultés rencontrées
 
 
 Lancement:
