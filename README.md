@@ -1,4 +1,4 @@
-# Projet PROJ831 : Meta-Campus - Application Dashboard étudiant
+# Projet PROJ831 : Meta-Campus - Application dashboard étudiant
 
 Projet finale de l'année scolaire qui consiste à réaliser une application destinée à aider les étudiants dans leur apprentissage, en leur fournissant des informations diverses, telles que l’avancement temporel des enseignements, les travaux à rendre, le niveau de charge de la semaine, toutes les informations concernant les modules...
 
