@@ -131,13 +131,13 @@ Enfin, nous pouvons accéder à notre compte en cliquant sur le nom de l'utilisa
 
 
 
-### Scrapping
+### Scraping
 
-Pour que notre application soit utile, il nous faut des données. Pour ce faire, nous remplissons notre base de données à partir d'informations récupérées sur différents sites web à l'aide de scrapping. 
+Pour que notre application soit utile, il nous faut des données. Pour ce faire, nous remplissons notre base de données à partir d'informations récupérées sur différents sites web à l'aide de scraping. 
 Dans un premier temps, lors de chaque connexion à l'application, nous allons récupérer les informations disponibles sur l'intranet de l'université (USMB) ainsi que l'intranet de l'école Polytech.
-Nous récupérons alors des données telles que le nom, prénom, date de naissance de l'utilisateur ainsi que l'ine, les polypoints, le mail... (Cette opération de scrapping prend entre 5 et 10 secondes)
+Nous récupérons alors des données telles que le nom, prénom, date de naissance de l'utilisateur ainsi que l'ine, les polypoints, le mail... (Cette opération de scraping prend entre 5 et 10 secondes)
 
-En outre, nous avons implémenté, dans notre application, un bouton pour actualiser les modules. Nous allons alors réaliser un scrapping sur la page des modules d'une filière cible que nous pouvons retrouver sur l'intranet de l'école. Cette opération va récupérer toutes les informations importants concernant les modules ainsi que les informations sur les enseignants et les unités d'enseignements (UE). (Cette opération prend entre 10 et 20 secondes).
+En outre, nous avons implémenté, dans notre application, un bouton pour actualiser les modules. Nous allons alors réaliser un scraping sur la page des modules d'une filière cible que nous pouvons retrouver sur l'intranet de l'école. Cette opération va récupérer toutes les informations importants concernant les modules ainsi que les informations sur les enseignants et les unités d'enseignements (UE). (Cette opération prend entre 10 et 20 secondes).
 
 Enfin, un autre bouton est disponible, dans la page du planning, pour actualiser les cours. Nous allons récupérer les informations directement sur le site nous permettant de récupérer notre planning.
 Nous pouvons alors répertorier tous les cours que nous avons eût tout au long de l'année scolaire. Cette opération prend un certain temps car le site disponible est vraiment instable et il y a beaucoup de données à récupérer. A noter qu'une fois que l'actualisation de cours a été réalisée, les cours seront chargés pour l'année entière. 
@@ -145,10 +145,10 @@ Nous pouvons alors répertorier tous les cours que nous avons eût tout au long 
 ---
 ## Difficultés rencontrées
 
-En ce qui concerne les difficultés que nous avons rencontrées, celles-ci sont principalement basées sur le scrapping. En effet, nous sommes dépendants des sites web où nous récupérons nos informations. 
-Par exemple, le site permettant de récupérer l'emploi du temps n'est pas très réactif et nous avons dû ajouter des temps de delay pour être sûrs que le scrapping fonctionnera bien. Aussi, la plateforme n'est pas accessible à certaines heures ce qui empêche donc la récupération de données.
+En ce qui concerne les difficultés que nous avons rencontrées, celles-ci sont principalement basées sur le scraping. En effet, nous sommes dépendants des sites web où nous récupérons nos informations. 
+Par exemple, le site permettant de récupérer l'emploi du temps n'est pas très réactif et nous avons dû ajouter des temps de delay pour être sûrs que le scraping fonctionnera bien. Aussi, la plateforme n'est pas accessible à certaines heures ce qui empêche donc la récupération de données.
 
-Le scrapping n'a pu être effectué qu'avec des comptes étudiants IDU4, il est donc possible que celui ne fonctionne pas correctement avec d'autres comptes.
+Le scraping n'a pu être effectué qu'avec des comptes étudiants IDU4, il est donc possible que celui ne fonctionne pas correctement avec d'autres comptes.
 
 ---
 ## Utilisation
