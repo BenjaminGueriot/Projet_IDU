@@ -103,15 +103,33 @@ A partir de cette page, nous pouvons accéder à l'emploi du temps généré à 
 
 ![Emploi du temps](Images/emploiDuTemps.png)
 
-Nous pouvons aussi accéder à l'ensemble des notes de tous les modules, ainsi que les moyennes en cliquant sur `Mes modules` :
+Sur la page `Planning`, il est possible de voir l'emploi du temps de la seamine en cours et de changer de semaine. Il est également possible de recharger l'emploi du temps pour obtenir les denières modifications.
+
+Il est possible d'ajouter un cour en appuyant sur le bouton `Ajouter un cour`:
+
+![Ajouter un cour](Images/ajouterCour.png)
+
+Nous pouvons aussi accéder à l'ensemble des notes de tous les modules, ainsi que les moyennes en cliquant sur `Mes Notes` :
 
 ![Modules notes](Images/modules.png)
 
-Enfin, nous pouvons accéder à notre compte en cliquant sur le nom de l'utilisateur : 
+Depuis cette page, on peut voir l'avancement du module en fonction du nombre de cours passés, les travaux à rendre pour chaque module, les notes et les moyennes de chaque module.
+
+Il est possible d'ajouter une note depuis la page d'accueil en appuyant sur le bouton `Ajouter une note`:
+
+![Ajouter une note](Images/ajouterNote.png)
+
+Il est possible de visualiser les informations des modules en appuyant sur le bouton `Module` /
+
+![Modules](Images/infoModule.png)
+
+Sur cette page il est possible de recharger les informations des modules.
+
+Enfin, nous pouvons accéder à notre compte en cliquant sur le nom de l'utilisateur :
 
 ![Mon compte](Images/monCompte.png)
 
-Depuis cette page, on peut voir l'avancement du module en fonction du nombre de cours passés, les travaux à rendre pour chaque module, les notes et les moyennes de chaque module.
+
 
 ### Scrapping
 
@@ -130,6 +148,8 @@ Nous pouvons alors répertorier tous les cours que nous avons eût tout au long 
 En ce qui concerne les difficultés que nous avons rencontrées, celles-ci sont principalement basées sur le scrapping. En effet, nous sommes dépendants des sites web où nous récupérons nos informations. 
 Par exemple, le site permettant de récupérer l'emploi du temps n'est pas très réactif et nous avons dû ajouter des temps de delay pour être sûrs que le scrapping fonctionnera bien. Aussi, la plateforme n'est pas accessible à certaines heures ce qui empêche donc la récupération de données.
 
+Le scrapping n'a pu être effectué qu'avec des comptes étudiants IDU4, il est donc possible que celui ne fonctionne pas correctement avec d'autres comptes.
+
 ---
 ## Utilisation
 
@@ -139,19 +159,21 @@ Prérequis:
 
 - Avoir Java Runtime Environment à jour (version 17 ou plus).
 
+- Avoir GoogleChrome d'installer
+
 
 Lancement:
 
 - Modifier les informations du fichier config.yml avec les informations de sa propre base de données.
 
-- Ouvrir le dossier Application puis lancer Application.bat.
+- Lancer le projet Maven avec les arguments `clean javafx:run` 
 
-- Se connecter avec le login d'un des élèves de la BDD. Le mot de passe est crypté, pour tous les élèves le mot de passe est "test".
+- Se connecter avec un login étudiant d'un élève de Polytech Annecy.
 
 exemple: 
 
-         login --> gonaya
-         mdp --> test
+         login --> gueriotb
+         mdp --> xxxxxxx
 
 ---
 ### Crédits
