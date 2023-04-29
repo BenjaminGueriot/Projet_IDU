@@ -48,7 +48,7 @@ A noter que `Fillière` est une énumération au sens Java, donc un type spécia
 Pour cette application, nous avons implémenté les patterns suivant :
 
 - `Singleton` au travers de la classe Ecole, afin qu'il n'y ait qu'une seule instance d'école contenant la liste de toutes les promos présente dans l'application.
-- `Factory` au travers de la classe CoursFactory, qui permet de créer des TP, TD ou CM : différents types de cours avec des durées différentes et potentiellement d'autres attributs.
+- `Factory` au travers de la classe CoursFactory, qui permet de créer des CM, TD, TP, EXAM ou SPECIAL : différents types de cours avec des durées différentes et potentiellement d'autres attributs.
 
 ### Cas d'utilisation
 
