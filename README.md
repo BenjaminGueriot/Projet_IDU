@@ -138,4 +138,4 @@ exemple:
 
 ---
 ### Crédits
-Projet conçu et élaboré par GONAY Arthur, GUERIOT Benjamin, NICOLAS Thomas, PACCOUD William, PRUVOST Jordan et TAKAHASHI Vincent
+Projet conçu et élaboré par GUERIOT Benjamin et NICOLAS Thomas.
