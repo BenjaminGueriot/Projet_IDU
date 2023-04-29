@@ -119,6 +119,9 @@ Enfin, nous pouvons accéder à notre compte en cliquant sur le nom de l'utilisa
 Depuis cette page, on peut voir l'avancement du module en fonction du nombre de cours passés, les travaux à rendre pour chaque module, les notes et les moyennes de chaque module.
 
 ---
+## Difficultés rencontrées
+
+---
 ## Utilisation
 
 Prérequis: 
@@ -126,9 +129,6 @@ Prérequis:
 - Avoir une base de données mysql et importer le fichier .sql fourni.
 
 - Avoir Java Runtime Environment à jour (version 17 ou plus).
-
----
-## Difficultés rencontrées
 
 
 Lancement:
