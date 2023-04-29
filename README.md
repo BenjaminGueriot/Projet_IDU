@@ -50,14 +50,6 @@ Pour cette application, nous avons implémenté les patterns suivant :
 - `Singleton` au travers de la classe Ecole, afin qu'il n'y ait qu'une seule instance d'école contenant la liste de toutes les promos présente dans l'application.
 - `Factory` au travers de la classe CoursFactory, qui permet de créer des CM, TD, TP, EXAM ou SPECIAL : différents types de cours avec des durées différentes et potentiellement d'autres attributs.
 
-### Cas d'utilisation
-
-Les diagrammes de cas d'utilisation nous permettront de définir le comportement de l'application en fonction des requêtes de l'utilisateur :
-
-
-![Diagramme cas d'utilisation](Images/useCase.png)
-
-
 ### Diagrammes de séquences
 
 Voici les diagrammes de séquence qui vont nous permettre de tracer le chemin des appels de fonction pour chaque cas d'utilisation :
