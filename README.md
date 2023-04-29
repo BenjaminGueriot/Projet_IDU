@@ -20,15 +20,15 @@ Voici le modèle Entité-Association de la base de donnée liée à notre applic
 
 Les entités fonctionnelles de notre application sont donc :
 - Ecole
+- Filiere
 - Promo
 - Eleve
+- Enseignant
+- UE
+- Module
 - Travail
 - Note
-- Module
 - Cours
-- Filiere
-- UE
-- Enseignant
 
 Le principe de notre application est donc le suivant :
 L'école contient des promos. Une promo correspond à une filière (IDU3, MM4...) et une année, exemple : IDU3 de 2022. Une filière contient des UE qui sont composés de modules. Un module est composé de différents cours, et un module peut être suivi par plusieurs filières.
