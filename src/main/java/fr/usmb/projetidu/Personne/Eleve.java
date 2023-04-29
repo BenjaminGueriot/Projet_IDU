@@ -111,7 +111,7 @@ public class Eleve extends Personne {
 			sum_coeff += coeff;
 			
 		}
-		
+
 		return sum / sum_coeff;
 		
 	}
@@ -191,15 +191,19 @@ public class Eleve extends Personne {
 		
 		for(Module module : modules) {
 			
-			if(getMeanOfModule(module) != null) {
-				sum += getMeanOfModule(module);
-				count++;
+			if(getMeanOfModule(module) != null && !getMeanOfModule(module).isNaN()) {
+				sum += getMeanOfModule(module) * module.getCoeff();
+				count += module.getCoeff();
 			}
 			
 		}
 		
 		double mean = sum / count;
-			
+		
+		if(count == 0.0) {
+			return Double.NaN;
+		}
+		
 		return Math.round(mean*100.0)/100.0;
 		
 	}
