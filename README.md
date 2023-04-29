@@ -16,7 +16,7 @@ La première étape du projet a été la conception préliminaire de l'applicati
 
 Voici le modèle Entité-Association de la base de donnée liée à notre application, les cardinalitées sont notés suivant la norme d'un MCD MERISE car le modèle a été utilisé pour générer le code sql de création de la BDD :
 
-![Modèle Entité Association](Images/EntiteAssociation.png)
+![Modèle EA](https://user-images.githubusercontent.com/77977775/235298589-71344af7-c668-4e35-be05-d6c6270e1f36.png)
 
 Les entités fonctionnelles de notre application sont donc :
 - Ecole
