@@ -16,7 +16,7 @@ La première étape du projet a été la conception préliminaire de l'applicati
 
 Voici le modèle Entité-Association de la base de donnée liée à notre application :
 
-![Modèle EA](https://user-images.githubusercontent.com/77977775/235298589-71344af7-c668-4e35-be05-d6c6270e1f36.png)
+![Modèle EA](Modele_EA)
 
 Les entités fonctionnelles de notre application sont donc :
 - Ecole
