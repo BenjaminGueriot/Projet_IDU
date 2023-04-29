@@ -115,7 +115,14 @@ Depuis cette page, on peut voir l'avancement du module en fonction du nombre de 
 
 ### Scrapping
 
+Pour que notre application soit utile, il nous faut des données. Pour ce faire, nous remplissons notre base de données à partir d'informations récupérées sur différents site web à l'aide de scrapping. 
+Dans un premier temps, lors de chaque connexion à l'application, nous allons récupérer les informations disponibles sur l'intranet de l'université (USMB) ainsi que l'intranet de l'école Polytech.
+Nous récupérons alors des données telles que le nom, prénom, date de naissance de l'utilisateur ainsi que l'ine, les polypoints, le mail... (Cette opération de scrapping prend entre 5 et 10 secondes)
 
+En outre, nous avons implémenté, dans notre application, un bouton pour actualiser les modules. Nous allons alors réaliser un scrapping sur la page des modules d'une filière cible que nous pouvons retrouver sur l'intranet de l'école. Cette opération va récupérer toutes les informations importants concernant les modules ainsi que les informations sur les enseignants et les unités d'enseignements (UE). (Cette opération prend entre 10 et 20 secondes).
+
+Enfin, un autre bouton est disponible, dans la page du planning, pour actualiser les cours. Nous allons récupérer les informations directement sur le site nous permettant de récupérer notre planning.
+Nous pouvons alors répertorier tous les cours que nous avons eût tout au long de l'année scolaire. Cette opération prend un certain temps car le site disponible est vraiment instable et il y a beaucoup de données à récupérer.
 
 ---
 ## Difficultés rencontrées
