@@ -81,6 +81,9 @@ Les notes sont stockées dans l'attribut informations de l'objet Eleve, donc il 
 
 ---
 ## Fonctionnalités
+
+### Application
+
 Lors du lancement de l'application, vous devez vous connecter :
 
 ![Page de connection](Images/pageDeConnection.png)
@@ -109,6 +112,10 @@ Enfin, nous pouvons accéder à notre compte en cliquant sur le nom de l'utilisa
 ![Mon compte](Images/monCompte.png)
 
 Depuis cette page, on peut voir l'avancement du module en fonction du nombre de cours passés, les travaux à rendre pour chaque module, les notes et les moyennes de chaque module.
+
+### Scrapping
+
+
 
 ---
 ## Difficultés rencontrées
