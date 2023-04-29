@@ -31,7 +31,7 @@ Les entités fonctionnelles de notre application sont donc :
 - Enseignant
 
 Le principe de notre application est donc le suivant :
-L'école contient des promos. Une promo correspond à une filière (IDU3, MM4, PEIP1...) et une année, exemple : IDU3 de 2022. Une filière contient des UE qui sont composés de modules. Un module est composé de différents cours, et un module peut être suivi par plusieurs filières.
+L'école contient des promos. Une promo correspond à une filière (IDU3, MM4...) et une année, exemple : IDU3 de 2022. Une filière contient des UE qui sont composés de modules. Un module est composé de différents cours, et un module peut être suivi par plusieurs filières.
 Un élève appartient à une promo qui contient plusieurs élèves. Chaque élève possède plusieurs notes qui sont associées à un travail. Un travail s'inscrit dans un module et est préparé par un enseignant. Un enseignant enseigne un ou plusieurs modules.
 
 
@@ -39,7 +39,7 @@ Nous avons implémenté notre base de données avec phpMyAdmin en SQL.
 
 ### Diagramme de classes
 
-Nous avons réfléchit à un diagramme de classe à partir de ces entités qui servira de base à l'implémentation du code, les cardinalités sont notés suivant la norme UML :
+Nous avons réfléchit à un diagramme de classe à partir de ces entités qui servira de base à l'implémentation du code, les cardinalités sont notés suivant la norme UML (les classes utils ne sont pas affichées sur ce diagramme) :
 
 ![Diagramme de classes](Images/diagrammeClasse.png)
 
@@ -48,7 +48,7 @@ A noter que `Fillière` est une énumération au sens Java, donc un type spécia
 Pour cette application, nous avons implémenté les patterns suivant :
 
 - `Singleton` au travers de la classe Ecole, afin qu'il n'y ait qu'une seule instance d'école contenant la liste de toutes les promos présente dans l'application.
-- `Factory` au travers de la classe CoursFactory, qui permet de créer des TP, TD ou CM : différents types de cours avec une durée différentes et potentiellement d'autres attributs.
+- `Factory` au travers de la classe CoursFactory, qui permet de créer des TP, TD ou CM : différents types de cours avec des durées différentes et potentiellement d'autres attributs.
 
 ### Cas d'utilisation
 
