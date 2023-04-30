@@ -6,6 +6,9 @@ import fr.usmb.projetidu.Enseignement.Module.Module;
 
 public class CourFactoryImpl implements CourFactory {
 
+	/**
+	 * 	Méthode permettant de créer un objet Cour
+	 */
 	@Override
 	public Cour createCour(CourEnum cour_enum, int num_seance, Date date, double heure_debut, double duree, Module module) {
 		

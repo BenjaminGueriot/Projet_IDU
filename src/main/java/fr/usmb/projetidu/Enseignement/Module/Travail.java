@@ -4,50 +4,62 @@ import java.util.Date;
 
 public class Travail {
 
+	/**
+	 * 	Nom du travail
+	 */
 	private String nom;
+	
+	/**
+	 * 	Sujet du travail
+	 */
 	private String sujet;
+	
+	/**
+	 * 	Date de rendu du travail
+	 */
+	
 	private Date date;
+	/**
+	 * 	Module du travail
+	 */
 	private Module module;
 	
+	/**
+	 * 	Constructeur de la classe
+	 */
 	public Travail(String nom, String sujet, Date date, Module module) {
-		super();
 		this.nom = nom;
 		this.sujet = sujet;
 		this.date = date;
 		this.module = module;
 	}
 
+	/**
+	 * 	Accesseur renvoyant le nom
+	 */
 	public String getNom() {
-		return nom;
+		return this.nom;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
+	/**
+	 * 	Accesseur renvoyant la date de rendu du travail
+	 */
 	public Date getDate() {
-		return date;
+		return this.date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
+	/**
+	 * 	Accesseur renvoyant le sujet
+	 */
 	public String getSujet() {
-		return sujet;
+		return this.sujet;
 	}
 
-	public void setSujet(String sujet) {
-		this.sujet = sujet;
-	}
-
+	/**
+	 * 	Accesseur renvoyant le module
+	 */
 	public Module getModule() {
-		return module;
+		return this.module;
 	}
 
-	public void setModule(Module module) {
-		this.module = module;
-	}
-	
-	
 }

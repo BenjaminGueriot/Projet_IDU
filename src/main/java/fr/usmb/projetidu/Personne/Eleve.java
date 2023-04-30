@@ -20,15 +20,45 @@ import fr.usmb.projetidu.Enseignement.Module.Cour.Cour;
 
 public class Eleve extends Personne {
 
+	/**
+	 * 	Promo de l'élève
+	 */
 	private Promo promo;
+	
+	/**
+	 * 	Dictionnaire comrenant les modules comme clés ainsi que les informations de ceux-ci en valeur 
+	 * 
+	 */
 	private HashMap<Module, HashMap<Travail, double[]>> informations = new HashMap<>();
+	
+	/**
+	 * 	Date de naissance de l'élève
+	 */
 	private String date_naissance;
-	private int polypoints = 0;;
+	
+	/**
+	 * 	Nombre de polypoints de l'élève
+	 */
+	private int polypoints = 0;
+	
+	/**
+	 * 	Identifiant national de l'élève
+	 */
 	private String ine;
+	
+	/**
+	 * 	Login de l'élève
+	 */
 	private String login;
+	
+	/**
+	 * 	Identifiant de l'élève
+	 */
 	private int id;
 	
-	
+	/**
+	 * 	Constructeur de la classe
+	 */
 	public Eleve(int id,String nom, String prenom, Promo promo, String mail, String date_naissance, int polypoints, String ine, String login) {
 		super(nom, prenom, mail);
 		this.id = id;
@@ -39,6 +69,9 @@ public class Eleve extends Personne {
 		this.login = login;
 	}
 	
+	/**
+	 * 	Méthode pour ajouter un ue
+	 */
 	public void addUE(UE ue) {
 		
 		List<Module> modules = ue.getModules();
@@ -51,10 +84,16 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Accesseur renvoyant la liste des modules
+	 */
 	public Set<Module> getAllModules() {
 		return this.informations.keySet();
 	}
 	
+	/**
+	 * 	Méthode pour ajouter une note à l'élève
+	 */
 	public void addNote(Module module, Travail travail, double note, double coeff) {
 		
 		if(!this.informations.containsKey(module)) return;
@@ -69,18 +108,76 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Accesseur permettant de récupérer les informations d'un module
+	 */
 	public HashMap<Travail, double[]> getInfosFromModule(Module module) {
 		
 		return this.informations.get(module);
 		
 	}
 	
+	/**
+	 * 	Accesseur permettant de récupérer toutes les inforations des travaux
+	 */
 	public Collection<double[]> getInfosFromAllTravaux(Module module) {
 		
 		return this.informations.get(module).values();
 		
 	}
 	
+	/**
+	 * 	Méthode permettant de récupérer toutes les informations de tous les modules
+	 */
+	public HashMap<Module, HashMap<Travail, double[]>> getInformations() {
+		return this.informations;
+	}
+
+	/**
+	 * 	Accesseur renvoyant le login
+	 */
+	public String getLogin() {
+		return this.login;
+	}
+	
+	/**
+	 * 	Accesseur renvoyant la promo
+	 */
+	public Promo getPromo() {
+		return this.promo;
+	}
+	
+	/**
+	 * 	Accesseur renvoyant l'identifiant de l'élève
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/**
+	 * 	Accesseur renvoyant l'identifiant national élève
+	 */
+	public String getIne() {
+		return this.ine;
+	}
+	
+	/**
+	 * 	Accesseur renvoyant le nombre de polypoints
+	 */
+	public Integer getPolypoints() {
+		return this.polypoints;
+	}
+	
+	/**
+	 * 	Accesseur renvoyant la date de naissance
+	 */
+	public String getBday() {
+		return this.date_naissance;
+	}
+	
+	/**
+	 * 	Méthode permettant de récupérer les notes d'un module
+	 */
 	public List<Double> getNotesFromModule(Module module) {
 		
 		HashMap<Travail, double[]> module_informations = this.informations.get(module);
@@ -95,6 +192,9 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Méthode permettant de récupérer la moyenne de l'élève pour un module
+	 */
 	public Double getMeanOfModule(Module module) {
 		
 		Collection<double[]> infos = this.getInfosFromAllTravaux(module);
@@ -116,6 +216,9 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Méthode permettant de récupérer la moyenne générale de l'élève
+	 */
 	public Double getGlobalMean() {
 		
 		double sum = 0.0;
@@ -135,42 +238,9 @@ public class Eleve extends Personne {
 		return Math.round(mean*100.0)/100.0;
 	}
 
-	public String getLogin() {
-		return this.login;
-	}
-	
-	public Promo getPromo() {
-		return this.promo;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
-
-	public HashMap<Module, HashMap<Travail, double[]>> getInformations() {
-		return this.informations;
-	}
-
-	public void setInformations(HashMap<Module, HashMap<Travail, double[]>> informations) {
-		this.informations = informations;
-	}
-
-	public String getIne() {
-		return this.ine;
-	}
-	
-	public Integer getPolypoints() {
-		return this.polypoints;
-	}
-	
-	public String getBday() {
-		return this.date_naissance;
-	}
-
-	public void setPromo(Promo promo) {
-		this.promo = promo;
-	}
-
+	/**
+	 * 	Méthode permettant de récupérer la note d'un travail
+	 */
 	public Object getNoteOfTravail(Travail travail) {
 		
 		Module module = travail.getModule();
@@ -182,6 +252,9 @@ public class Eleve extends Personne {
 		return null;
 	}
 
+	/**
+	 * 	Méthode permettant de récupérer la moyenne de l'élève pour une unité d'enseignement
+	 */
 	public double getMeanOfUe(UE ue) {
 		
 		List<Module> modules = ue.getModules();
@@ -208,6 +281,9 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Accesseur renvoyant la liste des travaux
+	 */
 	public List<Travail> getTravaux(){
 		
 		List<Travail> travaux = new ArrayList<>();
@@ -222,6 +298,9 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Méthode permettant de récupérer les dernières notes de l'élève 
+	 */
 	public HashMap<Travail, double[]> getLastNotes(){
 		
 		HashMap<Travail, double[]> map = new HashMap<>();
@@ -252,6 +331,9 @@ public class Eleve extends Personne {
 		
 	}
 	
+	/**
+	 * 	Méthode permettant de récupérer les prochains travaux de l'élève
+	 */
 	public HashMap<Travail, String> getNextTravaux(){
 		
 		HashMap<Travail, String> map = new HashMap<>();
@@ -279,6 +361,10 @@ public class Eleve extends Personne {
 		return map;
 	}
 	
+
+	/**
+	 * 	Méthode permettant de récupérer les prochains travaux de l'élève
+	 */
 	private HashMap<Travail, Date> getNextTravaux(Date date){
 		
 		HashMap<Travail, Date> map = new HashMap<>();
@@ -304,6 +390,10 @@ public class Eleve extends Personne {
 		return map;
 	}
 	
+
+	/**
+	 * 	Méthode permettant de récupérer le dernier lundi
+	 */
 	private Date getLastMonday(int current_week) {
 		
 		Date now = new Date();
@@ -338,9 +428,12 @@ public class Eleve extends Personne {
 		
 	}
 	
-	private int getNumberOfWeek() {
+
+	/**
+	 * 	Méthode permettant de récupérer les prochains travaux de l'élève
+	 */
+	private int getNumberOfWeek(Date date) {
 		
-		Date date = new Date(); 
 	    Calendar cal = Calendar.getInstance();
 	    cal.setTime(date);
 	    int week = cal.get(Calendar.WEEK_OF_YEAR);
@@ -348,6 +441,10 @@ public class Eleve extends Personne {
 	    return week;
 	}
 	
+
+	/**
+	 * 	Méthode permettant de récupérer les jours d'une semaine
+	 */
 	private List<Date> getDaysOfWeek(int current_week){
 		
 		List<Date> dates = new ArrayList<>();
@@ -366,6 +463,10 @@ public class Eleve extends Personne {
 		return dates;
 	}
 	
+
+	/**
+	 * 	Méthode permettant de formatter les horaires
+	 */
 	private String getFormattedHour(double heure) {
 		
 		String start = String.valueOf(heure).replace(".", " ");
@@ -397,6 +498,10 @@ public class Eleve extends Personne {
 		return beginning + "h" + finalEnd;
 	}
 	
+
+	/**
+	 * 	Méthode permettant de récupérer le planning d'une semaine
+	 */
 	public HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> getPlanningOfWeek(int current_week) {
 		
 		HashMap<DayOfWeek, HashMap<Cour, List<Object[]>>> map = new HashMap<>();
@@ -508,11 +613,15 @@ public class Eleve extends Personne {
 	
 	}
 	
+
+	/**
+	 * 	Méthode permettant de récupérer le niveau de charge d'une semaine
+	 */
 	public int[] getCharged() {
 		
 		Date date = getLastMonday(0);		
 		
-		int week = getNumberOfWeek();
+		int week = getNumberOfWeek(date);
 		
 		int amount = getNextTravaux(date).keySet().size();
 		

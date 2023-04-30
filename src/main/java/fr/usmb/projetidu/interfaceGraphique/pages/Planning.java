@@ -14,7 +14,6 @@ import java.util.List;
 
 import fr.usmb.projetidu.Enseignement.Module.Cour.Cour;
 import fr.usmb.projetidu.Personne.Eleve;
-import fr.usmb.projetidu.utils.DatabaseRequests;
 import fr.usmb.projetidu.utils.Initialize;
 import fr.usmb.projetidu.utils.ScrappingData;
 import javafx.geometry.HPos;
@@ -254,12 +253,14 @@ public class Planning extends Parent {
         this.getChildren().add(gridGeneral);
 	}
 	
-public static class Emplacement {
+	public static class Emplacement {
 	
+		@SuppressWarnings("unused")
 		private final String description;
 	    private final DayOfWeek dayOfWeek;
 	    private final VBox view;
-	    private final Border border = null;
+	    @SuppressWarnings("unused")
+		private final Border border = null;
 		
 		public Emplacement(DayOfWeek dayOfWeek, String description,String color) {
 			
