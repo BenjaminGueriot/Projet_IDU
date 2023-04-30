@@ -1,10 +1,7 @@
 package fr.usmb.projetidu.utils;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,17 +25,34 @@ import fr.usmb.projetidu.handler.MySQL;
 
 public class Initialize {
 	
+	/*
+	 * Dictionnaire avec comme clé l'id et comme valeur un objet travail
+	 */
 	private static HashMap<Integer, Travail> travaux = new HashMap<>();
+	
+	/*
+	 * Liste des élèves initialisés
+	 */
 	private static ArrayList<Eleve> eleves = new ArrayList<>();
 	
+	/**
+	 * Récupération de l'objet de la base de données
+	 */
 	private static MySQL database = Main.getDatabase();
 	
+	/**
+	 * Récupération d'un objet travail grâce à son id
+	 */
 	public static Travail getTravailFromId(int id) {
 		
 		return travaux.get(id);
 		
 	}
 	
+	/**
+	 * Méthode permettant de réinitialiser les objets liés à un élève
+	 * Méthode utilisée lors de la deconnexion ou lors de l'utilisation d'un des boutons pour actualiser les informations
+	 */
 	@SuppressWarnings("unused")
 	public static void resetObject(Eleve eleve) {
 		
@@ -71,6 +85,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Eleve avec les informations de la base de données
+	 */
 	public static Eleve InitializeEleve(String login) {
 		
 		String QUERY = "SELECT * FROM eleve WHERE login = '" + login + "';";
@@ -122,6 +139,10 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer des objet Eleve pour ceux dans la même promo que l'utilisateur avec les informations de la base de données
+	 * Cette méthode permet notamment de récupérer les moyennes des autres élèves présents dans la bdd
+	 */
 	public static void InitializeEleveInSamePromo(int id_eleve, Eleve eleve, int id_promo) {
 		
 		String QUERY = "SELECT * FROM eleve WHERE id_promo = '" + id_promo + "';";
@@ -169,6 +190,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Promo avec les informations de la base de données
+	 */
 	private static Promo InitializePromo(int id_eleve, int id_promo) {
 		
 		String QUERY = "SELECT * FROM promo WHERE id_promo = " + id_promo + ";";
@@ -202,6 +226,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Filiere avec les informations de la base de données
+	 */
 	private static Filiere InitializeFiliere(int id_eleve, int id_filiere) {
 		
 		String QUERY = "SELECT * FROM filiere WHERE id_filiere = " + id_filiere + ";";
@@ -242,6 +269,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant d'appeler la méthode pour créer les objets UE en fonction d'une filière
+	 */
 	private static void InitializeUE_Filiere(int id_eleve, Filiere filiere, int id_filiere) {
 		
 		String QUERY = "SELECT * FROM ue_filiere WHERE id_filiere = " + id_filiere + ";";
@@ -266,6 +296,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Ecole avec les informations de la base de données
+	 */
 	private static void InitializeEcole(int id_ecole) {
 		
 		String QUERY = "SELECT * FROM ecole WHERE id_ecole = " + id_ecole + ";";
@@ -289,6 +322,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet UE avec les informations de la base de données
+	 */
 	private static void InitializeUE(int id_eleve, Filiere filiere, int id_ue) {
 		
 		String QUERY = "SELECT * FROM ue WHERE id_ue = " + id_ue + ";";
@@ -328,6 +364,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Module avec les informations de la base de données
+	 */
 	private static void InitializeModule(int id_eleve, UE ue, int id_ue) {
 		
 		String QUERY = "SELECT * FROM module WHERE id_ue = " + id_ue + ";";
@@ -376,14 +415,17 @@ public class Initialize {
 			
 			ue.addModule(module);
 			
-			InitializeCour(id_eleve, module, id);
+			InitializeCours(id_eleve, module, id);
 			InitializeEnseigne(id, module);
 			InitializeTravail(id, module);
 		}
 		
 	}
 	
-	private static void InitializeCour(int id_eleve, Module module, int id_module) {
+	/**
+	 * Méthode permettant de créer un objet Cours avec les informations de la base de données
+	 */
+	private static void InitializeCours(int id_eleve, Module module, int id_module) {
 		
 		String QUERY = "SELECT * FROM cours WHERE id_module = " + id_module + ";";
 		
@@ -450,6 +492,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant d'appeler la méthode pour créer un obet enseignant en fonction d'un module
+	 */
 	private static void InitializeEnseigne(int id_module, Module module) {
 		
 		String QUERY = "SELECT id_enseignant FROM enseigne WHERE id_module = " + id_module + ";";
@@ -478,6 +523,9 @@ public class Initialize {
 		
 	}
 
+	/**
+	 * Méthode permettant de créer un objet Enseignant avec les informations de la base de données
+	 */
 	private static void InitializeEnseignant(int id_enseignant, Module module) {
 		
 		
@@ -515,6 +563,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de créer un objet Travail avec les informations de la base de données
+	 */
 	private static void InitializeTravail(int id_module, Module module) {
 		
 		
@@ -555,6 +606,9 @@ public class Initialize {
 		
 	}
 	
+	/**
+	 * Méthode permettant de formatter une date
+	 */
 	private static Date parseDate(String date, String format){
 	    SimpleDateFormat formatter = new SimpleDateFormat(format);
 	    try {
@@ -565,6 +619,9 @@ public class Initialize {
 		return null;
 	}
 
+	/**
+	 * Méthode permettant de créer un objet Note avec les informations de la base de données
+	 */
 	private static void InitializeNote(Eleve eleve, int id_eleve) {
 		
 		String QUERY = "SELECT * FROM note WHERE id_eleve = " + id_eleve + ";";

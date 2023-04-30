@@ -14,18 +14,34 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import fr.usmb.projetidu.Personne.Eleve;
-import fr.usmb.projetidu.interfaceGraphique.pages.AccueilEleve;
 import fr.usmb.projetidu.interfaceGraphique.pages.ErrorPopup;
 import javafx.stage.Stage;
 
 public class ScrappingData {
 	
+	/*
+	 * Login de l'étudiant
+	 */
 	private static String username;
+	
+	/*
+	 * Mot de passe de l'étudiant
+	 */
 	private static String passwordSaved;
+	
+	/*
+	 * Filière de l'élève
+	 */
 	private static String filiereEleve;
+	
+	/*
+	 * Année de l'élève
+	 */
 	private static int yearEleve;
 	
+	/*
+	 * Méthode permettant le scraping des informations trouvable sur l'intranet de l'université
+	 */
 	public static boolean login2USMBIntranet(Stage stage, String login, String pass) {
 				
 		try {
@@ -81,6 +97,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant le scraping des informations trouvable sur l'intranet de l'école
+	 */
 	public static void login2PolytechIntranet(Stage stage, String login, String pass, String surname, String name, String bday, String mail, String INE) throws InterruptedException {
 		
 		
@@ -170,6 +189,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant le scraping des informations trouvable sur moodle
+	 */
 	public static void login2Moodle(Stage stage, String login, String pass, String name, String surname, String bday, String mail, int polyPoints, String INE, int year, String filiere){
 		
 		ChromeOptions options = new ChromeOptions();
@@ -211,6 +233,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant le scraping des informations conçernant les modules
+	 */
 	public static void getAllModulesInfos(){
 		
 		 ChromeOptions options = new ChromeOptions();
@@ -270,6 +295,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant de chercher les modules disponibles pour une filière
+	 */
 	private static void launchModuleSearch(WebDriver driver, int semester, String filiere) {
 		
 		 WebElement option = driver.findElement(By.xpath("//*[@id=\"semestre\"]/option[" + (semester + 1) + "]"));
@@ -299,6 +327,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant de récupérer les informations d'un seul module
+	 */
 	private static void getModuleData(WebDriver driver, String filiere) {
 		
 		/* ------------------------------ Module ----------------------------------------------*/
@@ -459,6 +490,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant le scraping des informations trouvable sur la plateforme du planning
+	 */
 	public static void login2Planning(){
 		
 		getAllModulesInfos();
@@ -577,6 +611,9 @@ public class ScrappingData {
 		driver.quit(); 
  	}
 	
+	/*
+	 * Méthode pour ne récupérer les informations d'un seul jour du planning
+	 */
 	private static void getOneDay(WebDriver driver) {
 		
 		WebElement dayNotFormatted = driver.findElement(By.id("4"));
@@ -662,9 +699,9 @@ public class ScrappingData {
 				}
 				
 				if(startingHour != null && !startingHour.isEmpty()) {
-					DatabaseRequests.addCour2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
+					DatabaseRequests.addCours2Bdd(number, module, day, Double.parseDouble(startingHour), duree, type);
 				} else {
-					DatabaseRequests.addCour2Bdd(number, module, day, 0.0, duree, type);
+					DatabaseRequests.addCours2Bdd(number, module, day, 0.0, duree, type);
 				}
 				
 				
@@ -676,6 +713,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant de formatter les horaires
+	 */
 	private static String getFormattedHour(String hourNotFormatted) {
 		
 		String hour = "";
@@ -708,6 +748,9 @@ public class ScrappingData {
 		
 	}
 	
+	/*
+	 * Méthode permettant de récupérer les informations d'un étudiant
+	 */
 	private static String[] getStudentIdentification(String texte) {
 		
 		String[] splited = texte.split("\\s+");

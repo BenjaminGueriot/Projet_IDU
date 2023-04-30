@@ -10,7 +10,7 @@ import java.sql.SQLException;
  *   Cette classe va permettre de réaliser les connexions à la base de données
  *   Cette classe utilise le driver jdbc
  * 
- * @author Thomas, Benjamin
+ * @author Thomas
  * @version 1.0
  */
 public class MySQL extends Database {

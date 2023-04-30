@@ -21,7 +21,7 @@ import fr.usmb.projetidu.utils.Config;
  *   Cette classe va réaliser les méthodes liées aux fichiers de configurations
  *   Cette classe réalise les traitements en arrière plan
  * 
- * @author Thomas, Benjamin
+ * @author Thomas
  * @version 1.0
  */
 public class ConfigHandler {

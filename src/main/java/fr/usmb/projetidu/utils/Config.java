@@ -5,7 +5,7 @@ package fr.usmb.projetidu.utils;
  * <p>
  *   Cette classe permet de récupérer les informations du fichier de configuration
  * 
- * @author Thomas, Benjamin
+ * @author Thomas
  * @version 1.0
  */
 public class Config {

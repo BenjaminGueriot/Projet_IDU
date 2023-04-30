@@ -4,8 +4,14 @@ import java.util.HashMap;
 
 public class ModuleColor {
 
+	/*
+	 * Dictionnaire comprenant un code couleur avec un boolean retournant si la couleur est utilisée ou non
+	 */
 	public static HashMap<String, Boolean> colors = new HashMap<>(); 
 	
+	/*
+	 * Méthode pour ajouter les couleurs au dictionnaire
+	 */
 	public static void generateColors() {
 		
 		colors.put("#8BF5D7", false);
@@ -50,7 +56,6 @@ public class ModuleColor {
 		colors.put("#DB6F6F", false);
 		colors.put("#F0B6B6", false);
 
-		
 		
 	}
 	

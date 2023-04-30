@@ -8,7 +8,7 @@ import java.sql.Statement;
 /**
  * <b>Classe abstraite réalisant des interactions avec une base de données</b>
  * 
- * @author Thomas, Benjamin
+ * @author Thomas
  * @version 1.0
  */
 

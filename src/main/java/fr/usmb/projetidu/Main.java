@@ -3,14 +3,11 @@ package fr.usmb.projetidu;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-import fr.usmb.projetidu.Personne.Eleve;
 import fr.usmb.projetidu.handler.ConfigHandler;
 import fr.usmb.projetidu.handler.MySQL;
 import fr.usmb.projetidu.interfaceGraphique.pages.LoginForm;
 import fr.usmb.projetidu.utils.Config;
 import fr.usmb.projetidu.utils.DatabaseRequests;
-import fr.usmb.projetidu.utils.Initialize;
-import fr.usmb.projetidu.utils.ScrappingData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -28,7 +25,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		LoginForm LoginForm = new LoginForm(primaryStage);
-		// Add a style sheet to the scene
+		
         Scene scene = new Scene(LoginForm, 290, 220);
         scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -36,7 +33,6 @@ public class Main extends Application {
         
         Image image = new Image(getClass().getResourceAsStream("/Icon.jpg"));
 
-        // Add the image as an icon for the window
         primaryStage.getIcons().add(image);
         
         primaryStage.show();	
@@ -91,13 +87,11 @@ public class Main extends Application {
 		    {
 		      database.openConnection();
 		      System.out.println("Connexion à la base de données réalisée avec succès.");
-		      //InitTable.initTable();
 		      return true;
 		      
 		    }
 		    catch (ClassNotFoundException | SQLException e)
 		    {
-		      //new WarningGui("Connexion à la base de données échouée").setVisible(true);
 		      System.out.println("Impossible de se connecter à la base de données :");
 		      e.printStackTrace();
 		    } 

@@ -2,29 +2,47 @@ package fr.usmb.projetidu.Personne;
 
 public abstract class Personne {
 
+	/**
+	 * Nom d'une personne
+	 */
 	protected String nom;
+	
+	/**
+	 * Prenom d'une personne
+	 */
 	protected String prenom;
+	
+	/**
+	 * Mail d'une personne
+	 */
 	protected String mail;
 	
+	/**
+	 * Constructeur de la classe
+	 */
 	public Personne(String nom, String prenom, String mail) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.mail = mail;
 	}
 	
+	/**
+	 * 	Accesseur renvoyant le nom
+	 */
 	public String getNom() {
-		return nom;
+		return this.nom;
 	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+	
+	/**
+	 * 	Accesseur renvoyant le prenom
+	 */
 	public String getPrenom() {
 		return this.prenom;
 	}
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
 
+	/**
+	 * 	Accesseur renvoyant le mail
+	 */
 	public String getMail() {
 		return this.mail;
 	}
