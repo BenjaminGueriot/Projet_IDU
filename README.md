@@ -159,7 +159,7 @@ Prérequis:
 
 - Avoir Java Runtime Environment à jour (version 17 ou plus).
 
-- Avoir GoogleChrome d'installer
+- Avoir installé GoogleChrome (pour le scraping )
 
 
 Lancement:
